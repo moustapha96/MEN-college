@@ -1,0 +1,56 @@
+{% extends 'admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}
+	{% for message in app.flashes('success') %}
+
+		<div class="flash-notice alert alert-success">
+			{{ message }}
+		</div>
+
+	{% endfor %}
+	<a href=" {{ path('app_user_index') }}" class="m-1 btn btn-outline-info float-right btn-sm" role="button">
+		<i class="m-1 fa fa-list" aria-hidden="true"></i>
+		Liste</a>
+
+
+	{# <a href=" {{ path('app_user_new') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+			<i class="fa fa-plus" aria-hidden="true"></i>
+			Ajouter</a> #}
+{% endblock %}
+
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="search-result">
+
+								<div class="result-body">
+									<div class="table-responsive">
+										{{ include('user/_form.html.twig') }}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>{% endblock %}

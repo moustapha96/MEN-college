@@ -1,0 +1,128 @@
+{% extends 'admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+<h1 class="card-title"> {{ titre }} </h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}
+{% for message in app.flashes('success') %}
+
+<div class="flash-notice alert alert-success">
+    {{ message }}
+</div>
+
+{% endfor %}
+<a href=" {{ path('admin_rapport_liste') }}" class=" btn btn-info float-right btn-sm" role="button">
+    <i class="fa fa-list" aria-hidden="true"></i>Liste</a>
+
+<a href=" {{ path('admin_rapport_nouveau') }}" class=" btn btn-dark float-right btn-sm" role="button">
+    <i class="fa fa-plus" aria-hidden="true"></i>Ajouter</a>
+{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-margin">
+            <div class="card-body">
+                <div class="row search-body">
+                    <div class="col-lg-12">
+                        <div class="search-result">
+
+                            <div class="result-body">
+                                <div class="table-responsive">
+                                    <table class="table widget-26" id="sampleTable">
+                                        <thead>
+                                            <tr>
+
+                                                <th>Activite</th>
+                                                <th>Description</th>
+                                                <th>Resultat</th>
+                                                <th>Utilisateur</th>
+                                                <th>Actions</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {% for rapport in rapports %}
+                                            <tr>
+                                                <td>
+                                                    <div class="widget-26-job-title">
+                                                        <span>{{rapport.activite}}</span>
+                                                        {% if rapport.activiteFichier %}
+                                                        <p><a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}"
+                                                                target="_blank">Fichier
+                                                                d'activité</a></p>
+                                                        {% endif %}
+                                                    </div>
+
+                                                </td>
+                                                <td>
+                                                    <div class="widget-26-job-title">
+                                                        <span>{{rapport.description}}</span>
+                                                        {% if rapport.descriptionFichier %}
+                                                        <p><a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}"
+                                                                target="_blank">Fichier
+                                                                de description</a></p>
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+
+                                                <td>
+                                                    <div class="widget-26-job-title">
+                                                        <span>{{rapport.resultat}}</span>
+                                                        {% if rapport.resultatFichier %}
+                                                        <p><a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}"
+                                                                target="_blank">Fichier
+                                                                de résultat</a></p>
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+
+                                                <td>
+                                                    <div class="widget-26-job-title">
+                                                        <span>{{rapport.user }}</span>
+
+                                                    </div>
+                                                </td>
+
+
+
+                                                <td>
+                                                    <div class="widget-26-job-starred btn-group">
+
+
+
+                                                        <a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}"
+                                                            class="btn btn-outline-info " type="button">
+                                                            <i class="fa fa-eye" aria-hidden="true">
+                                                            </i> show
+                                                        </a>
+
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
+
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

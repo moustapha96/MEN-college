@@ -1,0 +1,85 @@
+{% extends 'admin/include/main.html.twig' %}
+
+
+{# {% titre de l'activite %} #}
+{% block title_job %}
+
+{% endblock %}
+
+{#        {% operation possible  %} #}
+{% block option %}
+
+    {% for message in app.flashes('notice') %}
+        <div class="flash-notice alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+{#        {% les donnees affichees %} #}
+{% block data %}
+    <section>
+        <h2 class="text-bold"> {{ titre }} </h2>
+        <div class="container">
+              {{ form(form) }}
+        </div>
+    </section>
+    {% if livre is defined %}
+        <section>
+            <h2 class="text-bold"> titre => {{ livre.titre }}</h2>
+            <div class="col-md-12">
+                <div class="tile">
+                    <div class="tile-body">
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group offset-1">
+                                    <img src="/livres/{{ livre.image }}" style="width:200px; height:200px">
+                                </div>
+                            </div>
+
+                            <div class="col-8">
+                                <div class="form-group row">
+                                    <label for="nom" class="col-sm-3 col-form-label">categorie </label>
+                                    <div class="col-sm-5">
+                                        <input disabled type="text" class="form-control" id="name"
+                                               value="{{ livre.categorie.nom }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="nom" class="col-sm-3 col-form-label">ISBN</label>
+                                    <div class="col-sm-5">
+                                        <input disabled type="text" class="form-control" id="author"
+                                               value="{{ livre.isbn }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ISBN" class="col-sm-3 col-form-label">date publication </label>
+                                    <div class="col-sm-5">
+                                        <input disabled type="text" class="form-control" id="ISBN"
+                                               value="{{ livre.getDateParution() | date }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ISBN" class="col-sm-3 col-form-label">Maison d'édition </label>
+                                    <div class="col-sm-5">
+                                        <input disabled type="text" class="form-control" id="ISBN"
+                                               value="{{ livre.getMaisonEdition() }}">
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    {% endif %}
+{% endblock %}
+
+
+

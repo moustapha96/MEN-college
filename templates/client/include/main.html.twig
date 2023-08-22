@@ -1,0 +1,66 @@
+{% extends '././layouts/main.html.twig' %}
+
+{% block title %}
+	Client
+	{{ titre }}
+{% endblock %}
+
+{#{% entete des page %}#}
+{% block head %}
+	{{ parent() }}
+{% endblock %}
+
+{#{% le menu %}#}
+{% block menu %}
+	{% include 'client/include/menu.html.twig' %}
+{% endblock %}
+
+{#{% le corps de la page %}#}
+{% block content %}
+	<div class="content-wrapper">
+		<div class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div
+						class="col-sm-6 text-bold">
+						{#{% titre de l'activite %}#}
+						{% block title_job %}{% endblock %}
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li
+								class="breadcrumb-item">
+
+								{# {% operation possible %}#}
+								{% block option %}{% endblock %}
+
+								{# <a class="btn btn-outline-primary  float-right ml-1 btn-sm"
+																                                                                href=""><i class="fa fa-reply"></i> Retour</a> #}
+							</li>
+
+						</ol>
+					</div>
+
+				</div>
+			</div>
+			<div class="content">
+				<div
+					class="container-fluid">
+					{# {% les donnees affichees %}#}
+					{% block data %}{% endblock %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block scripts %}
+	{{ parent() }}
+	<!-- Data table plugin-->
+	<script type="text/javascript" src="{{ asset('js/plugins/jquery.dataTables.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/plugins/dataTables.bootstrap.min.js') }}"></script>
+	<script type="text/javascript">
+		$('#sampleTable').DataTable();
+	</script>
+{% endblock %}

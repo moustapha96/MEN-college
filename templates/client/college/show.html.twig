@@ -1,0 +1,79 @@
+{% extends 'client/include/main.html.twig' %}
+
+{# {% titre de l'activite %} #}
+{% block title_job %}
+	<h1 class="card-title">{{ titre }}</h1>
+{% endblock %}
+
+{# {% operation possible %} #}
+{% block option %}
+	{% for message in app.flashes('success') %}
+		<div class="flash-notice alert alert-success">{{ message }}</div>
+	{% endfor %}
+
+
+	<a href=" {{ path('client_college_liste') }}" class="m-1 btn btn-outline-info float-right btn-sm" role="button">
+		<i class="fa fa-list" aria-hidden="true"></i>
+		Liste</a>
+
+	{# <a href="{{ path('admin_college_edit', { id: college.id }) }}" class="btn btn-dark float-right btn-sm" role="button">
+				<i class="fa fa-edit" aria-hidden="true"></i>Modifier</a> #}
+{% endblock %}
+
+{# {% les donnees affichees %} #}
+
+{% block data %}
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="search-result">
+
+								<table class="table">
+									<tbody>
+
+										<tr>
+											<th>
+												College</th>
+
+										</tr>
+										<tr>
+											<th>Nom
+											</th>
+											<td>{{ college.nom }}</td>
+										</tr>
+
+										<tr>
+											<th>Description
+											</th>
+											<td>{{ college.description }}</td>
+										</tr>
+
+										{# <tr>
+																					<th>
+																						<u>
+																							Rapport</u>
+																					</th>
+										
+																				</tr> #}
+
+
+									</tbody>
+								</table>
+
+
+								{# {{ include('admin/college/_delete_form.html.twig') }} #}
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

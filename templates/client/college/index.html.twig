@@ -1,0 +1,110 @@
+{% extends 'client/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}
+	{% for message in app.flashes('success') %}
+
+		<div class="flash-notice alert alert-success">
+			{{ message }}
+		</div>
+
+	{% endfor %}
+	{# <a href=" {{ path('app_rapport_new') }}" class=" btn btn-info float-right btn-sm" role="button">
+	  <i class="fa fa-plus" aria-hidden="true"></i> nouveau college</a> #}
+{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="search-result">
+
+								<div class="result-body">
+									<div class="table-responsive">
+										<table class="table widget-26" id="sampleTable">
+											<thead>
+												<tr>
+
+													<th>Nom</th>
+													<th>Description</th>
+													<th>Rapport</th>
+													<th>actions</th>
+
+												</tr>
+											</thead>
+											<tbody>
+
+												{% for college in colleges %}
+													<tr>
+														<td>
+															<div class="widget-26-job-title">
+																<span>{{college.nom}}</span>
+															</div>
+														</td>
+														<td>{{ college.description }}</td>
+														<td>
+															{% if app.user.roles[0] == "ROLE_USER" %}
+
+
+																<a href="{{ path('client_college_rapport_nouveau', { 'id' : college.id } ) }}" class="btn btn-outline-info" type="button">
+																	<i class="fa fa-plus" aria-hidden="true"></i>
+
+																</a>
+
+															{% endif %}
+														</td>
+
+
+														<td>
+															<div class="widget-26-job-starred btn-group">
+																{% if app.user.roles[0] == "ROLE_USER" %}
+																	<a href="{{ path('client_college_show', { 'id' : college.id } ) }}" class="btn btn-outline-dark " type="button">
+																		<i class="fa fa-eye" aria-hidden="true"></i>
+																	</a>
+
+
+																{% endif %}
+
+																{% if app.user.roles[0] == "ROLE_ADMIN" %}
+
+
+																	<a href="{{ path('admin_college_edit', { 'id' : college.id } ) }}" class="btn btn-outline-info" type="button">
+																		<i class="fa fa-edit" aria-hidden="true"></i>
+																	</a>
+
+																{% endif %}
+
+
+															</div>
+														</td>
+													</tr>
+
+
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>{% endblock %}

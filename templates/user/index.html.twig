@@ -1,0 +1,130 @@
+{% extends 'admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}
+	{% for message in app.flashes('success') %}
+
+		<div class="flash-notice alert alert-success">
+			{{ message }}
+		</div>
+
+	{% endfor %}
+	<a href=" {{ path('app_generate_pdf_users') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+
+		<i class="m-1 fa fa-print" aria-hidden="true"></i>Imprimer
+	</a>
+
+
+	<a href=" {{ path('app_user_new') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+		<i class="fa fa-plus" aria-hidden="true"></i>
+		Ajouter</a>
+{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="search-result">
+
+								<div class="result-body">
+									<div class="table-responsive">
+										<table class="table widget-26" id="sampleTable">
+											<thead>
+												<tr>
+
+													<th>Matricule</th>
+													<th>Email</th>
+													{# <th>Roles</th> #}
+													<th>Prenom</th>
+													<th>Nom</th>
+													{# <th>Enabled</th> #}
+													<th>Téléphone</th>
+													{# <th>Status</th> #}
+													<th>Dernier Activité</th>
+													<th>Connecté</th>
+													<th>Adresse</th>
+													<th>Sexe</th>
+													<th>Compte</th>
+													<th>actions</th>
+
+												</tr>
+											</thead>
+
+											<tbody>
+												{% for user in users %}
+													<tr>
+														<td>{{ user.matricule }}</td>
+														<td>{{ user.email }}</td>
+														{# <td>{{ user.roles ? user.roles|json_encode : '' }}</td> #}
+														<td>{{ user.firstName }}</td>
+														<td>{{ user.lastName }}</td>
+														{# <td>{{ user.enabled ? 'Yes' : 'No' }}</td> #}
+														<td>{{ user.phone }}</td>
+														{# <td>{{ user.status }}</td> #}
+														<td>{{ user.lastActivityAt ? user.lastActivityAt|date('Y-m-d H:i:s') :
+                                                    '' }}</td>
+														<td>
+
+															<a href="{{ path('app_user_acount', { 'id' : user.id } ) }}" class="btn btn-{{ user.isActiveNow   ? 'success' : 'danger'}}  ">
+																<i class="fa-solid fatoggle-on"></i>
+
+															</a>
+
+														</td>
+														<td>{{ user.adresse }}</td>
+														<td>{{ user.sexe }}</td>
+														<td>
+
+
+															<a href="{{ path('app_user_acount', { 'id' : user.id } ) }}" class="btn btn-outline-{{ user.enabled ? 'success' : 'danger'}}  " type="button">
+																<i class="fa-solid fa-{{ user.enabled ? 'user': 'lock' }}"></i>
+																{{ user.enabled ? 'Activer': 'Desactiver' }}
+															</a>
+
+														</td>
+
+														<td>
+
+															<a href="{{ path('app_user_show', { 'id' : user.id } ) }}" class="btn btn-outline-dark " type="button">
+																<i class="fa fa-eye" aria-hidden="true"></i>
+															</a>
+
+															<a href="{{ path('app_user_edit', { 'id' : user.id } ) }}" class="btn btn-outline-info" type="button">
+																<i class="fa fa-edit" aria-hidden="true"></i>
+															</a>
+
+														</td>
+													</tr>
+												{% else %}
+													<tr>
+														<td colspan="17">no records found</td>
+													</tr>
+												{% endfor %}
+											</tbody>
+
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>{% endblock %}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				margin: 0;
+				padding: 0;
+			}
+			table {
+				width: 100%;
+				border-collapse: collapse;
+			}
+			th,
+			td {
+				border: 1px solid black;
+				padding: 8px;
+				text-align: left;
+			}
+			th {
+				background-color: #f2f2f2;
+			}
+			.container {
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 20px;
+				text-align: center;
+			}
+			.user-info {
+				display: grid;
+				grid-template-columns: 1fr 2fr;
+				row-gap: 10px;
+				margin-top: 20px;
+			}
+			.user-info img {
+				border-radius: 50%;
+				max-width: 150px;
+				margin: 0 auto;
+				display: block;
+			}
+			th {
+				background-color: #f2f2f2;
+				text-align: left;
+			}
+			td {
+				padding: 8px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>User Information</h1>
+			<div class="user-info">
+				<div>
+					<img src="/avatars/{{ user.avatar }}" alt="Avatar">
+				</div>
+				<div>
+					<table>
+						<tr>
+							<th>Matricule</th>
+							<td>{{ user.matricule }}</td>
+						</tr>
+						<tr>
+							<th>Email</th>
+							<td>{{ user.email }}</td>
+						</tr>
+						<tr>
+							<th>Prenom</th>
+							<td>{{ user.firstName }}</td>
+						</tr>
+						<tr>
+							<th>Nom</th>
+							<td>{{ user.lastName }}</td>
+						</tr>
+						<tr>
+							<th>État Compte</th>
+							<td>{{ user.enabled ? 'Activé' : 'Désactivé' }}</td>
+						</tr>
+						<tr>
+							<th>Téléphone</th>
+							<td>{{ user.phone }}</td>
+						</tr>
+						<tr>
+							<th>Adresse</th>
+							<td>{{ user.adresse }}</td>
+						</tr>
+						<tr>
+							<th>Sexe</th>
+							<td>{{ user.sexe }}</td>
+						</tr>
+
+
+					</table>
+
+					<h2>Rapports
+					</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>College</th>
+								<th>Activité</th>
+								<th>Description</th>
+								<th>Résultats</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for r in user.rapports %}
+								<tr>
+									<td>{{ r.college.nom }}
+
+										<br>
+
+									</td>
+									<td>{{ r.activite }}
+
+										<br>
+										{% if r.activiteFichier %}
+
+											<a href="{{ asset('uploads/' ~ r.activiteFichier) }}">Fichier
+																																																																																																																																																																																																																																																																																																																																																																																																																		                                                    d'activité</a>
+										{% endif %}
+
+
+									</td>
+									<td>{{ r.description }}
+
+										<br>
+										{% if r.descriptionFichier %}
+
+											<a href="{{ asset('uploads/' ~ r.descriptionFichier) }}">Fichier 
+																																																																																																																																																																																																																																																																																																																																																																		                                                    description</a>
+										{% endif %}
+
+									</td>
+									<td>{{ r.resultat }}
+
+										<br>
+										{% if r.resultatFichier %}
+
+											<a href="{{ asset('uploads/' ~ r.resultatFichier) }}">Fichier de
+																																																																																																																																																																																																																																																																																																																																																																	                                                    résultat</a>
+
+										{% endif %}
+
+									</td>
+									<td>{{ r.createdAt|date('Y-m-d H:i:s') }}</td>
+
+
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+
+
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

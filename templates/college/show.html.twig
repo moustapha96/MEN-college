@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}College{% endblock %}
+
+{% block body %}
+    <h1>College</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ college.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ college.nom }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ college.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_college_index') }}">back to list</a>
+
+    <a href="{{ path('app_college_edit', {'id': college.id}) }}">edit</a>
+
+    {{ include('college/_delete_form.html.twig') }}
+{% endblock %}

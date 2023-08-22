@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des rapports
+{% endblock %}
+
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
+
+	<div class="example-wrapper">
+		<h1>Liste des Rapports 
+																																																																																																																														 ✅</h1>
+
+
+		<style>
+			table {
+				width: 100%;
+				border-collapse: collapse;
+			}
+			th,
+			td {
+				border: 1px solid black;
+				padding: 8px;
+				text-align: left;
+			}
+			th {
+				background-color: #f2f2f2;
+			}
+		</style>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Matricule</th>
+					<th>Collége</th>
+
+					<th>Activité</th>
+					<th>Description</th>
+					<th>Résultats</th>
+					<th>Date Création</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				{% for r in rapports %}
+					<tr>
+						<td>{{ r.user.matricule }}</td>
+						<td>{{ r.college.nom }}</td>
+
+						<td>{{ r.activite }}
+							<br>
+							{% if r.activiteFichier %}
+
+								<a href="{{ asset('uploads/' ~ r.activiteFichier) }}">Fichier
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						                                                    d'activité</a>
+							{% endif %}
+
+						</td>
+						<td>{{ r.description }}
+							<br>
+							{% if r.descriptionFichier %}
+
+								<a href="{{ asset('uploads/' ~ r.descriptionFichier) }}">Fichier 
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																													                                                    description</a>
+							{% endif %}
+
+						</td>
+						<td>{{ r.resultat }}
+							<br>
+
+							{% if r.resultatFichier %}
+
+								<a href="{{ asset('uploads/' ~ r.resultatFichier) }}">Fichier de
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				                                                    résultat</a>
+
+							{% endif %}
+
+						</td>
+
+						<td>{{ r.createdAt|date('Y-m-d H:i:s') }}</td>
+
+
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+
+	</div>
+{% endblock %}

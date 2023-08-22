@@ -1,0 +1,152 @@
+{% extends 'client/include/main.html.twig' %}
+
+
+{# {% titre de l'activite %} #}
+{% block title_job %}
+<h1 class="card-title"> {{ titre }} </h1>
+{% endblock %}
+
+{# {% operation possible %} #}
+{% block option %}
+{% for message in app.flashes('success') %}
+<div class="flash-notice alert alert-success">
+    {{ message }}
+</div>
+{% endfor %}
+{% for message in app.flashes('warning') %}
+
+<div class="flash-notice alert alert-warning">
+    {{ message }}
+</div>
+
+{% endfor %}
+{% endblock %}
+
+{# {% les donnees affichees %} #}
+{% block data %}
+
+
+<div class="container">
+    <div class="main-body">
+        <div class="row"> {% for item in user.roles %}
+            <li> {{ item }} </li>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <a href="{{ path('profil_update_avatar') }}">
+
+                                <img src="/avatars/{{ user.avatar }}" alt="Admin" class="rounded-circle" width="150">
+                            </a>
+                            <div class="mt-6">
+                                <h4>{{ user.firstName~' '~user.lastName }}</h4>
+                                <p class="text-secondary mb-1">{{ user.phone }}</p>
+                                <p class="text-muted font-size-sm">{{ user.adresse }}
+                                    , {{ user.sexe }} </p>
+                            </div>
+                            {% if formAvatar is defined %}
+                            {{ form(formAvatar) }}
+                            {% endif %}
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card">
+                    <form enctype="multipart/form-data" action="{{ path('profil_update_data') }}" method="POST">
+                        <div class="card-body">
+
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Prenom</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+
+                                    <input type="text" pattern="[a-zAZ]{3,}" name="firstName" class="form-control "
+                                        id="firstName" placeholder="prenom" value="{{ user.firstName }}" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Nom</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+
+                                    <input type="text" pattern="[a-zAZ]{3,}" name="lastName" class="form-control  "
+                                        id="lastName" placeholder="nom" value="{{ user.lastName }}" required>
+                                </div>
+                            </div>
+
+
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Email</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="email" class="form-control " id="email" placeholder="ex@example.com"
+                                        name="email" value="{{ user.email }}">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">tel</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" pattern="(76|77|78|75|33|88)[0-9]{3}[0-9]{2}[0-9]{2}"
+                                        class="form-control " id="tel" name="phone" value="{{ user.phone }}" required>
+
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Genre</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {% if user.sexe == 'Masculin' %}
+                                    <select id="genre" name="sexe" class="form-control" required>
+                                        <option value="Masculin" selected>Masculin</option>
+                                        <option value="Féminin">Féminin</option>
+                                    </select>
+                                    {% else %}
+                                    <select id="genre" name="sexe" class="form-control" required>
+                                        <option value="Masculin">Masculin</option>
+                                        <option value="Féminin" selected>Féminin</option>
+                                    </select>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Adresse</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" pattern="[a-zAZ0-9 ]{3,}" class="form-control " id="adresse"
+                                        name="adresse" value="{{ user.adresse }}" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="submit" class="btn btn-primary px-4" value="enregistrer modification">
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

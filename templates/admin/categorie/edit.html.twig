@@ -1,0 +1,57 @@
+{% extends 'admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+
+{% endblock %}
+
+{#        {% operation possible  %}#}
+{% block option %}
+
+
+{% endblock %}
+
+{#        {% formulaire de creation d'un livre %}#}
+{% block data %}
+    <div class="logo" style="text-align: center">
+
+
+        <div class="card">
+            <div class="header">{{ titre }}</div>
+            <div class="card-body align-content-center ">
+                <form enctype="multipart/form-data"
+                      action="{{ path('admin_categories_edite',{ 'id': categorie.id } ) }}"
+                      method="POST">
+
+
+                    <div class="form-row">
+                        <div class="form-group col-12 m-*-auto">
+                            <label for="nom">Nom</label>
+                            <input type="text" name="nom" class="form-control "
+                                   id="nom" placeholder="titre" value="{{ categorie.nom }}" required>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-row">
+                        <div class="form-group col-12 m-*-auto">
+                            <button type="submit" class="pull-left btn btn-outline-success">
+                                <i class="fa fa-save fa-lg fa-fw"></i>
+                                mettre à jour
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}
+
+
+

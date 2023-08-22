@@ -1,0 +1,132 @@
+{% extends 'client/include/main.html.twig' %}
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+		=>
+		{{ rapport.id }}
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}
+	<a class="btn btn-outline-primary float-right ml-1 btn-sm" href="{{ path('client_rapport_liste') }}">
+		<i class="fa fa-reply"></i>
+		Retour</a>
+	<a href=" {{ path('client_rapport_nouveau') }}" class=" btn btn-info float-right btn-sm" role="button">
+		<i class="fa fa-plus" aria-hidden="true"></i>
+		Ajouter
+	</a>
+
+{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="search-result">
+
+								<table class="table">
+									<tbody>
+										<tr>
+											<th></th>
+
+											<td><img src="/avatars/{{ rapport.user.avatar }}" alt="Admin" class="rounded-circle" width="150"></td>
+										</tr>
+
+										<tr>
+											<th>College</th>
+
+										</tr>
+										<tr>
+											<th>Nom
+											</th>
+											<td>{{ rapport.college.nom }}</td>
+										</tr>
+
+										<tr>
+											<th>Description
+											</th>
+											<td>{{ rapport.college.description }}</td>
+										</tr>
+
+										<tr>
+											<th>
+												<u>
+													Rapport</u>
+											</th>
+
+										</tr>
+
+										<tr>
+											<th>Activité
+											</th>
+											<td>{{ rapport.activite }}
+											</td>
+											<td>
+
+												{% if rapport.activiteFichier %}
+													<p>
+														<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}">Fichier
+															                                                    d'activité</a>
+													</p>
+												{% endif %}
+											</td>
+										</tr>
+										<tr>
+											<th>Description</th>
+											<td>{{ rapport.description }}
+											</td>
+											<td>
+
+												{% if rapport.descriptionFichier %}
+													<p>
+														<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}">Fichier de
+															                                                    description</a>
+													</p>
+												{% endif %}
+											</td>
+										</tr>
+										<tr>
+											<th>Resultat</th>
+											<td>{{ rapport.resultat }}</td>
+											<td>
+												{% if rapport.resultatFichier %}
+													<p>
+														<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}">Fichier de
+															                                                    résultat</a>
+													</p>
+												{% endif %}
+											</td>
+										</tr>
+										<tr>
+											<th>Date creation</th>
+											<td>{{ rapport.createdAt|date('Y-m-d H:i:s') }}</td>
+
+
+										</tr>
+
+
+									</tbody>
+								</table>
+
+
+								{{ include('admin/rapport/_delete_form.html.twig') }}
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

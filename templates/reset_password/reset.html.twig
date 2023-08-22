@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Gestion biblioteque</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
+    <!-- MDB -->
+    <link rel="stylesheet" href="login/css/mdb.min.css" />
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="login/css/style.css" />
+    <style>
+        #intro {
+            background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTNAXh5oH7R-BefMidr2zijpep68b1G8FUpA&usqp=CAU);
+            height: 100vh;
+        }
+
+        /* Height for devices larger than 576px */
+        @media (min-width: 992px) {
+            #intro {
+                margin-top: 5px;
+            }
+        }
+
+        .navbar .nav-link {
+            color: #fff !important;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <div id="intro" class="bg-image shadow-2-strong">
+        <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0, 0, 0, 0.8);">
+            <div class="container">
+
+                <div class="row justify-content-center">
+
+                    <div class="col-xl-9 col-md-8">
+
+                        {{ form_start(resetForm) }}
+                        {{ form_row(resetForm.plainPassword) }}
+                        <button class="btn btn-primary">Reset password</button>
+                        {{ form_end(resetForm) }}
+                        <div class="row center">
+                            <div class="text-center mt-3 text-secondary">
+                                <input type="submit" class="btn btn-primary px-4" value="enregistrer">
+                            </div>
+                            <div class="text-center mt-3 text-secondary">
+                                <a href="{{ path('app_login') }}">se connecter</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MDB -->
+    <script type="text/javascript" src="login/js/mdb.min.js"></script>
+    <!-- Custom scripts -->
+    <script type="text/javascript" src="login/js/script.js"></script>
+
+
+</body>
+
+</html>

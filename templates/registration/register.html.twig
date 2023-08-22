@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+		<meta http-equiv="x-ua-compatible" content="ie=edge"/>
+		<title>Gestion biblioteque</title>
+		<!-- Font Awesome -->
+		<link
+		rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
+		<!-- Google Fonts Roboto -->
+		<link
+		rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"/>
+		<!-- MDB -->
+		<link
+		rel="stylesheet" href="login/css/mdb.min.css"/>
+		<!-- Custom styles -->
+		<link rel="stylesheet" href="login/css/style.css"/>
+		<style>
+			/* Réinitialisation des marges et des rembourrages du navigateur */
+			/* Réinitialisation des marges et des rembourrages du navigateur */
+			/* Réinitialisation des marges et des rembourrages du navigateur */
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+			}
+
+			.center-container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: calc(100vh - 40px);
+				/* Centrage vertical avec un espace de 20px en haut et en bas */
+			}
+
+			.centered-element {
+				text-align: center;
+				padding: 20px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				background-color: #f5f5f5;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="center-container">
+			<div class="centered-element">
+				<div class="row">
+					<form class="bg-white rounded shadow-5-strong p-5" action="{{ path('app_register') }}" method="post">
+						<div class="row">
+							<img src="images/men_bar.png" alt=""/>
+						</div>
+						<div class="row">
+							<h3>Inscription</h3>
+						</div>
+
+						{% for label, messages in app.flashes %}
+							{% for message in messages %}
+								<div class="alert alert-{{ label }}">{{ message }}</div>
+							{% endfor %}
+						{% endfor %}
+
+						<div class="row">
+							<div class="form-outline mb-4">
+								<input type="text" id="matricule" name="matricule" required class="form-control"/>
+
+								<label class="form-label" for="matricule">Matricule</label>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-outline mb-4">
+								<input type="email" value="" name="email" required class="form-control"/>
+
+								<label class="form-label" for="form1Example1">Email address</label>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-outline mb-4">
+								<input type="text" id="firstName" required name="firstName" class="form-control"/>
+
+								<label class="form-label" for="firstName">Prenom</label>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-outline mb-4">
+								<input type="text" id="nom" required name="lastName" class="form-control"/>
+
+								<label class="form-label" for="lastName">Nom</label>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class=" mb-4">
+								<label class="form-label" for="sexe">Sexe</label>
+								<select id="sexe" name="sexe" class="form-select" required>
+									<option value="" disabled selected>Choisissez votre sexe</option>
+									<option value="MASCULIN">Masculin</option>
+									<option value="FÉMININ">Féminin</option>
+								</select>
+							</div>
+						</div>
+
+
+						<div class="row">
+
+							<div class="col-6 ">
+								<div class="form-outline mb-4">
+
+									<input type="text" id="adresse" name="adresse" required class="form-control"/>
+
+									<label class="form-label" for="adresse">Adresse</label>
+								</div>
+							</div>
+
+							<div class="col-6 ">
+								<div class="form-outline mb-4 ">
+
+									<input type="text" id="phone" name="phone" required class="form-control"/>
+
+									<label class="form-label" for="phone">Téléphone</label>
+								</div>
+							</div>
+
+
+						</div>
+
+
+						<div class="row">
+							<div class="col-6">
+								<div class="form-outline mb-4">
+									<input type="password" id="plainPassword" required name="plainPassword" class="form-control"/>
+
+									<label class="form-label" for="plainPassword">Mot de passe</label>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="form-outline mb-4">
+									<input type="password" id="confirPassword" required name="confirPassword" class="form-control"/>
+
+									<label class="form-label" for="confirPassword">Confirme Mot de Passe</label>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="row mb-2">
+							<button type="submit" class="btn btn-primary btn-block">s'inscrire</button>
+						</div>
+
+						<div class="row mb-4">
+							<div class="col text-center">
+								<a class="btn btn-outline-primary" href="{{ path('app_login') }}">se connecter</a>
+							</div>
+						</div>
+					</form>
+
+
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="login/js/mdb.min.js"></script>
+		<script type="text/javascript" src="login/js/script.js"></script>
+	</body>
+</html>

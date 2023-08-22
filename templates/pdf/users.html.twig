@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}pdf Utilisateurs
+{% endblock %}
+
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
+
+	<div class="example-wrapper">
+		<h1>Liste des Utilisateurs 
+																																																																																							 ✅</h1>
+
+
+		<style>
+			table {
+				width: 100%;
+				border-collapse: collapse;
+			}
+			th,
+			td {
+				border: 1px solid black;
+				padding: 8px;
+				text-align: left;
+			}
+			th {
+				background-color: #f2f2f2;
+			}
+		</style>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Matricule</th>
+					<th>Prenom</th>
+					<th>Nom</th>
+					<th>Adresse</th>
+					<th>Téléphone</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				{% for r in users %}
+					<tr>
+						<td>{{ r.matricule }}</td>
+						<td>{{ r.firstName }}</td>
+						<td>{{ r.lastName }}</td>
+						<td>{{ r.adresse }}</td>
+						<td>{{ r.phone }}</td>
+
+
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+
+	</div>
+{% endblock %}
