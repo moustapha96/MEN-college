@@ -59,7 +59,7 @@ class ClientController extends AbstractController
     public function ListeCollege(CollegeRepository $collegeRepository): Response
     {
         return $this->render("client/college/index.html.twig", [
-            'titre' => 'liste des Collèges',
+            'titre' => 'Gestion des Collèges',
             'colleges' => $collegeRepository->findAll()
         ]);
     }
@@ -68,7 +68,7 @@ class ClientController extends AbstractController
     public function NouveauCollege(CollegeRepository $collegeRepository): Response
     {
         return $this->render("client/college/index.html.twig", [
-            'titre' => 'liste des Collèges',
+            'titre' => 'Gestion des Collèges',
             'colleges' => $collegeRepository->findAll()
         ]);
     }
@@ -83,8 +83,12 @@ class ClientController extends AbstractController
     }
 
     #[Route('/colleges/rapport/{id}/nouveau', name: 'college_rapport_nouveau', methods: ['GET', 'POST'])]
-    public function ajoutRapport($id, Request $request, CollegeRepository $collegeRepository, EntityManagerInterface $entityManager): Response
-    {
+    public function ajoutRapport(
+        $id,
+        Request $request,
+        CollegeRepository $collegeRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
 
         $user = $this->getUser();
         $rapport = new Rapport();
@@ -124,7 +128,7 @@ class ClientController extends AbstractController
         }
 
         return $this->render('client/college/rapport.html.twig', [
-            'titre' => 'Ajouter un Rapport',
+            'titre' => "Ajout d'un Rapport d'activité",
             'college' => $college,
             'form' => $form
         ]);
@@ -136,7 +140,7 @@ class ClientController extends AbstractController
         $user = $this->getUser();
         $rapports = $rapportRepository->findBy(['user' => $user]);
         return $this->render("client/rapport/index.html.twig", [
-            'titre' => 'liste des Rapports',
+            'titre' => 'Liste de vos rapports d\'activités',
             'rapports' => $rapports
         ]);
     }
@@ -153,12 +157,13 @@ class ClientController extends AbstractController
             $rapport->setUser($user);
             $entityManager->persist($rapport);
             $entityManager->flush();
+            $this->addFlash('success', "Rapport d'activité enregistrer avec succès");
             return $this->redirectToRoute('client_rapport_liste', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('client/rapport/new.html.twig', [
             'rapport' => $rapport,
             'form' => $form,
-            'titre' => "Nouveau Rapport"
+            'titre' => "Nouveau Rapport d'activité"
         ]);
     }
 
@@ -166,7 +171,7 @@ class ClientController extends AbstractController
     public function show(Rapport $rapport): Response
     {
         return $this->render('client/rapport/show.html.twig', [
-            'titre' => "Détail Rapport",
+            'titre' => "Détail Rapport d'activité",
             'rapport' => $rapport,
         ]);
     }
@@ -224,11 +229,12 @@ class ClientController extends AbstractController
             }
 
             $entityManager->flush();
+            $this->addFlash('success', "Rapport d'activité mise à jour avec succès");
             return $this->redirectToRoute('client_rapport_liste', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('client/rapport/edit.html.twig', [
-            'titre' => "Mise a jour Rapport",
+            'titre' => "Mise à jour Rapport d'activité",
             'rapport' => $rapport,
             'form' => $form,
         ]);
@@ -241,6 +247,7 @@ class ClientController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $rapport->getId(), $request->request->get('_token'))) {
             $entityManager->remove($rapport);
             $entityManager->flush();
+            $this->addFlash('warning', "Suppression Rapport d'activité éffectif");
         }
         return $this->redirectToRoute('client_rapport_liste', [], Response::HTTP_SEE_OTHER);
     }

@@ -32,7 +32,10 @@ class UserType extends AbstractType
                 'label' => 'Nom',
             ])
             ->add('phone', TextType::class, [
-                'attr' => ['class' => 'col-6 mx-auto form-control '],
+                'attr' => [
+                    'class' => 'col-6 mx-auto form-control',
+                    'pattern' => '^(76|77|78|75|33|88)\d{7}$',
+                ],
                 'label' => 'Téléphone',
             ])
             ->add('adresse', TextType::class, [

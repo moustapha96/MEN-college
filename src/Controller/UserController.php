@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user')]
@@ -19,7 +20,7 @@ class UserController extends AbstractController
     {
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
-            'titre' => "Liste des Utilisateurs"
+            'titre' => "Liste des Inspecteurs"
         ]);
     }
 
@@ -27,6 +28,7 @@ class UserController extends AbstractController
     public function new(
         UserRepository $userRepository,
         Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager
     ): Response {
         $user = new User();
@@ -35,25 +37,44 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setAvatar('avatar.jpeg');
-            $user->setRoles([$form->getData('roles')]);
-            $user->setPassword("password");
+            $user->setRoles(['ROLE_USER']);
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    'password'
+                )
+            );
+
             $user->setStatus("ACTIVE");
 
-            $matriculeExite = $userRepository->findBy(['matricule' =>  $form->getData('matricule')]);
-            if ($matriculeExite) {
-                $this->addFlash('warning', "Ce matricule est deja utilisé");
+            $userByEmail = $userRepository->findOneBy(['email' => $form->getData('email')]);
+            if ($userByEmail) {
+                $this->addFlash('danger', 'Cette adresse email est déjà utilisé.');
                 return $this->redirectToRoute('app_user_new', [], Response::HTTP_SEE_OTHER);
             }
+
+            $userByMatricule = $userRepository->findOneBy(['matricule' => $form->getData('matricule')]);
+            if ($userByMatricule) {
+                $this->addFlash('danger', 'Ce matricule est déjà utilisé.');
+                return $this->redirectToRoute('app_user_new', [], Response::HTTP_SEE_OTHER);
+            }
+
+            $userByPhone = $userRepository->findOneBy(['phone' => $form->getData('phone')]);
+            if ($userByPhone) {
+                $this->addFlash('danger', 'Ce numéro de téléphone est déjà utilisé.');
+                return $this->redirectToRoute('app_user_new', [], Response::HTTP_SEE_OTHER);
+            }
+
             $entityManager->persist($user);
             $entityManager->flush();
-
+            $this->addFlash('success', "Inspecteur ajouté avec succés");
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/new.html.twig', [
             'user' => $user,
             'form' => $form,
-            'titre' => "Nouveau Utilisateur"
+            'titre' => "Nouveau Inspecteur"
         ]);
     }
 
@@ -62,7 +83,7 @@ class UserController extends AbstractController
     {
         return $this->render('user/show.html.twig', [
             'user' => $user,
-            'titre' => "Détail Utilisateur"
+            'titre' => "Détail de l'inspecteur"
         ]);
     }
 
@@ -75,6 +96,7 @@ class UserController extends AbstractController
 
         $entityManager->persist($user);
         $entityManager->flush();
+        $user->getEnabled() == true ?  $this->addFlash('success', "Compte activé avec succés ") :  $this->addFlash('warning', "Compte desactivé avec succés ");
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
@@ -96,11 +118,12 @@ class UserController extends AbstractController
             $user->setAvatar($user->getAvatar());
             $matriculeExite = $userRepository->findBy(['matricule' =>  $form->getData('matricule')]);
             if ($matriculeExite) {
-                $this->addFlash('warning', "Ce matricule est deja utilisé");
+                $this->addFlash('warning', "Ce matricule est déjà utilisé");
                 return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
             }
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->addFlash('success', "Mise à jour effectif");
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -108,7 +131,7 @@ class UserController extends AbstractController
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
-            'titre' => "Mise a jour Utilisateur"
+            'titre' => "Mise a jour Information Inspecteur"
         ]);
     }
 
@@ -118,6 +141,7 @@ class UserController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
+            $this->addFlash('successwarning', "Suppréssion effectif");
         }
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);

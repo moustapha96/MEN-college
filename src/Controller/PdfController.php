@@ -39,7 +39,7 @@ class PdfController extends AbstractController
         $pdfContent = shell_exec('wkhtmltopdf - - <<< ' . escapeshellarg($htmlContent));
         return new Response($pdfContent, 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="generated.pdf"',
+            'Content-Disposition' => 'inline; filename="editeur.pdf"',
         ]);
     }
     #[Route('/generate-users', name: 'app_generate_pdf_users', methods: ['GET'])]
@@ -55,7 +55,7 @@ class PdfController extends AbstractController
         $pdfContent = shell_exec('wkhtmltopdf - - <<< ' . escapeshellarg($htmlContent));
         return new Response($pdfContent, 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="generated.pdf"',
+            'Content-Disposition' => 'inline; filename="inspecteurs.pdf"',
         ]);
     }
     #[Route('/generate-rapport/{id}', name: 'app_generate_pdf_rapport', methods: ['GET'])]
@@ -70,7 +70,7 @@ class PdfController extends AbstractController
         $pdfContent = shell_exec('wkhtmltopdf - - <<< ' . escapeshellarg($htmlContent));
         return new Response($pdfContent, 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="generated.pdf"',
+            'Content-Disposition' => 'inline; filename="detail-rapport.pdf"',
         ]);
     }
 
@@ -87,7 +87,7 @@ class PdfController extends AbstractController
         $pdfContent = shell_exec('wkhtmltopdf - - <<< ' . escapeshellarg($htmlContent));
         return new Response($pdfContent, 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="generated.pdf"',
+            'Content-Disposition' => 'inline; filename="rapports.pdf"',
         ]);
     }
 }

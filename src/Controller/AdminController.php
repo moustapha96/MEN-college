@@ -10,12 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\College;
 use App\Entity\Rapport;
 use App\Form\CollegeType;
-use App\Form\RapportEditType;
 use App\Form\RapportType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CollegeRepository;
 use App\Repository\RapportRepository;
 use App\Repository\UserRepository;
+use App\Service\MailerService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[Route('/admin',  name: "admin_")]
@@ -32,11 +32,14 @@ class AdminController extends AbstractController
     public function index(
         CollegeRepository $collegeRepository,
         UserRepository $userRepository,
-        RapportRepository $rapportRepository
+        RapportRepository $rapportRepository,
+
     ): Response {
 
+
+
         return $this->render("admin/dashboard/index.html.twig", [
-            'titre' => 'Accueil Admin',
+            'titre' => 'Accueil Admin ',
             'rapports' => $rapportRepository->findAll(),
             'colleges' => $collegeRepository->findAll(),
             'users' =>  $userRepository->findAll()
@@ -48,7 +51,7 @@ class AdminController extends AbstractController
     public function ListeCollege(CollegeRepository $collegeRepository): Response
     {
         return $this->render("admin/college/index.html.twig", [
-            'titre' => 'liste des Collège',
+            'titre' => 'Gestion des Collèges',
             'colleges' => $collegeRepository->findAll()
         ]);
     }
@@ -69,18 +72,19 @@ class AdminController extends AbstractController
             $college->setDescription($data['description']);
             $collecteNom = $collegeRepository->findBy(['nom' => $data['nom']]);
             if ($collecteNom) {
-                $this->addFlash('warning', "College avec ce Nom existe  !! ");
+                $this->addFlash('warning', "Collège avec ce Nom existe  !! ");
                 $referer = $request->headers->get('referer');
                 return new RedirectResponse($referer);
             }
 
             $entityManager->persist($college);
             $entityManager->flush();
+            $this->addFlash('success', "Collège créé avec succés");
             return $this->redirectToRoute('admin_college_liste');
         }
 
         return $this->render('admin/college/new.html.twig', [
-            'titre' => 'Nouveau College',
+            'titre' => 'Nouveau Collège',
             'college' => $college,
 
         ]);
@@ -94,6 +98,7 @@ class AdminController extends AbstractController
             'college' => $college,
         ]);
     }
+
     #[Route('/colleges/{id}/rapport', name: 'college_rapport', methods: ['GET'])]
     public function showCollegeRapport(College $college, RapportRepository $rapportRepository): Response
     {
@@ -126,10 +131,9 @@ class AdminController extends AbstractController
 
             $entityManager->persist($college);
             $entityManager->flush();
+            $this->addFlash('success', "Mise à jour collège effectif");
             return $this->redirectToRoute('admin_college_liste');
         }
-
-
 
         return $this->render('admin/college/edit.html.twig', [
             'titre' => 'Mise a jour Collège',
@@ -143,6 +147,7 @@ class AdminController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $college->getId(), $request->request->get('_token'))) {
             $entityManager->remove($college);
             $entityManager->flush();
+            $this->addFlash('success', "Suppréssion effectif");
         }
         return $this->redirectToRoute('admin_college_liste', [], Response::HTTP_SEE_OTHER);
     }
@@ -153,7 +158,7 @@ class AdminController extends AbstractController
     public function ListeRpport(RapportRepository $rapportRepository): Response
     {
         return $this->render("admin/rapport/index.html.twig", [
-            'titre' => 'Gestion des Activités',
+            'titre' => 'Gestion des Rapports d\'Activités',
             'rapports' => $rapportRepository->findAll()
         ]);
     }
@@ -190,14 +195,68 @@ class AdminController extends AbstractController
                 $rapport->setResultatFichier($resultatFilename);
             }
 
-
             $entityManager->persist($rapport);
             $entityManager->flush();
+            $this->addFlash('success', "Rapport d'activité créé avec succés ");
             return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('admin/rapport/new.html.twig', [
             'rapport' => $rapport,
             'form' => $form,
+            'titre' => "Nouveau Rapport d'Activité"
+        ]);
+    }
+
+
+    #[Route('/rapports/{id}/nouveau',  name: "college_rapport_nouveau", methods: ['GET', 'POST'])]
+    public function NouveauRpportCollege(
+        $id,
+        Request $request,
+        CollegeRepository $collegeRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+
+        $user = $this->getUser();
+        $rapport = new Rapport();
+        $college = $collegeRepository->find($id);
+        $rapport->setCollege($college);
+        $form = $this->createForm(RapportType::class, $rapport);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $rapport->setUser($user);
+            $activiteFile = $form->get('activiteFichier')->getData();
+            if ($activiteFile instanceof UploadedFile) {
+                $activiteFilename = uniqid() . '.' . $activiteFile->guessExtension();
+                $activiteFile->move($this->getParameter('pdf_directory'), $activiteFilename);
+                $rapport->setActiviteFichier($activiteFilename);
+            }
+            $descriptionFile = $form->get('descriptionFichier')->getData();
+            if ($descriptionFile instanceof UploadedFile) {
+                $descriptionFilename = uniqid() . '.' . $descriptionFile->guessExtension();
+                $descriptionFile->move($this->getParameter('pdf_directory'), $descriptionFilename);
+                $rapport->setDescriptionFichier($descriptionFilename);
+            }
+
+            $resultatFile = $form->get('resultatFichier')->getData();
+            if ($resultatFile instanceof UploadedFile) {
+                $resultatFilename = uniqid() . '.' . $resultatFile->guessExtension();
+                $resultatFile->move($this->getParameter('pdf_directory'), $resultatFilename);
+                $rapport->setResultatFichier($resultatFilename);
+            }
+
+
+            $entityManager->persist($rapport);
+            $this->addFlash('success', "Rapport enregistrer avec succés");
+            $entityManager->flush();
+            return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('admin/college/rapport_new.html.twig', [
+            'rapport' => $rapport,
+            'form' => $form,
+            'college' => $college,
             'titre' => "Nouveau Rapport d'Activité"
         ]);
     }
@@ -264,6 +323,7 @@ class AdminController extends AbstractController
             }
 
             $entityManager->flush();
+            $this->addFlash('success', "Mise à jour rapport d'activité effectif");
             return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -281,6 +341,7 @@ class AdminController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $rapport->getId(), $request->request->get('_token'))) {
             $entityManager->remove($rapport);
             $entityManager->flush();
+            $this->addFlash('warning', "Suppréssion éffectif");
         }
         return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
     }

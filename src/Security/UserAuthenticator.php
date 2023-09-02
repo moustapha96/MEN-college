@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
@@ -21,9 +22,12 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
-
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
-    {
+    public $tokenSI;
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->tokenSI = $tokenStorage;
     }
 
     public function authenticate(Request $request): Passport
@@ -42,8 +46,11 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
-    {
+    public function onAuthenticationSuccess(
+        Request $request,
+        TokenInterface $token,
+        string $firewallName
+    ): ?Response {
 
         // dd($token->getRoleNames()[0]);
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
@@ -53,8 +60,8 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         $user = $token->getUser();
         // dd($user->getRoles());
         if ($user->getEnabled() == false) {
-
             throw new AccountDisabledException("votre compte a été desactivé ");
+            $this->logout();
             return new RedirectResponse($this->urlGenerator->generate('app_logout'));
         } else if ($user->getEnabled() == true &&  "ROLE_ADMIN" === $user->getRoles()[0]) {
 
@@ -74,5 +81,11 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    }
+
+    public function logout()
+    {
+        // Invalidate the current user's authentication token
+        $this->tokenSI->setToken(null);
     }
 }

@@ -7,6 +7,7 @@ use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Security\UserAuthenticator;
+use App\service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,7 +37,8 @@ class RegistrationController extends AbstractController
         UserAuthenticatorInterface $userAuthenticator,
         UserAuthenticator $authenticator,
         EntityManagerInterface $entityManager,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        MailerService $mailerService,
     ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -49,32 +51,28 @@ class RegistrationController extends AbstractController
             $userByEmail = $userRepository->findOneBy(['email' => $data['email']]);
             if ($userByEmail) {
                 $this->addFlash('danger', 'Cette adresse email existe déjà.');
-                return $this->redirectToRoute('app_register');
-                return new RedirectResponse($referer);
+                return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
             }
 
             $userByMatricule = $userRepository->findOneBy(['matricule' => $data['matricule']]);
             if ($userByMatricule) {
                 $this->addFlash('danger', 'Ce matricule existe déjà.');
-                return $this->redirectToRoute('app_register');
-                return new RedirectResponse($referer);
+                return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
             }
 
             $userByPhone = $userRepository->findOneBy(['phone' => $data['phone']]);
             if ($userByPhone) {
                 $this->addFlash('danger', 'Ce numéro de téléphone existe déjà.');
-                return $this->redirectToRoute('app_register');
-                return new RedirectResponse($referer);
+                return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
             }
             if ($data['plainPassword'] != $data['confirPassword']) {
                 $this->addFlash('danger', 'Les mots de passes ne correspondent pas ');
-                return $this->redirectToRoute('app_register');
+                return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
             }
-
-
 
             if ($data['plainPassword'] != $data['confirPassword']) {
                 $this->addFlash('danger', 'Les mots de passe ne correspondent pas.');
+                return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
             } else {
 
                 $user->setEnabled(false);
@@ -98,6 +96,14 @@ class RegistrationController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
+                // $mailerService->sendVerifEmail(
+                //     "L'envoi de messages échoue actuellement. Veuillez vérifier l'Api SMS .",
+                //     '',
+                //     $user->getEmail(),
+                //     'men-rapport@gmail.com',
+                //     "Merci de confirmer cotre email"
+                // );
+
                 // generate a signed url and email it to the user
                 $this->emailVerifier->sendEmailConfirmation(
                     'app_verify_email',
@@ -113,20 +119,16 @@ class RegistrationController extends AbstractController
 
                 return $this->redirectToRoute('app_login');
             }
-
-            // encode the plain password
-
-            // return $userAuthenticator->authenticateUser(
-            //     $user,
-            //     $authenticator,
-            //     $request
-            // );
         }
 
         return $this->render('registration/register.html.twig', [
             // 'form' => $form->createView(),
         ]);
     }
+
+
+
+
 
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response

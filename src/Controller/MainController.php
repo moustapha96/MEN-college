@@ -32,6 +32,7 @@ class MainController extends AbstractController
             'user' => $user
         ]);
     }
+
     #[Route('/client/profil', name: 'client_profil')]
     public function profil(): Response
     {
@@ -44,7 +45,6 @@ class MainController extends AbstractController
 
 
     //mettre a jour la photo profil
-
 
     #[Route('/admin/profil/update/avatar', name: 'admin_profil_update_avatar', methods: ['GET', 'POST'])]
     public function updateAvatarAdmin(Request $request, EntityManagerInterface $entityManager)
@@ -163,31 +163,44 @@ class MainController extends AbstractController
         $user = $this->getUser();
         $data = $request->request->all();
 
-        if ($data) {
+        if ($request->isMethod('POST')) {
 
             $user->setFirstName($data['firstName']);
             $user->setLastName($data['lastName']);
             $user->setAdresse($data['adresse']);
-            $user->setPhone($data['phone']);
             $user->setSexe($data['sexe']);
+
             $email = $data['email'];
+            $phone = $data['phone'];
 
-            $user_email = $userRepository->findBy(['email' => $email]);
+            $userWithEmail = $userRepository->findOneBy(['email' => $email]);
+            $userWithPhone = $userRepository->findOneBy(['phone' => $phone]);
 
-            if (strcmp($email, $user->getEmail()) != 0) {
-                if (in_array($email, $user_email)) {
-                    $this->addFlash('warning', "adresse mail existe deja !! ");
-                    $referer = $request->headers->get('referer');
-                    return new RedirectResponse($referer);
-                } else {
-                    $user->setEmail($email);
-                }
+            if ($userWithEmail && $userWithEmail !== $user) {
+                $this->addFlash('warning', "L'adresse email existe déjà !");
+                return $this->render('admin/profil/profil.html.twig', [
+                    'titre' => 'Mise a jour Profil',
+                    'user' => $this->getUser()
+                ]);
+            } else {
+                $user->setEmail($email);
+            }
+
+            if ($userWithPhone && $userWithPhone !== $user) {
+                $this->addFlash('warning', "Le numéro de téléphone existe déjà !");
+                return $this->render('admin/profil/profil.html.twig', [
+                    'titre' => 'Mise a jour Profil',
+                    'user' => $this->getUser()
+                ]);
+            } else {
+                $user->setPhone($phone);
             }
 
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->addFlash('success', "Profil mis à jour !");
         }
-        $this->addFlash('success', "profil mise a jour !");
+
         $user = $this->getUser();
         $defaultData = ['message' => "formulaire de modification du profil"];
         $formAvatar = $this->createFormBuilder($defaultData)
@@ -229,32 +242,43 @@ class MainController extends AbstractController
     ) {
         $user = $this->getUser();
         $data = $request->request->all();
-
-        if ($data) {
+        if ($request->isMethod('POST')) {
 
             $user->setFirstName($data['firstName']);
             $user->setLastName($data['lastName']);
             $user->setAdresse($data['adresse']);
-            $user->setPhone($data['phone']);
             $user->setSexe($data['sexe']);
+
             $email = $data['email'];
+            $phone = $data['phone'];
 
-            $user_email = $userRepository->findBy(['email' => $email]);
+            $userWithEmail = $userRepository->findOneBy(['email' => $email]);
+            $userWithPhone = $userRepository->findOneBy(['phone' => $phone]);
 
-            if (strcmp($email, $user->getEmail()) != 0) {
-                if (in_array($email, $user_email)) {
-                    $this->addFlash('warning', "adresse mail existe deja !! ");
-                    $referer = $request->headers->get('referer');
-                    return new RedirectResponse($referer);
-                } else {
-                    $user->setEmail($email);
-                }
+            if ($userWithEmail && $userWithEmail !== $user) {
+                $this->addFlash('warning', "L'adresse email existe déjà !");
+                return $this->render('client/profil/profil.html.twig', [
+                    'titre' => 'Mise a jour Profil',
+                    'user' => $this->getUser()
+                ]);
+            } else {
+                $user->setEmail($email);
+            }
+
+            if ($userWithPhone && $userWithPhone !== $user) {
+                $this->addFlash('warning', "Le numéro de téléphone existe déjà !");
+                return $this->render('client/profil/profil.html.twig', [
+                    'titre' => 'Mise a jour Profil',
+                    'user' => $this->getUser()
+                ]);
+            } else {
+                $user->setPhone($phone);
             }
 
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->addFlash('success', "Profil mis à jour !");
         }
-        $this->addFlash('success', "profil mise a jour !");
         $user = $this->getUser();
         $defaultData = ['message' => "formulaire de modification du profil"];
         $formAvatar = $this->createFormBuilder($defaultData)
