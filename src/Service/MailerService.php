@@ -18,12 +18,17 @@ class MailerService
         $this->mail = $mailer;
     }
 
-    public function sendMail(string $message, $detail, string $destinataire, string $destinatairecc, $objet)
-    {
+    public function sendMail(
+        string $message,
+        $detail,
+        string $destinataire,
+        string $destinatairecc,
+        $objet
+    ) {
 
         $email = (new TemplatedEmail())
             ->from(new Address("moustaphakhouma964@gmail.com", 'MEN'))
-            ->to(new Address("men-rapport@gmail.com"))
+            ->to(new Address($destinataire))
             ->cc(new Address($destinatairecc))
             ->subject($objet)
             ->htmlTemplate('emails/template_sms.html.twig')

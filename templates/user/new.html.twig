@@ -10,21 +10,14 @@
 
 {# {% operation possible %}#}
 {% block option %}
-	{% for message in app.flashes('success') %}
-
-		<div class="flash-notice alert alert-success">
-			{{ message }}
-		</div>
-
-	{% endfor %}
 	<a href=" {{ path('app_user_index') }}" class="m-1 btn btn-outline-info float-right btn-sm" role="button">
 		<i class="m-1 fa fa-list" aria-hidden="true"></i>
 		Liste</a>
 
 
 	{# <a href=" {{ path('app_user_new') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
-			<i class="fa fa-plus" aria-hidden="true"></i>
-			Ajouter</a> #}
+				<i class="fa fa-plus" aria-hidden="true"></i>
+				Ajouter</a> #}
 {% endblock %}
 
 

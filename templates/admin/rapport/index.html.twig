@@ -10,14 +10,6 @@
 
 {# {% operation possible %}#}
 {% block option %}
-	{% for message in app.flashes('success') %}
-
-		<div class="flash-notice alert alert-success">
-			{{ message }}
-		</div>
-
-	{% endfor %}
-
 
 	<a href=" {{ path('app_generate_pdf_rapports') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
 
@@ -50,13 +42,13 @@
 											<thead>
 												<tr>
 
-													<th>Activite</th>
-													<th>Description</th>
-													<th>Resultat</th>
-													<th>Matricule - Editeur</th>
+													<th>Activité</th>
+													<th>Déscription</th>
+													<th>Résultat</th>
+													<th>Inspecteur</th>
 													<th>Collège</th>
 													<th>Date</th>
-
+													<th>Archiver</th>
 													<th>Actions</th>
 
 
@@ -72,7 +64,7 @@
 																{% if rapport.activiteFichier %}
 																	<p>
 																		<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						                                                                d'activité</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		                                                                d'activité</a>
 																	</p>
 																{% endif %}
 															</div>
@@ -84,7 +76,7 @@
 																{% if rapport.descriptionFichier %}
 																	<p>
 																		<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						                                                                de description</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		                                                                de description</a>
 																	</p>
 																{% endif %}
 															</div>
@@ -96,7 +88,7 @@
 																{% if rapport.resultatFichier %}
 																	<p>
 																		<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						                                                                de résultat</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		                                                                de résultat</a>
 																	</p>
 																{% endif %}
 															</div>
@@ -121,17 +113,30 @@
 														<td>
 															<div class="widget-26-job-title">
 																<span>
-																	<a href="{{ path('admin_rapport_show',{'id': rapport.college.getId() }) }}">{{rapport.college.getNom()
+																	<a href="{{ path('admin_college_show',{'id': rapport.college.id }) }}">{{rapport.college.getNom()
                                                                 }}</a>
 																</span>
 
 															</div>
 														</td>
 
+
 														<td>
-															{{ rapport.createdAt|date('Y-m-d H:i:s') }}
+															<p>
+																{{ rapport.createdAt|date('Y-m-d H:i') }}</p>
 
 
+														</td>
+
+														<td>
+
+
+															<a href="{{ path('admin_rapport_activer', { 'id' : rapport.id } ) }}" class="btn btn-outline-{{ rapport.isDeleted ? 'success' : 'danger'}}  " type="button">
+																<i class="fa-solid fa-{{ rapport.isDeleted ? 'archive': 'lock' }}"></i>
+
+																{{ rapport.isDeleted ? 'Activé': 'Archivé' }}
+
+															</a>
 														</td>
 
 
@@ -141,16 +146,18 @@
 															<div class="widget-26-job-starred btn-group">
 
 
-																<a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}" class="btn btn-outline-info " type="button">
-																	<i class="fa fa-eye" aria-hidden="true"></i>
+																<a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-outline-info " type="button">
+																	<i class="fa fa-eye" aria-hidden="true"></i>Détails
 
 																</a>
 
+																{% if  rapport.isDeleted == true %}
+																	<a href="{{ path('admin_rapport_edit',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-outline-dark " type="button">
+																		<i class="fa fa-edit" aria-hidden="true"></i>Editer
 
-																<a href="{{ path('admin_rapport_edit',{'id': rapport.id }) }}" class="btn btn-outline-dark " type="button">
-																	<i class="fa fa-edit" aria-hidden="true"></i>
+																	</a>
 
-																</a>
+																{% endif %}
 
 
 															</div>

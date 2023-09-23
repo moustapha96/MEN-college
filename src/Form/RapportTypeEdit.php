@@ -17,10 +17,11 @@ class RapportTypeEdit extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
-        $builder->add('activite', TextType::class, [
-            'attr' => ['class' => 'col-6 mx-auto form-control '],
-            'label' => 'activite',
-        ])
+        $builder
+            ->add('activite', TextType::class, [
+                'attr' => ['class' => 'col-6 mx-auto form-control '],
+                'label' => 'activite',
+            ])
             ->add('description', TextType::class, [
                 'attr' => ['class' => 'col-6 mx-auto form-control '],
                 'label' => 'description',
@@ -29,8 +30,6 @@ class RapportTypeEdit extends AbstractType
                 'attr' => ['class' => 'col-6 mx-auto form-control '],
                 'label' => 'resultats',
             ])
-
-
 
             ->add('valider', SubmitType::class, [
                 'label' => '<i class="fa fa-save"></i> Valider', // Utilisez l'icône de Font Awesome ici

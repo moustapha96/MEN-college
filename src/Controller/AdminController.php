@@ -111,6 +111,18 @@ class AdminController extends AbstractController
         ]);
     }
 
+
+    #[Route('/college/rapports/{id}/show',  name: "college_rapport_show", methods: ['GET'])]
+    public function showRapport(Rapport $rapport): Response
+    {
+        return $this->render('admin/college/rapport_show.html.twig', [
+            'rapport' => $rapport,
+            'college' => $rapport->getCollege(),
+            'titre' => "Détail Rapport d'activité",
+        ]);
+    }
+
+
     #[Route('/colleges/{id}/edit', name: 'college_edit', methods: ['GET', 'POST'])]
     public function editCollege(Request $request, int $id, CollegeRepository $collegeRepository, EntityManagerInterface $entityManager): Response
     {
@@ -119,12 +131,6 @@ class AdminController extends AbstractController
         $data = $request->request->all();
         if ($data) {
 
-            // $collecteNom = $collegeRepository->findBy(['nom' => $data['nom']]);
-            // if ($collecteNom) {
-            //     $this->addFlash('warning', "College avec ce Nom existe  !! ");
-            //     $referer = $request->headers->get('referer');
-            //     return new RedirectResponse($referer);
-            // }
 
             $college->setNom($data['nom']);
             $college->setDescription($data['description']);
@@ -342,6 +348,20 @@ class AdminController extends AbstractController
             $entityManager->remove($rapport);
             $entityManager->flush();
             $this->addFlash('warning', "Suppréssion éffectif");
+        }
+        return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('/rapports/{id}/active', name: 'rapport_activer', methods: ['GET'])]
+    public function SetEnableDelete(Request $request, Rapport $rapport, EntityManagerInterface $entityManager): Response
+    {
+        if ($rapport) {
+            $rapport->setIsDeleted(!$rapport->isIsDeleted());
+            $entityManager->persist($rapport);
+            $entityManager->flush();
+            $rapport->isIsDeleted() ?   $this->addFlash('success', "Rapport activé") :
+                $this->addFlash('danger', "Rapport archivé");
         }
         return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
     }

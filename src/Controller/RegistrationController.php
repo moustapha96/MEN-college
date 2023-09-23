@@ -7,7 +7,7 @@ use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Security\UserAuthenticator;
-use App\service\MailerService;
+use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,28 +21,47 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+
+
 class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
+    private MailerService $mailerService;
 
-    public function __construct(EmailVerifier $emailVerifier)
+    public function __construct(EmailVerifier $emailVerifier, MailerService $mailerService,)
     {
         $this->emailVerifier = $emailVerifier;
+        $this->mailerService = $mailerService;
     }
 
     #[Route('/register', name: 'app_register')]
     public function register(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
-        UserAuthenticatorInterface $userAuthenticator,
-        UserAuthenticator $authenticator,
         EntityManagerInterface $entityManager,
         UserRepository $userRepository,
-        MailerService $mailerService,
+
     ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
-        // $form->handleRequest($request);
+
+        $referer = $request->headers->get('referer');
+
+
+        try {
+            $mail = $this->mailerService->sendMail(
+                "Compte creer avec success",
+                "",
+                "khouma964@gmail.com",
+                "alhusseinkhouma0@gmail.com",
+                'Test send mail'
+            );
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+
+
         $data = $request->request->all();
 
         if ($request->isMethod('POST')) {
@@ -51,28 +70,28 @@ class RegistrationController extends AbstractController
             $userByEmail = $userRepository->findOneBy(['email' => $data['email']]);
             if ($userByEmail) {
                 $this->addFlash('danger', 'Cette adresse email existe déjà.');
-                return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
+                return $this->redirect($referer);
             }
 
             $userByMatricule = $userRepository->findOneBy(['matricule' => $data['matricule']]);
             if ($userByMatricule) {
                 $this->addFlash('danger', 'Ce matricule existe déjà.');
-                return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
+                return $this->redirect($referer);
             }
 
             $userByPhone = $userRepository->findOneBy(['phone' => $data['phone']]);
             if ($userByPhone) {
                 $this->addFlash('danger', 'Ce numéro de téléphone existe déjà.');
-                return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
+                return $this->redirect($referer);
             }
             if ($data['plainPassword'] != $data['confirPassword']) {
                 $this->addFlash('danger', 'Les mots de passes ne correspondent pas ');
-                return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
+                return $this->redirect($referer);
             }
 
             if ($data['plainPassword'] != $data['confirPassword']) {
                 $this->addFlash('danger', 'Les mots de passe ne correspondent pas.');
-                return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
+                return $this->redirect($referer);
             } else {
 
                 $user->setEnabled(false);
@@ -85,6 +104,8 @@ class RegistrationController extends AbstractController
                 $user->setLastName($data['lastName']);
                 $user->setAdresse($data['adresse']);
                 $user->setSexe($data['sexe']);
+                $user->setMatricule($data['matricule']);
+                $user->setEmail($data['email']);
 
                 $user->setPassword(
                     $userPasswordHasher->hashPassword(
@@ -96,25 +117,26 @@ class RegistrationController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                // $mailerService->sendVerifEmail(
-                //     "L'envoi de messages échoue actuellement. Veuillez vérifier l'Api SMS .",
-                //     '',
-                //     $user->getEmail(),
-                //     'men-rapport@gmail.com',
-                //     "Merci de confirmer cotre email"
-                // );
+
+                $this->mailerService->sendMail(
+                    "Compte creer avec success",
+                    "",
+                    "khouma964@gmail.com",
+                    "alhusseinkhouma0@gmail.com",
+                    'Test send mail'
+                );
 
                 // generate a signed url and email it to the user
-                $this->emailVerifier->sendEmailConfirmation(
-                    'app_verify_email',
-                    $user,
-                    (new TemplatedEmail())
-                        ->from(new Address('men-rapport@gmail.com', 'MEN'))
-                        ->cc(new Address('khouma964@gmail.com', 'MEN'))
-                        ->to($user->getEmail())
-                        ->subject('Merci de confirmer cotre email')
-                        ->htmlTemplate('registration/confirmation_email.html.twig')
-                );
+                // $this->emailVerifier->sendEmailConfirmation(
+                //     'app_verify_email',
+                //     $user,
+                //     (new TemplatedEmail())
+                //         ->from(new Address('men-rapport@gmail.com', 'MEN'))
+                //         ->cc(new Address('khouma964@gmail.com', 'MEN'))
+                //         ->to($user->getEmail())
+                //         ->subject('Merci de confirmer cotre email')
+                //         ->htmlTemplate('registration/confirmation_email.html.twig')
+                // );
                 $this->addFlash('success', 'Inscription réussie! Veuillez vérifier votre email.');
 
                 return $this->redirectToRoute('app_login');

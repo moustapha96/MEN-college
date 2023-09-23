@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
+		<meta charset="UTF-8">
+		<meta charset="UTF-8">
+
+
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+
+
 		<style>
 			body {
 				font-family: Arial, sans-serif;
@@ -48,11 +61,24 @@
 		</style>
 	</head>
 	<body>
+		<div class="row">
+
+			<img
+			src="{{ asset('images/men_bar.png') }}" alt="Image">
+		{# <img src="{{ asset('/avatars/' ~ user.avatar) }}" alt="Image"> #}
+
+
+		</div>
+
 		<div class="container">
-			<h1>Rapport Information</h1>
+			<h1>Rapport D'activité
+			</h1>
 			<div class="user-info">
 				<div>
-					<img src="/avatars/{{ rapport.user.avatar }}" alt="Avatar">
+
+					<img src="{{ asset('/avatars/' ~ rapport.user.avatar) }}" alt="Image">
+
+
 				</div>
 				<div>
 					<table>
@@ -76,7 +102,7 @@
 						</tr>
 
 						<tr>
-							<th>College</th>
+							<th>Collège</th>
 							<td>{{ rapport.college.nom }}</td>
 
 						</tr>
@@ -90,7 +116,7 @@
 								{% if rapport.activiteFichier %}
 
 									<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																										                                                    d'activité</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												                                                    d'activité</a>
 
 								{% endif %}
 
@@ -106,7 +132,7 @@
 								{% if rapport.descriptionFichier %}
 
 									<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																														                                                    description</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																                                                    description</a>
 								{% endif %}
 
 							</td>
@@ -121,7 +147,7 @@
 								{% if rapport.resultatFichier %}
 
 									<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																																																		                                                    résultat</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				                                                    résultat</a>
 
 								{% endif %}
 

@@ -1,20 +1,123 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Hello SecurityController!{% endblock %}
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+		<meta http-equiv="x-ua-compatible" content="ie=edge"/>
+		<title>Gestion biblioteque</title>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"/>
+		<link rel="stylesheet" href="login/css/mdb.min.css"/>
+		<link rel="stylesheet" href="login/css/style.css"/>
+		<style>
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+			}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+			.center-container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: calc(100vh - 40px);
+				/* Centrage vertical avec un espace de 20px en haut et en bas */
+			}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+			.centered-element {
+				text-align: center;
+				padding: 20px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				background-color: #f5f5f5;
+			}
+		</style>
+	</head>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/mac/Documents/GitHub/MEN_rapport/men_rapport/src/Controller/SecurityController.php'|file_link(0) }}">src/Controller/SecurityController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/mac/Documents/GitHub/MEN_rapport/men_rapport/templates/security/index.html.twig'|file_link(0) }}">templates/security/index.html.twig</a></code></li>
-    </ul>
-</div>
-{% endblock %}
+	<body>
+
+
+		<div class="center-container">
+			<div class="centered-element">
+
+				<div class="row">
+
+
+					<form class="bg-white rounded shadow-5-strong p-5" method="post">
+						<div class="row">
+							<img src="images/men_bar.png" alt="">
+						</div>
+
+						<div
+							class="row">{# <h3>MEN Bibliotèque </h3> #}
+						</div>
+
+						{% for label, messages in app.flashes %}
+							{% for message in messages %}
+								<div class="alert alert-{{ label }}">
+									{{ message }}
+								</div>
+							{% endfor %}
+						{% endfor %}
+						{% if error %}
+							<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+						{% endif %}
+
+						{% if app.user %}
+							<div>
+								{% if app.user.enabled == false %}
+									<b style=" color: red ">
+										Votre compte est desactivé</b>
+								{% endif %}
+
+							</div>
+							<div class="mb-3">
+								{% if app.user.enabled == true %}
+									Vous êtes connecté en tant que
+									{{ app.user.username }},
+									<a href="{{ path('app_logout') }}">Logout</a>
+								{% endif %}
+
+
+							</div>
+						{% endif %}
+
+						<div class="form-outline mb-4">
+							<input type="email" value="{{ last_username }}" name="email" id="form1Example1" class="form-control"/>
+							<label class="form-label" for="form1Example1">Email address</label>
+						</div>
+
+						<div class="form-outline mb-4">
+							<input type="password" id="password" name="password" class="form-control"/>
+							<label class="form-label" for="form1Example2">Password</label>
+						</div>
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+
+						<button type="submit" class="  btn btn-primary btn-block">se connectez</button>
+
+						<div class="d-flex mt-3 justify-content-between">
+							<a class="btn btn-outline-primary" href="{{ path('app_register') }}">s'inscrire</a>
+
+							<a class="btn btn-outline-primary" href="{{ path('app_forgot_password_request') }}">reinitialisation mot de passe</a>
+
+
+						</div>
+
+					</form>
+
+
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="login/js/mdb.min.js"></script>
+		<script type="text/javascript" src="login/js/script.js"></script>
+
+
+	</body>
+
+</html>
+
+

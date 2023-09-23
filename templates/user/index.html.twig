@@ -10,13 +10,13 @@
 
 {# {% operation possible %}#}
 {% block option %}
-	{% for message in app.flashes('success') %}
 
-		<div class="flash-notice alert alert-success">
-			{{ message }}
-		</div>
+	{# {% for label, messages in app.flashes %}
+													{% for message in messages %}
+														<div class="alert alert-{{ label }}">{{ message }}</div>
+													{% endfor %}
+												{% endfor %} #}
 
-	{% endfor %}
 	<a href=" {{ path('app_generate_pdf_users') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
 
 		<i class="m-1 fa fa-print" aria-hidden="true"></i>Imprimer
@@ -24,7 +24,7 @@
 
 
 	<a href=" {{ path('app_user_new') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
-		<i class="fa fa-plus" aria-hidden="true"></i>
+		<i class="m-1 fa fa-plus" aria-hidden="true"></i>
 		Ajouter</a>
 {% endblock %}
 
@@ -55,7 +55,7 @@
 													<th>Téléphone</th>
 													{# <th>Status</th> #}
 													<th>Dernier Activité</th>
-													<th>Connecté</th>
+													{# <th>Connecté</th> #}
 													<th>Adresse</th>
 													<th>Sexe</th>
 													<th>Compte</th>
@@ -77,20 +77,12 @@
 														{# <td>{{ user.status }}</td> #}
 														<td>{{ user.lastActivityAt ? user.lastActivityAt|date('Y-m-d H:i:s') :
                                                     '' }}</td>
-														<td>
-
-															<a href="{{ path('app_user_acount', { 'id' : user.id } ) }}" class="btn btn-{{ user.isActiveNow   ? 'success' : 'danger'}}  ">
-																<i class="fa-solid fatoggle-on"></i>
-
-															</a>
-
-														</td>
 														<td>{{ user.adresse }}</td>
 														<td>{{ user.sexe }}</td>
 														<td>
 
 
-															<a href="{{ path('app_user_acount', { 'id' : user.id } ) }}" class="btn btn-outline-{{ user.enabled ? 'success' : 'danger'}}  " type="button">
+															<a href="{{ path('app_user_acount', { 'id' : user.id } ) }}" class="m-1 btn btn-outline-{{ user.enabled ? 'success' : 'danger'}}  " type="button">
 																<i class="fa-solid fa-{{ user.enabled ? 'user': 'lock' }}"></i>
 																{{ user.enabled ? 'Activer': 'Desactiver' }}
 															</a>
@@ -99,12 +91,12 @@
 
 														<td>
 
-															<a href="{{ path('app_user_show', { 'id' : user.id } ) }}" class="btn btn-outline-dark " type="button">
-																<i class="fa fa-eye" aria-hidden="true"></i>
+															<a href="{{ path('app_user_show', { 'id' : user.id } ) }}" class="m-1 btn btn-outline-dark " type="button">
+																<i class="fa fa-eye" aria-hidden="true"></i>Détails
 															</a>
 
-															<a href="{{ path('app_user_edit', { 'id' : user.id } ) }}" class="btn btn-outline-info" type="button">
-																<i class="fa fa-edit" aria-hidden="true"></i>
+															<a href="{{ path('app_user_edit', { 'id' : user.id } ) }}" class="m-1 btn btn-outline-info" type="button">
+																<i class="fa fa-edit" aria-hidden="true"></i>Editer
 															</a>
 
 														</td>

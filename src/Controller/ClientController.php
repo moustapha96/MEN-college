@@ -44,9 +44,11 @@ class ClientController extends AbstractController
         // UserRepository $userRepository,
         RapportRepository $rapportRepository
     ): Response {
+
+        $user = $this->getUser();
         return $this->render("client/dashboard/index.html.twig", [
             'titre' => 'Inspecteur / Inspectrice',
-            'rapports' => $rapportRepository->findAll(),
+            'rapports' => $rapportRepository->findBy(['user' => $user]),
             'colleges' => $collegeRepository->findAll(),
             // 'users' =>  $userRepository->findAll()
         ]);
@@ -138,7 +140,7 @@ class ClientController extends AbstractController
     public function ListeRpport(RapportRepository $rapportRepository): Response
     {
         $user = $this->getUser();
-        $rapports = $rapportRepository->findBy(['user' => $user]);
+        $rapports = $rapportRepository->findBy(['user' => $user, 'isDeleted' => 0]);
         return $this->render("client/rapport/index.html.twig", [
             'titre' => 'Liste de vos rapports d\'activités',
             'rapports' => $rapports
@@ -245,7 +247,7 @@ class ClientController extends AbstractController
     public function delete(Request $request, Rapport $rapport, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $rapport->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($rapport);
+            $rapport->setIsDeleted(true);
             $entityManager->flush();
             $this->addFlash('warning', "Suppression Rapport d'activité éffectif");
         }

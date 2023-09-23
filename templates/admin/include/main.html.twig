@@ -33,13 +33,17 @@
 								{# {% operation possible %} #}
 								{% block option %}{% endblock %}
 
-								<a class="m-1 btn btn-outline-primary float-right ml-1 btn-sm" href="">
-									<i class="fa fa-reply"></i>
-									Retour</a>
+
+								{# <a class="m-1 btn btn-outline-primary float-right ml-1 btn-sm" href="">
+																																																																																																																																																																																																									<i class="fa fa-reply"></i>
+																																																																																																																																																																																																									Retour</a> #}
 							</li>
 						</ol>
 					</div>
+
 				</div>
+
+
 			</div>
 			<div class="content">
 				<div
@@ -209,6 +213,16 @@
 							border-radius: 8px;
 						}
 					</style>
+
+					<div class="row">
+						<div class="col-md-12">
+							{% for label, messages in app.flashes %}
+								{% for message in messages %}
+									<div class="alert alert-{{ label }}">{{ message }}</div>
+								{% endfor %}
+							{% endfor %}
+						</div>
+					</div>
 
 					{% block data %}{% endblock %}
 				</div>

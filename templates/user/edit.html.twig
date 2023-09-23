@@ -10,13 +10,6 @@
 
 {# {% operation possible %}#}
 {% block option %}
-	{% for message in app.flashes('success') %}
-
-		<div class="flash-notice alert alert-success">
-			{{ message }}
-		</div>
-
-	{% endfor %}
 
 	<a href=" {{ path('app_user_index') }}" class="m-1 btn btn-outline-info float-right btn-sm" role="button">
 		<i class="m-1 fa fa-list" aria-hidden="true"></i>
@@ -27,9 +20,9 @@
 		Ajouter</a>
 
 	{#
-				<a href=" {{ path('app_user_delete', {'id': user.id}) }}" role="button" type="submit"
-				    class=" btn  btn-outline-danger float-right btn-sm">
-				    <i class="fa fa-trash" aria-hidden="true"></i> Delete</a> #}
+					<a href=" {{ path('app_user_delete', {'id': user.id}) }}" role="button" type="submit"
+					    class=" btn  btn-outline-danger float-right btn-sm">
+					    <i class="fa fa-trash" aria-hidden="true"></i> Delete</a> #}
 
 
 {% endblock %}

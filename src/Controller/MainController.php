@@ -247,7 +247,7 @@ class MainController extends AbstractController
             $user->setFirstName($data['firstName']);
             $user->setLastName($data['lastName']);
             $user->setAdresse($data['adresse']);
-            $user->setSexe($data['sexe']);
+            // $user->setSexe($data['sexe']);
 
             $email = $data['email'];
             $phone = $data['phone'];

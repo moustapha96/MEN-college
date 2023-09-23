@@ -17,13 +17,9 @@
 		Liste</a>
 
 
-	<a href=" {{ path('app_rapport_new') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
-		<i class="fa fa-plus" aria-hidden="true"></i>
-		nouveau Rapport</a>
+	<a href="{{ path('admin_college_edit', { id: college.id }) }}" class="m-1 btn btn-outline-info float-right btn-sm" role="button">
 
-	<a href="{{ path('admin_college_edit', { id: college.id }) }}" class="m-1 btn btn-info float-right btn-sm" role="button">
-
-		<i class="fa fa-edit" aria-hidden="true"></i>Modifier</a>
+		<i class="m-1 fa fa-edit" aria-hidden="true"></i>Modifier</a>
 
 
 {% endblock %}
@@ -45,7 +41,7 @@
 
 										<tr>
 											<th>
-												College</th>
+												Collège</th>
 
 										</tr>
 										<tr>
@@ -61,19 +57,19 @@
 										</tr>
 
 										{# <tr>
-																																																																																																					<th>
-																																																																																																						<u>
-																																																																																																							Rapport</u>
-																																																																																																					</th>
-																																																																																										
-																																																																																																				</tr> #}
+																																																																																																																																																																											<th>
+																																																																																																																																																																												<u>
+																																																																																																																																																																													Rapport</u>
+																																																																																																																																																																											</th>
+																																																																																																																																																																
+																																																																																																																																																																										</tr> #}
 
 
 									</tbody>
 								</table>
 
 
-								{{ include('admin/college/_delete_form.html.twig') }}
+								{# {{ include('admin/college/_delete_form.html.twig') }} #}
 							</div>
 						</div>
 					</div>

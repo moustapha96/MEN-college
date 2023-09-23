@@ -1,137 +1,14 @@
-{#
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <title>Gestion biblioteque</title>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
-  <link rel="stylesheet" href="login/css/mdb.min.css" />
-  <link rel="stylesheet" href="login/css/style.css" />
-</head>
-
-<body>
-
-  <header>
-    <style>
-      #intro {
-        background-image: url(https://cdn.pixabay.com/photo/2013/07/12/15/20/literature-149713_960_720.png);
-        height: 100vh;
-      }
-
-
-      @media (min-width: 992px) {
-        #intro {
-          margin-top: 5px;
-        }
-      }
-
-      .navbar .nav-link {
-        color: #fff !important;
-      }
-    </style>
-
-    <div id="intro" class="bg-image shadow-2-strong">
-      <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0, 0, 0, 0.8);">
-        <div class="container">
-
-          <div class="row justify-content-center">
-
-            <div class="col-xl-5 col-md-8">
-
-              <form class="bg-white rounded shadow-5-strong p-5" method="post">
-                <div class="row">
-                  <img src="images/men_bar.png" alt="">
-                </div>
-
-                <div class="row">
-
-                </div>
-
-                </br>
-                {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                <div class="alert alert-{{ label }}">
-                  {{ message }}
-                </div>
-                {% endfor %}
-                {% endfor %}
-                {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
-
-                {% if app.user %}
-                <div class="mb-3">
-                  You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-                </div>
-                {% endif %}
-                <div class="form-outline mb-4">
-                  <input type="email" value="{{ last_username }}" name="email" id="form1Example1"
-                    class="form-control" />
-                  <label class="form-label" for="form1Example1">Email address</label>
-                </div>
-
-                <div class="form-outline mb-4">
-                  <input type="password" id="password" name="password" class="form-control" />
-                  <label class="form-label" for="form1Example2">Password</label>
-                </div>
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-
-                <div class="row mb-4">
-
-                  <div class="col text-center">
-                    <a href="{{ path('app_register') }}">s'inscrire</a>
-                    <br />
-                    <a href="{{ path('app_forgot_password_request') }}">reinitialisation mot de passe</a>
-
-                  </div>
-                </div>
-
-
-                <button type="submit" class="btn btn-primary btn-block">se connectez</button>
-              </form>
-
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-  </header>
-
-
-  <script type="text/javascript" src="login/js/mdb.min.js"></script>
-  <script type="text/javascript" src="login/js/script.js"></script>
-
-</body>
-
-</html>
-
-
-
-
-#}
-
-
-<!DOCTYPE html>
-<html lang="en">
-
 	<head>
-		<meta charset="UTF-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-		<meta http-equiv="x-ua-compatible" content="ie=edge"/>
-		<title>Gestion biblioteque</title>
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"/>
-		<link rel="stylesheet" href="login/css/mdb.min.css"/>
-		<link rel="stylesheet" href="login/css/style.css"/>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>Gestion Lotissement</title>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+		<link rel="stylesheet" href="login/css/mdb.min.css">
+		<link rel="stylesheet" href="login/css/style.css">
 		<style>
 			body,
 			html {
@@ -139,43 +16,40 @@
 				padding: 0;
 				height: 100%;
 			}
-
 			.center-container {
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				min-height: calc(100vh - 40px);
-				/* Centrage vertical avec un espace de 20px en haut et en bas */
+				min-height: 100vh;
+				flex-wrap: wrap;
 			}
-
 			.centered-element {
 				text-align: center;
 				padding: 20px;
 				border: 1px solid #ccc;
 				border-radius: 5px;
 				background-color: #f5f5f5;
+				width: 100%;
+				max-width: 600px;
+			}
+			.responsive-image {
+				max-width: 100%;
+				height: auto;
+				border-radius: 3%;
 			}
 		</style>
 	</head>
-
 	<body>
-
-
 		<div class="center-container">
 			<div class="centered-element">
+				<form class="bg-white rounded shadow-5-strong p-5" method="post">
+					<div class="row mb-3 ">
+						<img src="images/men_bar.png" style="width: 100% ;height : 70px; animation:   " class="responsive-image" alt="">
 
-				<div class="row">
+						<h3 class="m-2">Se Connecter</h3>
+					</div>
 
-
-					<form class="bg-white rounded shadow-5-strong p-5" method="post">
-						<div class="row">
-							<img src="images/men_bar.png" alt="">
-						</div>
-
-						<div
-							class="row">{# <h3>MEN Bibliotèque </h3> #}
-						</div>
-
+					<div class="row">
 						{% for label, messages in app.flashes %}
 							{% for message in messages %}
 								<div class="alert alert-{{ label }}">
@@ -186,56 +60,48 @@
 						{% if error %}
 							<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 						{% endif %}
-
 						{% if app.user %}
+							<div>
+								{% if app.user.enabled == false %}
+									<b style="color: red">Votre compte est désactivé</b>
+								{% endif %}
+							</div>
 							<div class="mb-3">
-								You are logged in as
-								{{ app.user.username }},
-								<a href="{{ path('app_logout') }}">Logout</a>
+								{% if app.user.enabled == true %}
+									Vous êtes connecté en tant que
+									{{ app.user.username }},
+									<a href="{{ path('app_logout') }}">Logout</a>
+								{% endif %}
 							</div>
 						{% endif %}
+					</div>
 
-						<div class="form-outline mb-4">
-							<input type="email" value="{{ last_username }}" name="email" id="form1Example1" class="form-control"/>
-							<label class="form-label" for="form1Example1">Email address</label>
-						</div>
+					<div class="form-outline mb-4">
+						<input type="email" value="{{ last_username }}" name="email" id="form1Example1" class="form-control"/>
+						<label class="form-label" for="form1Example1">Adresse e-mail</label>
+					</div>
 
-						<div class="form-outline mb-4">
-							<input type="password" id="password" name="password" class="form-control"/>
-							<label class="form-label" for="form1Example2">Password</label>
-						</div>
-						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+					<div class="form-outline mb-4">
+						<input type="password" id="password" name="password" class="form-control"/>
+						<label class="form-label" for="form1Example2">Mot de passe</label>
+					</div>
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
+					<button type="submit" class="btn btn-primary btn-block">Se connecter</button>
 
-						<div class="row mb-4">
+					<div class="d-flex mt-3 justify-content-between">
+						<a class="btn btn-outline-primary btn-block " href="{{ path('app_register') }}">s'inscrire</a>
 
-							<div class="col text-center">
-								<a href="{{ path('app_register') }}">s'inscrire</a>
-								<br/>
-								<a href="{{ path('app_forgot_password_request') }}">reinitialisation mot de passe</a>
-							</div>
-						</div>
-
-						<!-- Submit button -->
-						<button type="submit" class="btn btn-primary btn-block">se connectez</button>
-					</form>
-
-					{# <div class="row center">
-															
-															          <div class="text-center mt-3 text-secondary">
-															            <a class="btn btn-outline-primary" href="{{ path('app_login') }}">se connecter</a>
-															          </div>
-															        </div> #}
+						<!--<a class="btn btn-outline-primary" href="{{ path('app_forgot_password_request') }}">reinitialisation mot de passe</a>-->
 
 
-				</div>
+					</div>
+
+				</form>
 			</div>
 		</div>
 		<script type="text/javascript" src="login/js/mdb.min.js"></script>
-		<!-- Custom scripts -->
+
 		<script type="text/javascript" src="login/js/script.js"></script>
-
-
 	</body>
-
 </html>

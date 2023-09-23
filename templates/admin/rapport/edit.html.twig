@@ -10,13 +10,6 @@
 
 {# {% operation possible %}#}
 {% block option %}
-	{% for message in app.flashes('success') %}
-
-		<div class="flash-notice alert alert-success">
-			{{ message }}
-		</div>
-
-	{% endfor %}
 	<a class="m-1 btn btn-outline-info float-right btn-sm" href="{{ path('admin_rapport_liste') }}">
 		<i class="m-1 fa fa-list"></i>
 		Liste</a>
@@ -39,7 +32,7 @@
 							<div class="search-result">
 
 								<div class="result-body">
-									<h1 style="text-align: center">College =>
+									<h1 style="text-align: center">Collège =>
 										{{ rapport.college.getNom() }}
 									</h1>
 

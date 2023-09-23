@@ -9,22 +9,14 @@
 		<u>
 			{{ college.nom }}</u>
 	</h1>
+
 {% endblock %}
 
 {# {% operation possible %}#}
 {% block option %}
-	{% for message in app.flashes('success') %}
-
-		<div class="flash-notice alert alert-success">
-			{{ message }}
-		</div>
-
-	{% endfor %}
-	{# <a href="" class=" btn btn-info float-right btn-sm" role="button">
-		  <i class="fa fa-plus" aria-hidden="true"></i> nouveau rapport</a> #}
-	<a class="m-1 btn btn-outline-info float-right ml-1 btn-sm" href="{{ path('client_college_liste') }}">
-		<i class="fa fa-list"></i>
-		Liste</a>
+	<a href=" {{ path('client_college_liste') }}" class=" btn btn-info float-right btn-sm" role="button">
+		<i class="fa fa-reply" aria-hidden="true"></i>
+		retour</a>
 
 {% endblock %}
 
@@ -33,11 +25,7 @@
 
 
 	<div class="row">
-
-		<div
-			class="col-12">
-			{# <h3 style="text-align: center"> College : {{ college.nom }} </h3> #}
-
+		<div class="col-12">
 			<div class="card card-margin">
 				<div class="card-body">
 					<div class="row search-body">
@@ -45,63 +33,9 @@
 							<div class="search-result">
 
 								<div class="result-body">
-									<div
-										class="card-body">
-										{# <form enctype="multipart/form-data"
-																				                    action="{{ path('client_college_rapport_nouveau', { 'id' : college.id  }  ) }}" method="POST">
-																				
-																				                    <div class="form-row">
-																				                      <div class="form-group col-md-9">
-																				                        <label for="Nom">Activité</label>
-																				
-																				                        <textarea required rows="2" cols="3" name="activite" class="form-control" id="activite"
-																				                          required></textarea>
-																				                      </div>
-																				                      <div class="form-group col-md-3">
-																				                        <label for="Nom">Fichier Activité</label>
-																				                        <input type="file" name="activiteFichier" id="activiteFichier">
-																				                      </div>
-																				                    </div>
-																				                    <div class="form-row">
-																				
-																				                      <div class="form-group col-md-9">
-																				                        <label for="code">Description </label>
-																				                        <textarea required rows="2" cols="3" name="description" class="form-control"
-																				                          id="description"></textarea>
-																				                      </div>
-																				                      <div class="form-group col-md-3">
-																				                        <label for="code">Fichier Description </label>
-																				                        <input type="file" name="descriptionFichier" id="descriptionFichier">
-																				                      </div>
-																				                    </div>
-																				
-																				                    <div class="form-row">
-																				
-																				                      <div class="form-group col-md-9">
-																				                        <label for="code">Résultats </label>
-																				                        <textarea required rows="2" cols="3" name="resultat" class="form-control"
-																				                          id="resultat"></textarea>
-																				                      </div>
-																				                      <div class="form-group col-md-3">
-																				                        <label for="code">Fichier Resultats </label>
-																				                        <input type="file" name="resultatFichier" id="resultatFichier">
-																				                      </div>
-																				                    </div>
-																				
-																				                    <div class="form-row">
-																				
-																				                      <div class="form-group col-12 m-*-auto">
-																				                        <button type="submit" class="pull-right btn btn-outline-success">
-																				                          <i class="fa fa-save fa-lg fa-fw"></i>
-																				                          valider
-																				                        </button>
-																				                      </div>
-																				                    </div>
-																				                  </form> #}
-
-										{{ include('client/rapport/_form.html.twig') }}
-									</div>
+									{{ include('client/rapport/_form.html.twig') }}
 								</div>
+
 							</div>
 						</div>
 					</div>
@@ -110,4 +44,4 @@
 			</div>
 		</div>
 	</div>
-</div>{% endblock %}
+{% endblock %}

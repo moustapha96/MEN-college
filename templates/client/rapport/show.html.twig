@@ -11,11 +11,11 @@
 
 {# {% operation possible %}#}
 {% block option %}
-	<a class="btn btn-outline-primary float-right ml-1 btn-sm" href="{{ path('client_rapport_liste') }}">
-		<i class="fa fa-reply"></i>
-		Retour</a>
-	<a href=" {{ path('client_rapport_nouveau') }}" class=" btn btn-info float-right btn-sm" role="button">
-		<i class="fa fa-plus" aria-hidden="true"></i>
+	<a class="m-1 btn btn-outline-info float-right ml-1 btn-sm" href="{{ path('client_rapport_liste') }}">
+		<i class="m-1 fa fa-list"></i>
+		Liste</a>
+	<a href=" {{ path('client_rapport_nouveau') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+		<i class="m-1 fa fa-plus" aria-hidden="true"></i>
 		Ajouter
 	</a>
 
@@ -42,7 +42,7 @@
 										</tr>
 
 										<tr>
-											<th>College</th>
+											<th>Collège</th>
 
 										</tr>
 										<tr>
@@ -75,7 +75,7 @@
 												{% if rapport.activiteFichier %}
 													<p>
 														<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}">Fichier
-															                                                    d'activité</a>
+																																																																																																																																																																					                                                    d'activité</a>
 													</p>
 												{% endif %}
 											</td>
@@ -89,7 +89,7 @@
 												{% if rapport.descriptionFichier %}
 													<p>
 														<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}">Fichier de
-															                                                    description</a>
+																																																																																																																																																																					                                                    description</a>
 													</p>
 												{% endif %}
 											</td>
@@ -101,13 +101,13 @@
 												{% if rapport.resultatFichier %}
 													<p>
 														<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}">Fichier de
-															                                                    résultat</a>
+																																																																																																																																																																					                                                    résultat</a>
 													</p>
 												{% endif %}
 											</td>
 										</tr>
 										<tr>
-											<th>Date creation</th>
+											<th>Date rapport</th>
 											<td>{{ rapport.createdAt|date('Y-m-d H:i:s') }}</td>
 
 
@@ -118,7 +118,7 @@
 								</table>
 
 
-								{{ include('admin/rapport/_delete_form.html.twig') }}
+								{# {{ include('client/rapport/_delete_form.html.twig') }} #}
 							</div>
 						</div>
 					</div>

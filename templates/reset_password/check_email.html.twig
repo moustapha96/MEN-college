@@ -1,11 +1,86 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Password Reset Email Sent{% endblock %}
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+		<meta http-equiv="x-ua-compatible" content="ie=edge"/>
+		<title>Gestion biblioteque | E-mail de réinitialisation du mot de passe envoyé</title>
 
-{% block body %}
-    <p>
-        If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
-        This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
-    </p>
-    <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
-{% endblock %}
+
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"/>
+		<link rel="stylesheet" href="login/css/mdb.min.css"/>
+		<link rel="stylesheet" href="login/css/style.css"/>
+		<style>
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+			}
+
+			.center-container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: calc(100vh - 40px);
+				/* Centrage vertical avec un espace de 20px en haut et en bas */
+			}
+
+			.centered-element {
+				text-align: center;
+				padding: 20px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				background-color: #f5f5f5;
+			}
+		</style>
+	</head>
+
+	<body>
+
+
+		<div class="center-container">
+			<div class="centered-element">
+
+				<div class="row">
+
+
+					<form class="bg-white rounded shadow-5-strong p-5" method="post">
+						<div class="row">
+							<img src="images/men_bar.png" alt="">
+						</div>
+
+						<div class="row mt-2 ">
+							<h3>MEN E-mail de réinitialisation du mot de passe envoyé
+
+							</h3>
+						</div>
+
+						{% for label, messages in app.flashes %}
+							{% for message in messages %}
+								<div class="alert alert-{{ label }}">
+									{{ message }}
+								</div>
+							{% endfor %}
+						{% endfor %}
+
+
+						<p>
+							Si un compte correspondant à votre adresse e-mail existe, un e-mail vient d'être envoyé contenant un lien que vous pouvez utiliser pour réinitialiser votre mot de passe.
+																												Ce lien expirera dans
+							{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+						</p>
+						<p>Si vous ne recevez pas d'e-mail, veuillez vérifier votre dossier spam ou</p>
+
+						<a href="{{ path('app_forgot_password_request') }}">essayer à nouveau</a>.</p>
+
+
+				</form>
+
+
+			</div>
+		</div>
+	</body>
+</html></div><script type="text/javascript" src="login/js/mdb.min.js"></script><!-- Custom scripts --><script type="text/javascript" src="login/js/script.js"></script></body></html></body></html>

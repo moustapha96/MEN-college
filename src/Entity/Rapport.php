@@ -42,11 +42,15 @@ class Rapport
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $createdAt;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isDeleted = null;
+
 
     public function __construct()
     {
         // Set the createdAt value when an instance is created
         $this->createdAt = new \DateTimeImmutable();
+        $this->isDeleted = false;
     }
 
     public function getCreatedAt(): \DateTimeImmutable
@@ -158,6 +162,18 @@ class Rapport
     public function setCollege(?College $college): static
     {
         $this->college = $college;
+
+        return $this;
+    }
+
+    public function isIsDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(?bool $isDeleted): static
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }

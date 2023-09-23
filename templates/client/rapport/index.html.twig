@@ -10,13 +10,6 @@
 
 {# {% operation possible %}#}
 {% block option %}
-	{% for message in app.flashes('success') %}
-
-		<div class="flash-notice alert alert-success">
-			{{ message }}
-		</div>
-
-	{% endfor %}
 	<a href=" {{ path('client_rapport_nouveau') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
 		<i class="m-1 fa fa-plus" aria-hidden="true"></i>
 		Ajouter</a>
@@ -58,7 +51,7 @@
 																{% if rapport.activiteFichier %}
 																	<p>
 																		<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}" target="_blank">Fichier
-																																																																																																																																																								                                                                d'activité</a>
+																																																																																																																																																																																																																																																																																																																																																						                                                                d'activité</a>
 																	</p>
 																{% endif %}
 															</div>
@@ -70,7 +63,7 @@
 																{% if rapport.descriptionFichier %}
 																	<p>
 																		<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}" target="_blank">Fichier
-																																																																																																																																																								                                                                de description</a>
+																																																																																																																																																																																																																																																																																																																																																						                                                                de description</a>
 																	</p>
 																{% endif %}
 															</div>
@@ -82,39 +75,39 @@
 																{% if rapport.resultatFichier %}
 																	<p>
 																		<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}" target="_blank">Fichier
-																																																																																																																																																								                                                                de résultat</a>
+																																																																																																																																																																																																																																																																																																																																																						                                                                de résultat</a>
 																	</p>
 																{% endif %}
 															</div>
 														</td>
 														<td>
-															{{ rapport.createdAt|date('Y-m-d H:i:s') }}
+															{{ rapport.createdAt|date('Y-m-d H:i') }}
 
 
 														</td>
 
 
 														{# <td>
-																																																																																																																                                                    <div class="widget-26-job-title">
-																																																																																																																                                                        <span>{{rapport.user }}</span>
-																																																																																																																
-																																																																																																																                                                    </div>
-																																																																																																																                                                </td> #}
+																																																																																																																																																																																																																																																												                                                    <div class="widget-26-job-title">
+																																																																																																																																																																																																																																																												                                                        <span>{{rapport.user }}</span>
+																																																																																																																																																																																																																																																												
+																																																																																																																																																																																																																																																												                                                    </div>
+																																																																																																																																																																																																																																																												                                                </td> #}
 
 
 														<td>
-															<div class="widget-26-job-starred btn-group">
+															<div class="widget-26-job-starred btn-group p-1 ">
 
 
-																<a href="{{ path('client_rapport_show',{'id': rapport.id }) }}" class="btn btn-outline-info " type="button">
-																	<i class="fa fa-eye" aria-hidden="true"></i>
-																	show
+																<a href="{{ path('client_rapport_show',{'id': rapport.id }) }}" class="m-1 btn btn-outline-info " type="button">
+																	<i class="m-1 fa fa-eye" aria-hidden="true"></i>Détails
+
 																</a>
 
 
-																<a href="{{ path('client_rapport_edit',{'id': rapport.id }) }}" class="btn btn-outline-dark " type="button">
-																	<i class="fa fa-edit" aria-hidden="true"></i>
-																	edit
+																<a href="{{ path('client_rapport_edit',{'id': rapport.id }) }}" class="m-1 btn btn-outline-dark " type="button">
+																	<i class="m-1 fa fa-edit" aria-hidden="true"></i>
+
 																</a>
 
 

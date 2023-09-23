@@ -10,19 +10,13 @@
 
 {# {% operation possible %}#}
 {% block option %}
-	{% for message in app.flashes('success') %}
 
-		<div class="flash-notice alert alert-success">
-			{{ message }}
-		</div>
-
-	{% endfor %}
 	<a class="m-1 btn btn-outline-info float-right ml-1 btn-sm" href="{{ path('admin_college_liste') }}">
 		<i class="fa fa-list"></i>
 		Liste</a>
 	{# <a href=" {{ path('admin_college_nouveau') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
-			<i class="fa fa-plus" aria-hidden="true"></i>
-			Ajouter</a> #}
+						<i class="fa fa-plus" aria-hidden="true"></i>
+						Ajouter</a> #}
 {% endblock %}
 
 {# {% les donnees affichees %}#}
@@ -46,7 +40,7 @@
 												<div class="form-row">
 													<div class="form-group col-md-12">
 														<label for="Nom">Nom</label>
-														<input type="text" name="nom" class="form-control " placeholder="Nom de la college" id="nom" required>
+														<input type="text" name="nom" class="form-control " placeholder="Nom collège" id="nom" required>
 													</div>
 												</div>
 												<div class="form-row">
