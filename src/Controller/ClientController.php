@@ -50,7 +50,8 @@ class ClientController extends AbstractController
             'titre' => 'Inspecteur / Inspectrice',
             'rapports' => $rapportRepository->findBy(['user' => $user]),
             'colleges' => $collegeRepository->findAll(),
-            // 'users' =>  $userRepository->findAll()
+            'rapports_deleted' =>  $rapportRepository->findBy(['isDeleted' => 1, 'user' => $user]),
+            'rapports_valide' =>  $rapportRepository->findBy(['isDeleted' => 0, 'user' => $user])
         ]);
     }
 

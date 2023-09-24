@@ -10,13 +10,11 @@
 (function ($) {
   'use strict'
 
-  setTimeout(function () {
-    if (window.___browserSync___ === undefined && Number(localStorage.getItem('AdminLTE:Demo:MessageShowed')) < Date.now()) {
-      localStorage.setItem('AdminLTE:Demo:MessageShowed', (Date.now()) + (15 * 60 * 1000))
-      // eslint-disable-next-line no-alert
-      alert('You load AdminLTE\'s "demo.js", \nthis file is only created for testing purposes!')
-    }
-  }, 1000)
+  // setTimeout(function () {
+  //   if (window.___browserSync___ === undefined && Number(localStorage.getItem('AdminLTE:Demo:MessageShowed')) < Date.now()) {
+  //     localStorage.setItem('AdminLTE:Demo:MessageShowed', (Date.now()) + (15 * 60 * 1000))
+  //   }
+  // }, 1000)
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
@@ -66,7 +64,7 @@
   var $dark_mode_checkbox = $('<input />', {
     type: 'checkbox',
     value: 1,
-    checked: $('body').hasClass('dark-mode'),
+    checked: true ,
     class: 'mr-1'
   }).on('click', function () {
     if ($(this).is(':checked')) {
@@ -106,6 +104,7 @@
       $('.main-header').removeClass('dropdown-legacy')
     }
   })
+
   var $dropdown_legacy_offset_container = $('<div />', { class: 'mb-1' }).append($dropdown_legacy_offset_checkbox).append('<span>Dropdown Legacy Offset</span>')
   $container.append($dropdown_legacy_offset_container)
 

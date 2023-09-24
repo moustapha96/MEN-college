@@ -69,6 +69,7 @@ body {
   background-color: #fff;
 }
 
+
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important;
 }
@@ -10661,8 +10662,8 @@ a.text-dark:hover, a.text-dark:focus {
   width: 100%;
   transition: height 200ms linear;
   position: fixed;
-  left: 0;
-  top: 0;
+  left: 50%;
+  top: 50%;
   z-index: 9999;
 }
 
@@ -11501,6 +11502,8 @@ body:not(.layout-fixed).layout-navbar-fixed.text-sm .wrapper .main-sidebar .side
 .layout-footer-fixed .wrapper .control-sidebar {
   bottom: 0;
 }
+
+
 
 .layout-footer-fixed .wrapper .main-footer {
   bottom: 0;

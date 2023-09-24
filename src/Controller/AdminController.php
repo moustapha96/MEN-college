@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\College;
 use App\Entity\Rapport;
+use App\Entity\User;
 use App\Form\CollegeType;
 use App\Form\RapportType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,6 +42,8 @@ class AdminController extends AbstractController
         return $this->render("admin/dashboard/index.html.twig", [
             'titre' => 'Accueil Admin ',
             'rapports' => $rapportRepository->findAll(),
+            'rapports_valide' => $rapportRepository->findBy(['isDeleted' => 0]),
+            'rapports_deleted' => $rapportRepository->findBy(['isDeleted' => 1]),
             'colleges' => $collegeRepository->findAll(),
             'users' =>  $userRepository->findAll()
         ]);
@@ -96,6 +99,17 @@ class AdminController extends AbstractController
         return $this->render('admin/college/show.html.twig', [
             'titre' => 'Detail Collège',
             'college' => $college,
+        ]);
+    }
+
+    #[Route('/rapports/{id}/inspecteur', name: 'college_rapport_client_show', methods: ['GET'])]
+    public function showRapportClient(
+        User $user,
+        RapportRepository $rapportRepository
+    ): Response {
+        return $this->render('admin/college/liste_rapport_client.html.twig', [
+            'titre' => 'Rapports inspecteur  => ' . $user->getMatricule() . ' ',
+            'rapports' => $rapportRepository->findBy(['user' => $user]),
         ]);
     }
 

@@ -1,0 +1,160 @@
+{% extends 'admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}
+
+
+	<a href=" {{ path('app_user_index') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+		<i class="m-1 fa fa-list" aria-hidden="true"></i>
+		Liste
+	</a>
+
+{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="search-result">
+
+								<div class="result-body">
+									<div class="table-responsive">
+										<table class="table widget-26" id="sampleTable">
+											<thead>
+												<tr>
+
+													<th>Activité</th>
+													<th>Déscription</th>
+													<th>Résultat</th>
+													<th>Collège</th>
+													<th>Date</th>
+													<th>Archiver</th>
+													<th>Actions</th>
+
+
+												</tr>
+											</thead>
+											<tbody>
+
+												{% for rapport in rapports %}
+													<tr>
+														<td>
+															<div class="widget-26-job-title">
+																<span>{{rapport.activite}}</span>
+																{% if rapport.activiteFichier %}
+																	<p>
+																		<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}" target="_blank">Fichier
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			                                                                d'activité</a>
+																	</p>
+																{% endif %}
+															</div>
+
+														</td>
+														<td>
+															<div class="widget-26-job-title">
+																<span>{{rapport.description}}</span>
+																{% if rapport.descriptionFichier %}
+																	<p>
+																		<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}" target="_blank">Fichier
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			                                                                de description</a>
+																	</p>
+																{% endif %}
+															</div>
+														</td>
+
+														<td>
+															<div class="widget-26-job-title">
+																<span>{{rapport.resultat}}</span>
+																{% if rapport.resultatFichier %}
+																	<p>
+																		<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}" target="_blank">Fichier
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			                                                                de résultat</a>
+																	</p>
+																{% endif %}
+															</div>
+														</td>
+
+
+														<td>
+															<div class="widget-26-job-title">
+																<span>
+																	<a href="{{ path('admin_college_show',{'id': rapport.college.id }) }}">{{rapport.college.getNom()
+                                                                }}</a>
+																</span>
+
+															</div>
+														</td>
+
+
+														<td>
+															<p style="text-size: 8px">
+																{{ rapport.createdAt|date('Y-m-d H:i') }}</p>
+
+														</td>
+
+														<td>
+
+
+															<a href="{{ path('admin_rapport_activer', { 'id' : rapport.id } ) }}" class="btn btn-outline-{{ rapport.isDeleted ? 'success' : 'danger'}}  " type="button">
+																<i class="fa-solid fa-{{ rapport.isDeleted ? 'archive': 'lock' }}"></i>
+
+																{{ rapport.isDeleted ? 'Activé': 'Archivé' }}
+
+															</a>
+														</td>
+
+
+														<td>
+
+
+															<div class="widget-26-job-starred btn-group">
+
+
+																<a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-outline-info " type="button">
+																	<i class="fa fa-eye" aria-hidden="true"></i>Détails
+
+																</a>
+
+																{% if  rapport.isDeleted == true %}
+																	<a href="{{ path('admin_rapport_edit',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-outline-dark " type="button">
+																		<i class="fa fa-edit" aria-hidden="true"></i>Editer
+
+																	</a>
+
+																{% endif %}
+
+
+															</div>
+														</td>
+													</tr>
+
+
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

@@ -12,10 +12,10 @@
 {% block option %}
 
 	{# {% for label, messages in app.flashes %}
-													{% for message in messages %}
-														<div class="alert alert-{{ label }}">{{ message }}</div>
-													{% endfor %}
-												{% endfor %} #}
+																										{% for message in messages %}
+																											<div class="alert alert-{{ label }}">{{ message }}</div>
+																										{% endfor %}
+																									{% endfor %} #}
 
 	<a href=" {{ path('app_generate_pdf_users') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
 
@@ -48,16 +48,17 @@
 
 													<th>Matricule</th>
 													<th>Email</th>
-													{# <th>Roles</th> #}
+
 													<th>Prenom</th>
 													<th>Nom</th>
-													{# <th>Enabled</th> #}
+
 													<th>Téléphone</th>
-													{# <th>Status</th> #}
+
 													<th>Dernier Activité</th>
-													{# <th>Connecté</th> #}
+
 													<th>Adresse</th>
 													<th>Sexe</th>
+													<th>Rapports</th>
 													<th>Compte</th>
 													<th>actions</th>
 
@@ -69,16 +70,22 @@
 													<tr>
 														<td>{{ user.matricule }}</td>
 														<td>{{ user.email }}</td>
-														{# <td>{{ user.roles ? user.roles|json_encode : '' }}</td> #}
 														<td>{{ user.firstName }}</td>
 														<td>{{ user.lastName }}</td>
-														{# <td>{{ user.enabled ? 'Yes' : 'No' }}</td> #}
 														<td>{{ user.phone }}</td>
-														{# <td>{{ user.status }}</td> #}
 														<td>{{ user.lastActivityAt ? user.lastActivityAt|date('Y-m-d H:i:s') :
                                                     '' }}</td>
 														<td>{{ user.adresse }}</td>
 														<td>{{ user.sexe }}</td>
+														<td>
+															<a href="{{ path('admin_college_rapport_client_show', { 'id' : user.id } ) }}" class="m-1 btn btn-outline-dark" type="button">
+
+																<i class="fa-solid fa-file "></i>
+																{{ user.rapports | length }}
+															</a>
+
+														</td>
+
 														<td>
 
 
@@ -118,5 +125,6 @@
 				</div>
 			</div>
 		</div>
+
 	</div>
-</div>{% endblock %}
+{% endblock %}

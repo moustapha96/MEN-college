@@ -3,3 +3,9 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+
+# config/routes.yaml
+custom_404_page:
+    path: /404
+    controller: App\Controller\CustomErrorController::show404

@@ -1,6 +1,13 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
 
+   
+
+framework:
+    # Définissez votre contrôleur d'erreur personnalisé ici
+    error_controller: App\Controller\CustomErrorController::show404
+
+
 when@test:
     twig:
         strict_variables: true

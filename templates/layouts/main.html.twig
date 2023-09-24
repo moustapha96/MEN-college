@@ -23,12 +23,19 @@
 		<div
 			class="wrapper">
 			<!-- Navbar -->
+
 			{% include 'layouts/header.html.twig' ignore missing %}
+
 			<!-- /.navbar -->
 
+			<div class="preloader">
+				<img src="{{ asset('images/men.png') }}" alt="AdminLTELogo" height="60" width="60">
+			</div>
+
 			<!-- Main Sidebar Container -->
-				<aside
-				class="main-sidebar sidebar-dark-primary elevation-4"> <!-- Brand Logo -->
+			<aside
+				class="main-sidebar sidebar-dark-primary elevation-4">
+				<!-- Brand Logo -->
 				<a href="{{ app.user.roles[0] == 'ROLE_USER' ? path('client_home'): path('admin_home') }}" class="brand-link">
 
 					<img src="{{ asset('images/men.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -76,10 +83,12 @@
 						<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false"> {% block menu %}{% endblock %}
 
 							</ul>
+
 						</nav>
-						<!-- /.sidebar-menu -->
+
+
 					</div>
-					<!-- /.sidebar -->
+
 				</aside>
 
 				{% block content %}
@@ -142,16 +151,11 @@
 				{% block footer %}
 					{% include 'layouts/footer.html.twig' ignore missing %}
 				{% endblock %}
-			</div>
-			<!-- ./wrapper -->
-
-			<!-- REQUIRED SCRIPTS -->
 
 
-			{% block scripts %}
-				{% include 'layouts/scripts.html.twig' ignore missing %}
-			{% endblock %}
-
+				{% block scripts %}
+					{% include 'layouts/scripts.html.twig' ignore missing %}
+				{% endblock %}
+			</html>
 		</body>
-
 	</html>
