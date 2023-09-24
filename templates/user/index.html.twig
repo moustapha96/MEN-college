@@ -12,10 +12,10 @@
 {% block option %}
 
 	{# {% for label, messages in app.flashes %}
-																										{% for message in messages %}
-																											<div class="alert alert-{{ label }}">{{ message }}</div>
-																										{% endfor %}
-																									{% endfor %} #}
+																																					{% for message in messages %}
+																																						<div class="alert alert-{{ label }}">{{ message }}</div>
+																																					{% endfor %}
+																																				{% endfor %} #}
 
 	<a href=" {{ path('app_generate_pdf_users') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
 
@@ -54,7 +54,7 @@
 
 													<th>Téléphone</th>
 
-													<th>Dernier Activité</th>
+													<th>Collège</th>
 
 													<th>Adresse</th>
 													<th>Sexe</th>
@@ -73,8 +73,40 @@
 														<td>{{ user.firstName }}</td>
 														<td>{{ user.lastName }}</td>
 														<td>{{ user.phone }}</td>
-														<td>{{ user.lastActivityAt ? user.lastActivityAt|date('Y-m-d H:i:s') :
-                                                    '' }}</td>
+														<td>
+															<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-{{ user.id }}">{{ user.college.nom }}
+															</button>
+															<div class="modal fade" id="modal-{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<h5 class="modal-title">College</h5>
+																			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																				<span aria-hidden="true">&times;</span>
+																			</button>
+																		</div>
+																		<form method="POST" action="{{ path('app_user_college_update', {'id': user.id} ) }}">
+																			<div class="modal-body">
+																				<select class="form-control" name="college" id="college">
+																					{% for college in colleges %}
+																						{% set selected = '' %}
+																						{% if college.nom == user.college.nom %}
+																							{% set selected = 'selected' %}
+																						{% endif %}
+																						<option value="{{ college.id }}" {{ selected }}>{{ college.nom }}</option>
+																					{% endfor %}
+																				</select>
+																			</div>
+																			<div class="modal-footer">
+																				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+																				<button type="submit" class="btn btn-success">Enregistrer</button>
+																			</div>
+																		</form>
+																	</div>
+																</div>
+															</div>
+														</td>
+
 														<td>{{ user.adresse }}</td>
 														<td>{{ user.sexe }}</td>
 														<td>

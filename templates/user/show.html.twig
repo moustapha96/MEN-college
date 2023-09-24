@@ -14,10 +14,10 @@
 		<i class="fa fa-list" aria-hidden="true"></i>
 		Liste</a>
 	{#
-																	
-																	
-																	<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-dark float-right btn-sm" role="button"><i
-																	        class="fa fa-edit" aria-hidden="true"></i>Modifier</a> #}
+																			
+																			
+																			<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-dark float-right btn-sm" role="button"><i
+																			        class="fa fa-edit" aria-hidden="true"></i>Modifier</a> #}
 {% endblock %}
 
 {# {% les donnees affichees %}#}
@@ -48,9 +48,9 @@
 											<td>{{ user.email }}</td>
 										</tr>
 										{# <tr>
-																																																																																																																																																																										                                        <th>Roles</th>
-																																																																																																																																																																										                                        <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-																																																																																																																																																																										                                    </tr> #}
+																																																																																																																																																																																														                                        <th>Roles</th>
+																																																																																																																																																																																														                                        <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+																																																																																																																																																																																														                                    </tr> #}
 
 										<tr>
 											<th>Prenom</th>
@@ -72,18 +72,18 @@
 											<td>{{ user.phone }}</td>
 										</tr>
 										{# <tr>
-																																																																																																																																																																										                                        <th>Status</th>
-																																																																																																																																																																										                                        <td>{{ user.status }}</td>
-																																																																																																																																																																										                                    </tr> #}
+																																																																																																																																																																																														                                        <th>Status</th>
+																																																																																																																																																																																														                                        <td>{{ user.status }}</td>
+																																																																																																																																																																																														                                    </tr> #}
 										<tr>
 											<th>Dernier Connexion</th>
 											<td>{{ user.lastActivityAt ? user.lastActivityAt|date('Y-m-d H:i:s') : '' }}
 											</td>
 										</tr>
 										{# <tr>
-																															<th>Connecté</th>
-																															<td>{{ user.isActiveNow ? 'OUI' : 'NON' }}</td>
-																														</tr> #}
+																																																			<th>Connecté</th>
+																																																			<td>{{ user.isActiveNow ? 'OUI' : 'NON' }}</td>
+																																																		</tr> #}
 										<tr>
 											<th>Adresse</th>
 											<td>{{ user.adresse }}</td>
@@ -91,6 +91,10 @@
 										<tr>
 											<th>Sexe</th>
 											<td>{{ user.sexe }}</td>
+										</tr>
+										<tr>
+											<th>College</th>
+											<td>{{ user.college.nom }}</td>
 										</tr>
 
 

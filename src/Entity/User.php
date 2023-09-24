@@ -106,7 +106,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $matricule = null;
 
-
+    #[ORM\ManyToOne(inversedBy: 'user')]
+    private ?College $college = null;
 
     public function __construct()
     {
@@ -467,6 +468,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setMatricule(string $matricule): static
     {
         $this->matricule = $matricule;
+
+        return $this;
+    }
+
+    public function getCollege(): ?College
+    {
+        return $this->college;
+    }
+
+    public function setCollege(?College $college): static
+    {
+        $this->college = $college;
 
         return $this;
     }

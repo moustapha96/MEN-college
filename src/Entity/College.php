@@ -25,9 +25,14 @@ class College
     #[ORM\OneToMany(mappedBy: 'college', targetEntity: Rapport::class)]
     private Collection $rapports;
 
+    #[ORM\OneToMany(mappedBy: 'college', targetEntity: User::class)]
+    private Collection $user;
+
+
     public function __construct()
     {
         $this->rapports = new ArrayCollection();
+        $this->user = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,6 +92,36 @@ class College
             // set the owning side to null (unless already changed)
             if ($rapport->getCollege() === $this) {
                 $rapport->setCollege(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->user->contains($user)) {
+            $this->user->add($user);
+            $user->setCollege($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->user->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getCollege() === $this) {
+                $user->setCollege(null);
             }
         }
 

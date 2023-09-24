@@ -3,9 +3,9 @@ twig:
 
    
 
-framework:
-    # Définissez votre contrôleur d'erreur personnalisé ici
-    error_controller: App\Controller\CustomErrorController::show404
+# framework:
+#     # Définissez votre contrôleur d'erreur personnalisé ici
+#     error_controller: App\Controller\CustomErrorController::show404
 
 
 when@test:

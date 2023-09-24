@@ -51,7 +51,8 @@ class ClientController extends AbstractController
             'rapports' => $rapportRepository->findBy(['user' => $user]),
             'colleges' => $collegeRepository->findAll(),
             'rapports_deleted' =>  $rapportRepository->findBy(['isDeleted' => 1, 'user' => $user]),
-            'rapports_valide' =>  $rapportRepository->findBy(['isDeleted' => 0, 'user' => $user])
+            'rapports_valide' =>  $rapportRepository->findBy(['isDeleted' => 0, 'user' => $user]),
+            'rapports_college' =>  $rapportRepository->findBy(['college' => $user->getCollege()])
         ]);
     }
 
@@ -63,7 +64,7 @@ class ClientController extends AbstractController
     {
         return $this->render("client/college/index.html.twig", [
             'titre' => 'Gestion des Collèges',
-            'colleges' => $collegeRepository->findAll()
+            'colleges' => $collegeRepository->findBy(['id' =>  $this->getUser()->getCollege()->getId()])
         ]);
     }
 
@@ -141,9 +142,9 @@ class ClientController extends AbstractController
     public function ListeRpport(RapportRepository $rapportRepository): Response
     {
         $user = $this->getUser();
-        $rapports = $rapportRepository->findBy(['user' => $user, 'isDeleted' => 0]);
+        $rapports = $rapportRepository->findBy(['college' => $user->getCollege(), 'isDeleted' => 0]);
         return $this->render("client/rapport/index.html.twig", [
-            'titre' => 'Liste de vos rapports d\'activités',
+            'titre' => 'Liste des rapports d\'activités  ; College  ' . $user->getCollege()->getNom(),
             'rapports' => $rapports
         ]);
     }
@@ -152,11 +153,17 @@ class ClientController extends AbstractController
     #[Route('/rapports/nouveau',  name: "rapport_nouveau", methods: ['GET', 'POST'])]
     public function NouveauRpport(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $rapport = new Rapport();
+        $rapport->setCollege($user->getCollege());
         $form = $this->createForm(RapportType::class, $rapport);
         $form->handleRequest($request);
         $user = $this->getUser();
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('college')->getData() != $user->getCollege()) {
+                $this->addFlash('warning', "Vous ne pouvez pas faire un rapport sur un autre college !!");
+                return $this->redirectToRoute('client_rapport_nouveau', [], Response::HTTP_SEE_OTHER);
+            }
             $rapport->setUser($user);
             $entityManager->persist($rapport);
             $entityManager->flush();

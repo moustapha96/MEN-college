@@ -36,6 +36,8 @@
 													<th>Activite</th>
 													<th>Description</th>
 													<th>Resultat</th>
+													<th>Inspecteur</th>
+
 													<th>Date</th>
 													<th>Actions</th>
 
@@ -51,7 +53,7 @@
 																{% if rapport.activiteFichier %}
 																	<p>
 																		<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																						                                                                d'activité</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							                                                                d'activité</a>
 																	</p>
 																{% endif %}
 															</div>
@@ -63,7 +65,7 @@
 																{% if rapport.descriptionFichier %}
 																	<p>
 																		<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																						                                                                de description</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							                                                                de description</a>
 																	</p>
 																{% endif %}
 															</div>
@@ -75,11 +77,21 @@
 																{% if rapport.resultatFichier %}
 																	<p>
 																		<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																						                                                                de résultat</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							                                                                de résultat</a>
 																	</p>
 																{% endif %}
 															</div>
 														</td>
+														<td>
+															{% if app.user.id != rapport.user.id %}
+																{{ rapport.user.firstName~' '~ rapport.user.lastName }}
+															{% else %}
+																Moi même
+															{% endif %}
+
+
+														</td>
+
 														<td>
 															{{ rapport.createdAt|date('Y-m-d H:i') }}
 
@@ -88,11 +100,11 @@
 
 
 														{# <td>
-																																																																																																																																																																																																																																																												                                                    <div class="widget-26-job-title">
-																																																																																																																																																																																																																																																												                                                        <span>{{rapport.user }}</span>
-																																																																																																																																																																																																																																																												
-																																																																																																																																																																																																																																																												                                                    </div>
-																																																																																																																																																																																																																																																												                                                </td> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																						                                                    <div class="widget-26-job-title">
+																																																																																																																																																																																																																																																																																																																																																																																																																						                                                        <span>{{rapport.user }}</span>
+																																																																																																																																																																																																																																																																																																																																																																																																																						
+																																																																																																																																																																																																																																																																																																																																																																																																																						                                                    </div>
+																																																																																																																																																																																																																																																																																																																																																																																																																						                                                </td> #}
 
 
 														<td>
@@ -105,10 +117,15 @@
 																</a>
 
 
-																<a href="{{ path('client_rapport_edit',{'id': rapport.id }) }}" class="m-1 btn btn-outline-dark " type="button">
-																	<i class="m-1 fa fa-edit" aria-hidden="true"></i>
+																{% if app.user.id == rapport.user.id %}
 
-																</a>
+
+																	<a href="{{ path('client_rapport_edit',{'id': rapport.id }) }}" class="m-1 btn btn-outline-dark " type="button">
+																		<i class="m-1 fa fa-edit" aria-hidden="true"></i>Editer
+
+																	</a>
+
+																{% endif %}
 
 
 															</div>

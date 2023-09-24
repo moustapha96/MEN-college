@@ -41,8 +41,64 @@
 											<td><img src="/avatars/{{ rapport.user.avatar }}" alt="Admin" class="rounded-circle" width="150"></td>
 										</tr>
 
+										{% if app.user.id != rapport.user.id %}
+											<tr>
+												<th>
+													<h3>
+														Inspecteur
+													</h3>
+												</th>
+											</tr>
+
+
+											<tr>
+												<th>
+													Matricule</th>
+												<td>{{ rapport.user.matricule }}</td>
+											</tr>
+
+											<tr>
+												<th>
+													Email</th>
+												<td>{{ rapport.user.email }}</td>
+											</tr>
+
+											<tr>
+												<th>
+													Prenom</th>
+												<td>{{ rapport.user.firstName }}</td>
+											</tr>
+
+											<tr>
+												<th>
+													Nom</th>
+												<td>{{ rapport.user.lastName }}</td>
+											</tr>
+										{% else %}
+											<tr>
+												<th>
+													<h3>
+														Inspecteur
+													</h3>
+												</th>
+											</tr>
+
+
+											<tr>
+												<th>Moi meme</th>
+											</tr>
+
+
+										{% endif %}
+
+
 										<tr>
-											<th>Collège</th>
+											<th>
+												<h3>
+													Collège
+												</h3>
+											</th>
+
 
 										</tr>
 										<tr>
@@ -59,8 +115,8 @@
 
 										<tr>
 											<th>
-												<u>
-													Rapport</u>
+												<h3>
+													Rapport</h3>
 											</th>
 
 										</tr>
@@ -75,7 +131,7 @@
 												{% if rapport.activiteFichier %}
 													<p>
 														<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}">Fichier
-																																																																																																																																																																					                                                    d'activité</a>
+																																																																																																																																																																																																																																																																																																																																																						                                                    d'activité</a>
 													</p>
 												{% endif %}
 											</td>
@@ -89,7 +145,7 @@
 												{% if rapport.descriptionFichier %}
 													<p>
 														<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}">Fichier de
-																																																																																																																																																																					                                                    description</a>
+																																																																																																																																																																																																																																																																																																																																																						                                                    description</a>
 													</p>
 												{% endif %}
 											</td>
@@ -101,7 +157,7 @@
 												{% if rapport.resultatFichier %}
 													<p>
 														<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}">Fichier de
-																																																																																																																																																																					                                                    résultat</a>
+																																																																																																																																																																																																																																																																																																																																																						                                                    résultat</a>
 													</p>
 												{% endif %}
 											</td>
@@ -122,11 +178,8 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>
 	</div>
-
-
 {% endblock %}

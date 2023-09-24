@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\CollegeRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,11 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, CollegeRepository $collegeRepository): Response
     {
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
-            'titre' => "Liste des Inspecteurs"
+            'titre' => "Liste des Inspecteurs",
+            "colleges" => $collegeRepository->findAll()
         ]);
     }
 
@@ -145,5 +147,25 @@ class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/college', name: 'app_user_college_update', methods: ['GET', 'POST'])]
+    public function changestatut(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        User $user,
+        CollegeRepository $collegeRepository,
+
+    ): Response {
+
+        $college = $collegeRepository->find($request->request->all()['college']);
+        $user->setCollege($college);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        $this->addFlash('success', "College  mise à jour avec succès ");
+
+        return $this->redirect($request->headers->get('referer'));
+
+        // return $this->redirectToRoute('app_demande_app_index', [], Response::HTTP_SEE_OTHER);
     }
 }
