@@ -49,6 +49,7 @@ class MainController extends AbstractController
     #[Route('/admin/profil/update/avatar', name: 'admin_profil_update_avatar', methods: ['GET', 'POST'])]
     public function updateAvatarAdmin(Request $request, EntityManagerInterface $entityManager)
     {
+        /** @var User $user */
         $user = $this->getUser();
         $defaultData = ['message' => "formulaire de modification du profil"];
         $formAvatar = $this->createFormBuilder($defaultData)
@@ -101,6 +102,7 @@ class MainController extends AbstractController
     #[Route('/client/profil/update/avatar', name: 'client_profil_update_avatar', methods: ['GET', 'POST'])]
     public function updateAvatarClient(Request $request, EntityManagerInterface $entityManager)
     {
+        /** @var User $user */
         $user = $this->getUser();
         $defaultData = ['message' => "formulaire de modification du profil"];
         $formAvatar = $this->createFormBuilder($defaultData)
@@ -152,7 +154,6 @@ class MainController extends AbstractController
 
 
     //function de mise en jour des donnees
-
     #[Route('/admin/profil/update', name: 'admin_profil_update_data', methods: ['POST'])]
 
     public function updateDataAdmin(
@@ -160,6 +161,7 @@ class MainController extends AbstractController
         UserRepository $userRepository,
         EntityManagerInterface $entityManager
     ) {
+        /** @var User $user */
         $user = $this->getUser();
         $data = $request->request->all();
 
@@ -240,6 +242,7 @@ class MainController extends AbstractController
         UserRepository $userRepository,
         EntityManagerInterface $entityManager
     ) {
+        /** @var User $user */
         $user = $this->getUser();
         $data = $request->request->all();
         if ($request->isMethod('POST')) {

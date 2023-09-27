@@ -45,6 +45,9 @@ class Rapport
     #[ORM\Column(nullable: true)]
     private ?bool $isDeleted = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $statut = null;
+
 
     public function __construct()
     {
@@ -174,6 +177,18 @@ class Rapport
     public function setIsDeleted(?bool $isDeleted): static
     {
         $this->isDeleted = $isDeleted;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(?string $statut): static
+    {
+        $this->statut = $statut;
 
         return $this;
     }

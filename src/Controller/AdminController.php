@@ -379,4 +379,30 @@ class AdminController extends AbstractController
         }
         return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/rapports/{id}/state', name: 'rapport_update_state', methods: ['POST'])]
+    public function changeState(Request $request, Rapport $rapport, EntityManagerInterface $entityManager): Response
+    {
+        $state = $request->request->all()['state'];
+
+        if ($rapport) {
+            $rapport->setStatut($state);
+            if ($state == "NON VALIDER") {
+                $rapport->setIsDeleted(true);
+            } else {
+                $rapport->setIsDeleted(false);
+            }
+
+            $entityManager->persist($rapport);
+            $entityManager->flush();
+            if ($state == "EN ATTENTE") {
+                $this->addFlash('warning', "Rapport " . $state);
+            } else if ($state == "VALIDER") {
+                $this->addFlash('success', "Rapport " . $state);
+            } else {
+                $this->addFlash('danger', "Rapport " . $state);
+            }
+        }
+        return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
+    }
 }

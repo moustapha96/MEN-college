@@ -57,8 +57,9 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+        /** @var User $user */
         $user = $token->getUser();
-        // dd($user->getRoles());
+
         if ($user->getEnabled() == false) {
             throw new AccountDisabledException("votre compte a été desactivé ");
             $this->logout();
@@ -69,7 +70,6 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         } else if ($user->getEnabled() == true && "ROLE_USER" === $user->getRoles()[0]) {
             return new RedirectResponse($this->urlGenerator->generate('client_home'));
         }
-
 
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);

@@ -106,6 +106,12 @@
 							<td>{{ rapport.college.nom }}</td>
 
 						</tr>
+						<tr>
+							<th>Statut Rapport</th>
+							<td>
+								{{ rapport.statut }}
+							</td>
+						</tr>
 
 						<tr>
 							<th>Activité</th>
@@ -116,7 +122,7 @@
 								{% if rapport.activiteFichier %}
 
 									<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												                                                    d'activité</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																                                                    d'activité</a>
 
 								{% endif %}
 
@@ -132,7 +138,7 @@
 								{% if rapport.descriptionFichier %}
 
 									<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																                                                    description</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				                                                    description</a>
 								{% endif %}
 
 							</td>
@@ -147,7 +153,7 @@
 								{% if rapport.resultatFichier %}
 
 									<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				                                                    résultat</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								                                                    résultat</a>
 
 								{% endif %}
 

@@ -64,7 +64,7 @@
 																{% if rapport.activiteFichier %}
 																	<p>
 																		<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					                                                                d'activité</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					                                                                d'activité</a>
 																	</p>
 																{% endif %}
 															</div>
@@ -76,7 +76,7 @@
 																{% if rapport.descriptionFichier %}
 																	<p>
 																		<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					                                                                de description</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					                                                                de description</a>
 																	</p>
 																{% endif %}
 															</div>
@@ -88,7 +88,7 @@
 																{% if rapport.resultatFichier %}
 																	<p>
 																		<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					                                                                de résultat</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					                                                                de résultat</a>
 																	</p>
 																{% endif %}
 															</div>
@@ -130,20 +130,73 @@
 
 														<td>
 
+															<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#model{{rapport.id}}">
+																{% set color = (rapport.statut == "VALIDER" ) ? 'success' :  (rapport.statut == "EN ATTENTE" ? 'warning': 'danger') %}
+																{% set icon = (rapport.statut == "VALIDER" ) ? 'check-circle' :  (rapport.statut == "EN ATTENTE" ? 'check': 'trash') %}
 
-															<a href="{{ path('admin_rapport_activer', { 'id' : rapport.id } ) }}" class="btn btn-outline-{{ rapport.isDeleted ? 'success' : 'danger'}}  " type="button">
-																<i class="fa-solid fa-{{ rapport.isDeleted ? 'archive': 'lock' }}"></i>
 
-																{{ rapport.isDeleted ? 'Activé': 'Archivé' }}
+																<a class="btn btn-outline-{{ color }}  " type="button">
+																	<i class="fa fa-solid fa-{{ icon }}"></i>
 
-															</a>
+																	{{ rapport.statut }}
+																</a>
+
+															</button>
+
+
+															<!-- Modal -->
+															<div class="modal fade" id="model{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<h5 class="modal-title">État Rapport</h5>
+																			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																				<span aria-hidden="true">&times;</span>
+																			</button>
+																		</div>
+																		<form action="{{ path("admin_rapport_update_state", { 'id': rapport.id } ) }}" method="post">
+
+																			<div class="modal-body">
+																				<div class="container-fluid">
+																					<div class="form-group">
+																						<label for="state">État actuelle:
+																							{{ rapport.statut }}
+																						</label>
+																						<select class="custom-select" name="state" id="state">
+																							{% set selected = 'selected' %}
+
+
+																							<option>Choisie...</option>
+																							<option {{ rapport.statut == 'EN ATTENTE' ? selected : '' }} value="EN ATTENTE">En Attente</option>
+																							<option {{ rapport.statut == 'VALIDER' ? selected : '' }} value="VALIDER">Valider</option>
+																							<option {{ rapport.statut == 'NON VALIDER' ? selected : '' }} value="NON VALIDER">Non Valider</option>
+
+
+																						</select>
+																					</div>
+
+
+																				</div>
+																			</div>
+																			<div class="modal-footer">
+																				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+																				<button type="submit" class="btn btn-primary">Enregistrer</button>
+																			</div>
+																		</form>
+
+																	</div>
+																</div>
+															</div>
+
+
 														</td>
 
 
 														<td>
 
 
-															<div class="widget-26-job-starred btn-group">
+															<div class="widget-26-job-starred btn-group ">
 
 
 																<a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-outline-info " type="button">
@@ -155,6 +208,11 @@
 																	<a href="{{ path('admin_rapport_edit',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-outline-dark " type="button">
 																		<i class="fa fa-edit" aria-hidden="true"></i>Editer
 
+																	</a>
+
+																	<a href="{{ path('app_mailler_test',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-outline-info " type="button">
+
+																		<i class="fas fa-mail-bulk    "></i>
 																	</a>
 
 																{% endif %}
@@ -179,4 +237,14 @@
 
 		</div>
 	</div>
+	<script>
+		$('#exampleModal').on('show.bs.modal', event => {
+var button = $(event.relatedTarget);
+var modal = $(this);
+// Use above variables to manipulate the DOM
+
+});
+	</script>
+
+
 {% endblock %}

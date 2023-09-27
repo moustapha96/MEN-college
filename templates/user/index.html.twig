@@ -12,10 +12,10 @@
 {% block option %}
 
 	{# {% for label, messages in app.flashes %}
-																																					{% for message in messages %}
-																																						<div class="alert alert-{{ label }}">{{ message }}</div>
-																																					{% endfor %}
-																																				{% endfor %} #}
+																																																																																	{% for message in messages %}
+																																																																																		<div class="alert alert-{{ label }}">{{ message }}</div>
+																																																																																	{% endfor %}
+																																																																																{% endfor %} #}
 
 	<a href=" {{ path('app_generate_pdf_users') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
 
@@ -109,24 +109,22 @@
 
 														<td>{{ user.adresse }}</td>
 														<td>{{ user.sexe }}</td>
+
 														<td>
 															<a href="{{ path('admin_college_rapport_client_show', { 'id' : user.id } ) }}" class="m-1 btn btn-outline-dark" type="button">
-
-																<i class="fa-solid fa-file "></i>
+																<i class="fa fa-list"></i>
 																{{ user.rapports | length }}
 															</a>
-
 														</td>
+
 
 														<td>
-
-
 															<a href="{{ path('app_user_acount', { 'id' : user.id } ) }}" class="m-1 btn btn-outline-{{ user.enabled ? 'success' : 'danger'}}  " type="button">
-																<i class="fa-solid fa-{{ user.enabled ? 'user': 'lock' }}"></i>
-																{{ user.enabled ? 'Activer': 'Desactiver' }}
+																<i class="fa fa-{{ user.enabled ? 'unlock-alt': 'lock' }}" aria-hidden="true"></i>
+																{{ user.enabled ? 'Activer': 'Blocker' }}
 															</a>
-
 														</td>
+
 
 														<td>
 

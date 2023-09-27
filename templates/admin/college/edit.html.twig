@@ -30,50 +30,42 @@
 		<div class="col-12">
 			<div class="card card-margin">
 				<div class="card-body">
-					<div class="row search-body">
-						<div class="col-lg-12">
-							<div class="search-result">
-
-								<div class="result-body">
-									<div class="table-responsive">
-
-										<div class="card-body">
-											<form action="{{ path('admin_college_edit',{ 'id': college.id } ) }}" method="POST">
-
-												<div class="form-row">
-													<div class="form-group col-md-12">
-														<label for="Nom">Nom</label>
-														<input type="text" name="nom" class="form-control " value="{{ college.nom }}" placeholder="Nom scollège" id="nom" required>
-													</div>
-												</div>
-												<div class="form-row">
+					<div class="result-body">
+						<div class="table-responsive">
 
 
-													<div class="form-group col-md-12">
-														<label for="code">Description
-														</label>
-														<textarea required rows="2" name="description" class="form-control" id="description">
-															{{college.description}}
-														</textarea>
-													</div>
-												</div>
+							<form action="{{ path('admin_college_edit',{ 'id': college.id } ) }}" method="POST">
 
-												<div class="form-row">
-
-													<div class="form-group col-md-12 m-*-auto">
-														<button type="submit" class="pull-right btn btn-outline-success">
-															<i class="fa fa-save fa-lg fa-fw"></i>
-															enregistrer
-														</button>
-													</div>
-												</div>
-											</form>
-
-										</div>
-
+								<div class="form-row">
+									<div class="form-group col-md-12">
+										<label for="Nom">Nom</label>
+										<input type="text" name="nom" class="form-control " value="{{ college.nom }}" placeholder="Nom scollège" id="nom" required>
 									</div>
 								</div>
-							</div>
+								<div class="form-row">
+
+
+									<div class="form-group col-md-12">
+										<label for="code">Description
+										</label>
+										<textarea required rows="2" name="description" class="form-control" id="description">
+											{{college.description}}
+										</textarea>
+									</div>
+								</div>
+
+								<div class="form-row">
+
+									<div class="form-group col-md-12 m-*-auto">
+										<button type="submit" class="pull-right btn btn-outline-success">
+											<i class="fa fa-save fa-lg fa-fw"></i>
+											enregistrer
+										</button>
+									</div>
+								</div>
+							</form>
+
+
 						</div>
 					</div>
 

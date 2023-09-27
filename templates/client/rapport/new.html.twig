@@ -5,13 +5,15 @@
 {% block title_job %}
 	<h1 class="card-title">
 		{{ titre }}
+		<br>
+
 	</h1>
 {% endblock %}
 
 {# {% operation possible %}#}
 {% block option %}
 	{# <a href="" class=" btn btn-info float-right btn-sm" role="button">
-											  <i class="fa fa-plus" aria-hidden="true"></i> nouveau rapport</a> #}
+																		  <i class="fa fa-plus" aria-hidden="true"></i> nouveau rapport</a> #}
 	<a class="m-1 btn btn-outline-info float-right ml-1 btn-sm" href="{{ path('client_rapport_liste') }}">
 		<i class="fa fa-list"></i>
 		Liste</a>
@@ -29,6 +31,15 @@
 					<div class="row search-body">
 						<div class="col-lg-12">
 							<div class="search-result">
+								<div class="text-center">
+									<h3>
+										College =>
+										<b>
+											{{ college.nom }}</b>
+									</h3>
+
+								</div>
+
 
 								<div class="result-body">
 									<div class="table-responsive">

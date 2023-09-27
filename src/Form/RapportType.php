@@ -23,13 +23,13 @@ class RapportType extends AbstractType
 
         $builder
 
-            ->add('college', EntityType::class, [
-                'attr' => ['class' => 'col-6 mx-auto form-control'],
-                'class' => College::class,
-                'choice_label' => 'nom', // Remplacez par le champ de l'entité College que vous souhaitez afficher
-                'label' => 'Collège',
-                'placeholder' => 'Sélectionnez un collège',
-            ])
+            // ->add('college', EntityType::class, [
+            //     'attr' => ['class' => 'col-6 mx-auto form-control'],
+            //     'class' => College::class,
+            //     'choice_label' => 'nom', // Remplacez par le champ de l'entité College que vous souhaitez afficher
+            //     'label' => 'Collège',
+            //     'placeholder' => 'Sélectionnez un collège',
+            // ])
             ->add('activite', TextareaType::class, [
                 'attr' => ['class' => 'col-6 mx-auto form-control ', 'row' => 3],
                 'label' => 'Activité',
@@ -87,6 +87,16 @@ class RapportType extends AbstractType
                 ]
             ])
 
+            ->add('statut', ChoiceType::class, [
+                'attr' => ['class' => 'col-6 mx-auto form-control'],
+                'label' => 'Statut Rapport',
+                'choices' => [
+                    'En attente' => 'EN ATTENTE', // Vous pouvez utiliser des valeurs plus explicites si nécessaire
+                    'Valider' => 'VALIDER',
+                    'Non valider' => 'NON_VALIDER',
+                ],
+                'placeholder' => 'Sélectionnez une option', // Optionnel, crée un champ vide par défaut
+            ])
 
             // ->add('valider', SubmitType::class, ['attr' => ['class' => 'btn btn-outline-success']]);
             ->add('valider', SubmitType::class, [

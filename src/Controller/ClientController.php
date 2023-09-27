@@ -45,6 +45,7 @@ class ClientController extends AbstractController
         RapportRepository $rapportRepository
     ): Response {
 
+        /** @var User $user */
         $user = $this->getUser();
         return $this->render("client/dashboard/index.html.twig", [
             'titre' => 'Inspecteur / Inspectrice',
@@ -62,9 +63,11 @@ class ClientController extends AbstractController
     #[Route('/colleges',  name: "college_liste")]
     public function ListeCollege(CollegeRepository $collegeRepository): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         return $this->render("client/college/index.html.twig", [
             'titre' => 'Gestion des Collèges',
-            'colleges' => $collegeRepository->findBy(['id' =>  $this->getUser()->getCollege()->getId()])
+            'colleges' => $collegeRepository->findBy(['id' =>  $user->getCollege()->getId()])
         ]);
     }
 
@@ -141,6 +144,7 @@ class ClientController extends AbstractController
     #[Route('/rapports',  name: "rapport_liste")]
     public function ListeRpport(RapportRepository $rapportRepository): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $rapports = $rapportRepository->findBy(['college' => $user->getCollege(), 'isDeleted' => 0]);
         return $this->render("client/rapport/index.html.twig", [
@@ -153,27 +157,29 @@ class ClientController extends AbstractController
     #[Route('/rapports/nouveau',  name: "rapport_nouveau", methods: ['GET', 'POST'])]
     public function NouveauRpport(Request $request, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $rapport = new Rapport();
         $rapport->setCollege($user->getCollege());
         $form = $this->createForm(RapportType::class, $rapport);
         $form->handleRequest($request);
         $user = $this->getUser();
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('college')->getData() != $user->getCollege()) {
-                $this->addFlash('warning', "Vous ne pouvez pas faire un rapport sur un autre college !!");
-                return $this->redirectToRoute('client_rapport_nouveau', [], Response::HTTP_SEE_OTHER);
-            }
+        if ($form->isSubmitted()) {
+            /** @var User $user */
+
+            $rapport->setCollege($user->getCollege());
             $rapport->setUser($user);
             $entityManager->persist($rapport);
             $entityManager->flush();
             $this->addFlash('success', "Rapport d'activité enregistrer avec succès");
             return $this->redirectToRoute('client_rapport_liste', [], Response::HTTP_SEE_OTHER);
         }
+        /** @var User $user */
         return $this->render('client/rapport/new.html.twig', [
             'rapport' => $rapport,
             'form' => $form,
-            'titre' => "Nouveau Rapport d'activité"
+            'titre' => "Nouveau Rapport d'activité ",
+            "college" =>  $user->getCollege()
         ]);
     }
 
@@ -198,6 +204,8 @@ class ClientController extends AbstractController
         $form = $this->createForm(RapportType::class, $rapport);
         $form->handleRequest($request);
 
+        /** @var User $user */
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -213,9 +221,7 @@ class ClientController extends AbstractController
                 }
             }
 
-
             $descriptionFile = $form->get('descriptionFichier')->getData();
-
             if (!$rapport->getDescriptionFichier()) {
                 $rapport->setDescriptionFichier($rapportAvant->getDescriptionFichier());
             } else {
@@ -227,7 +233,6 @@ class ClientController extends AbstractController
             }
 
             $resultatFile = $form->get('resultatFichier')->getData();
-
             if (!$rapport->getResultatFichier()) {
                 $rapport->setResultatFichier($rapportAvant->getResultatFichier());
             } else {
@@ -247,6 +252,7 @@ class ClientController extends AbstractController
             'titre' => "Mise à jour Rapport d'activité",
             'rapport' => $rapport,
             'form' => $form,
+            "college" =>  $user->getCollege()
         ]);
     }
 
