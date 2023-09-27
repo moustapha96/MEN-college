@@ -45,7 +45,10 @@ class AdminController extends AbstractController
             'rapports_valide' => $rapportRepository->findBy(['isDeleted' => 0]),
             'rapports_deleted' => $rapportRepository->findBy(['isDeleted' => 1]),
             'colleges' => $collegeRepository->findAll(),
-            'users' =>  $userRepository->findAll()
+            'users' =>  $userRepository->findAll(),
+            "rapports_en_attente" => $rapportRepository->findBy(['statut' => "EN ATTENTE"]),
+            "rapports_valider" => $rapportRepository->findBy(['statut' => "VALIDER"]),
+            "rapports_non_valider" => $rapportRepository->findBy(['statut' => "NON VALIDER"]),
         ]);
     }
 
@@ -108,8 +111,9 @@ class AdminController extends AbstractController
         RapportRepository $rapportRepository
     ): Response {
         return $this->render('admin/college/liste_rapport_client.html.twig', [
-            'titre' => 'Rapports inspecteur  => ' . $user->getMatricule() . ' ',
+            'titre' => 'Rapports inspecteur ',
             'rapports' => $rapportRepository->findBy(['user' => $user]),
+            "user" =>  $user
         ]);
     }
 
@@ -403,6 +407,7 @@ class AdminController extends AbstractController
                 $this->addFlash('danger', "Rapport " . $state);
             }
         }
-        return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
+        $referer = $request->headers->get('referer');
+        return new RedirectResponse($referer);
     }
 }

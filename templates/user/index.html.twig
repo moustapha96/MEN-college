@@ -12,10 +12,10 @@
 {% block option %}
 
 	{# {% for label, messages in app.flashes %}
-																																																																																	{% for message in messages %}
-																																																																																		<div class="alert alert-{{ label }}">{{ message }}</div>
-																																																																																	{% endfor %}
-																																																																																{% endfor %} #}
+																																																																																														{% for message in messages %}
+																																																																																															<div class="alert alert-{{ label }}">{{ message }}</div>
+																																																																																														{% endfor %}
+																																																																																													{% endfor %} #}
 
 	<a href=" {{ path('app_generate_pdf_users') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
 
@@ -74,7 +74,9 @@
 														<td>{{ user.lastName }}</td>
 														<td>{{ user.phone }}</td>
 														<td>
-															<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-{{ user.id }}">{{ user.college.nom }}
+
+															<button type="button" class="btn btn-outline-dark btn-bg " data-toggle="modal" data-target="#modal-{{ user.id }}">{{ user.college.nom }}
+
 															</button>
 															<div class="modal fade" id="modal-{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
 																<div class="modal-dialog" role="document">
@@ -129,6 +131,7 @@
 														<td>
 
 															<a href="{{ path('app_user_show', { 'id' : user.id } ) }}" class="m-1 btn btn-outline-dark " type="button">
+
 																<i class="fa fa-eye" aria-hidden="true"></i>Détails
 															</a>
 

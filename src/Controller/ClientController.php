@@ -44,20 +44,18 @@ class ClientController extends AbstractController
         // UserRepository $userRepository,
         RapportRepository $rapportRepository
     ): Response {
-
         /** @var User $user */
         $user = $this->getUser();
         return $this->render("client/dashboard/index.html.twig", [
             'titre' => 'Inspecteur / Inspectrice',
             'rapports' => $rapportRepository->findBy(['user' => $user]),
             'colleges' => $collegeRepository->findAll(),
-            'rapports_deleted' =>  $rapportRepository->findBy(['isDeleted' => 1, 'user' => $user]),
-            'rapports_valide' =>  $rapportRepository->findBy(['isDeleted' => 0, 'user' => $user]),
-            'rapports_college' =>  $rapportRepository->findBy(['college' => $user->getCollege()])
+            'rapports_college' =>  $rapportRepository->findBy(['college' => $user->getCollege()]),
+            "rapports_en_attente" => $rapportRepository->findBy(['statut' => "EN ATTENTE", 'user' => $user]),
+            "rapports_valider" => $rapportRepository->findBy(['statut' => "VALIDER", 'user' => $user]),
+            "rapports_non_valider" => $rapportRepository->findBy(['statut' => "NON VALIDER", 'user' => $user]),
         ]);
     }
-
-
 
 
     #[Route('/colleges',  name: "college_liste")]
@@ -70,6 +68,7 @@ class ClientController extends AbstractController
             'colleges' => $collegeRepository->findBy(['id' =>  $user->getCollege()->getId()])
         ]);
     }
+
 
     #[Route('/colleges/nouveau',  name: "college_nouveau")]
     public function NouveauCollege(CollegeRepository $collegeRepository): Response
@@ -88,6 +87,7 @@ class ClientController extends AbstractController
             'college' => $college,
         ]);
     }
+
 
     #[Route('/colleges/rapport/{id}/nouveau', name: 'college_rapport_nouveau', methods: ['GET', 'POST'])]
     public function ajoutRapport(
@@ -148,8 +148,9 @@ class ClientController extends AbstractController
         $user = $this->getUser();
         $rapports = $rapportRepository->findBy(['college' => $user->getCollege(), 'isDeleted' => 0]);
         return $this->render("client/rapport/index.html.twig", [
-            'titre' => 'Liste des rapports d\'activités  ; College  ' . $user->getCollege()->getNom(),
-            'rapports' => $rapports
+            'titre' => 'Liste des rapports d\'activités',
+            "rapports" => $rapports,
+            "college" => $user->getCollege()
         ]);
     }
 
