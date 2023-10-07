@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\CollegeRepository;
 use App\Repository\UserRepository;
+use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,13 +93,20 @@ class UserController extends AbstractController
 
 
     #[Route('/{id}/acount', name: 'app_user_acount', methods: ['GET'])]
-    public function editAccount(User $user, EntityManagerInterface $entityManager): Response
-    {
+    public function editAccount(
+        User $user,
+        EntityManagerInterface $entityManager,
+        MailerService $mailerService
+    ): Response {
         $user->setEnabled(!$user->getEnabled());
 
         $entityManager->persist($user);
         $entityManager->flush();
-        $user->getEnabled() == true ?  $this->addFlash('success', "Compte activé avec succés ") :  $this->addFlash('warning', "Compte desactivé avec succés ");
+        $user->getEnabled() == true ?
+            $this->addFlash('success', "Compte activé avec succés ") :
+            $this->addFlash('warning', "Compte desactivé avec succés ");
+
+        $user->getEnabled() ? $mailerService->sendMailCompteActive($user) : $mailerService->sendMailCompteBloque($user);
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }

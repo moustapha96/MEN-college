@@ -40,7 +40,7 @@ class SecurityController extends AbstractController
         if ($user) {
 
             if ($user->getEnabled() == false) {
-                throw new AccountDisabledException("votre compte a été desactivé  depuis votre dernier connexion");
+                throw new AccountDisabledException("votre compte a été desactivé  depuis votre derniere connexion");
 
                 return new RedirectResponse($this->urlGenerator->generate('app_logout'));
             } else if ($user->getEnabled() == true &&  "ROLE_ADMIN" === $user->getRoles()[0]) {
@@ -61,7 +61,6 @@ class SecurityController extends AbstractController
     {
 
         /** @var User $user */
-
         $user = $this->getUser();
         $user->setIsActiveNow(false);
         $user->setLastActivityAt(new DateTime());

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Rapport;
+use App\Entity\User;
 use App\Service\MailerService;
 use DateTime;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -47,6 +48,23 @@ class MaillerController extends AbstractController
     }
 
 
+    public function sendMailCompteBloque(User $user, MailerService $mailer): Response
+    {
+       
+       
+        $mail =  $mailer->sendMailCompteBloque(
+            "Veuillez recevoir le rapport de " . $user->getFirstName() . " " . $user->getLastName(),
+            $college->getNom(),
+            $user->getEmail(),
+            "khouma964@gmail.com",
+            $rapport,
+            $attachments
+        );
+        // dd($mail);
+
+        $this->addFlash('success', "Mail test envoyer avec success");
+        return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
+    }
     #[Route('/{id}/mail-rapport', name: 'send_rapport')]
     public function sendMailRapport(Rapport $rapport, MailerService  $mailer): Response
     {

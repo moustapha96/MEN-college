@@ -40,207 +40,203 @@
 									<div class="table-responsive">
 										<table class="table widget-26" id="sampleTable">
 											<thead>
-												<tr>
+												<tr style="height: 5px"></tr>
 
-													<th>Activité</th>
-													<th>Déscription</th>
-													<th>Résultat</th>
-													<th>Inspecteur</th>
-													<th>Collège</th>
-													<th>Date</th>
-													<th>Archiver</th>
-													<th>Actions</th>
-
-
-												</tr>
+												<th style="width: 10%; max-width: 10px;">Activité</th>
+												<th style="width: 20%; max-width: 10px;">Déscription</th>
+												<th style="width: 15%; max-width: 10px;">Résultat</th>
+												<th style="width: 15%; max-width: 10px;">Inspecteur</th>
+												<th style="width: 15%; max-width: 10px;">Collège</th>
+												<th style="width: 10%; max-width: 10px;">Date</th>
+												<th style="width: 5%; max-width: 10px;">Archiver</th>
+												<th style="width: 10%; max-width: 10px; ">Actions</th>
 											</thead>
-											<tbody>
-
-												{% for rapport in rapports %}
-													<tr>
-														<td>
-															<div class="widget-26-job-title">
-																<span>{{rapport.activite}}</span>
-																{% if rapport.activiteFichier %}
-																	<p>
-																		<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	                                                                d'activité</a>
-																	</p>
-																{% endif %}
-															</div>
-
-														</td>
-														<td>
-															<div class="widget-26-job-title">
-																<span>{{rapport.description}}</span>
-																{% if rapport.descriptionFichier %}
-																	<p>
-																		<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	                                                                de description</a>
-																	</p>
-																{% endif %}
-															</div>
-														</td>
-
-														<td>
-															<div class="widget-26-job-title">
-																<span>{{rapport.resultat}}</span>
-																{% if rapport.resultatFichier %}
-																	<p>
-																		<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	                                                                de résultat</a>
-																	</p>
-																{% endif %}
-															</div>
-														</td>
-
-														<td>
-															<div class="widget-26-job-title">
-																<span>
-																	<a href="{{ path('app_user_show',{'id': rapport.user.getId() }) }}">{{rapport.user.getMatricule()
-}}
-																		=>
-																		{{rapport.user
-                                                                }}</a>
-
-																</span>
-
-															</div>
-
-														</td>
+										</tr>
+									</thead>
 
 
-														<td>
-															<div class="widget-26-job-title">
-																<span>
-																	<a href="{{ path('admin_college_show',{'id': rapport.college.id }) }}">{{rapport.college.getNom()
-                                                                }}</a>
-																</span>
+									<tbody>
 
-															</div>
-														</td>
+										{% for rapport in rapports %}
+											<tr>
+												<td style="width: 10%;">
 
-
-														<td>
+													<div class="widget-26-job-title">
+														<span>{{rapport.activite}}</span>
+														{% if rapport.activiteFichier %}
 															<p>
-																{{ rapport.createdAt|date('Y-m-d H:i') }}</p>
+																<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}" target="_blank">Fichier
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								                                                                d'activité</a>
+															</p>
+														{% endif %}
+													</div>
 
 
-														</td>
+												</td>
+												<td>
 
-														<td>
+													<div class="widget-26-job-title">
+														<span>{{rapport.description}}</span>
+														{% if rapport.descriptionFichier %}
+															<p>
+																<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}" target="_blank">Fichier
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					                                                                de description</a>
+															</p>
+														{% endif %}
+													</div>
+												</td>
 
-															<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#model{{rapport.id}}">
-																{% set color = (rapport.statut == "VALIDER" ) ? 'success' :  (rapport.statut == "EN ATTENTE" ? 'warning': 'danger') %}
-																{% set icon = (rapport.statut == "VALIDER" ) ? 'check-circle' :  (rapport.statut == "EN ATTENTE" ? 'check': 'trash') %}
+												<td>
+													<div class="widget-26-job-title">
+														<span>{{rapport.resultat}}</span>
+														{% if rapport.resultatFichier %}
+															<p>
+																<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}" target="_blank">Fichier
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					                                                                de résultat</a>
+															</p>
+														{% endif %}
+													</div>
+												</td>
 
+												<td>
 
-																<a class="btn btn-outline-{{ color }}  " type="button">
-																	<i class="fa fa-solid fa-{{ icon }}"></i>
+													<div class="widget-26-job-title">
+														<span>
+															<a href="{{ path('app_user_show',{'id': rapport.user.getId() }) }}">{{rapport.user.getMatricule()
+}}
+																=>
+																{{rapport.user
+                                                                }}</a>
 
-																	{{ rapport.statut }}
-																</a>
+														</span>
 
-															</button>
+													</div>
 
-
-															<!-- Modal -->
-															<div class="modal fade" id="model{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-
-																<div class="modal-dialog" role="document">
-																	<div class="modal-content">
-																		<div class="modal-header">
-																			<h5 class="modal-title">État Rapport</h5>
-																			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-																				<span aria-hidden="true">&times;</span>
-																			</button>
-																		</div>
-																		<form action="{{ path("admin_rapport_update_state", { 'id': rapport.id } ) }}" method="post">
-
-																			<div class="modal-body">
-																				<div class="container-fluid">
-																					<div class="form-group">
-																						<label for="state">État actuelle:
-																							{{ rapport.statut }}
-																						</label>
-																						<select class="custom-select" name="state" id="state">
-																							{% set selected = 'selected' %}
-
-
-																							<option>Choisie...</option>
-																							<option {{ rapport.statut == 'EN ATTENTE' ? selected : '' }} value="EN ATTENTE">En Attente</option>
-																							<option {{ rapport.statut == 'VALIDER' ? selected : '' }} value="VALIDER">Valider</option>
-																							<option {{ rapport.statut == 'NON VALIDER' ? selected : '' }} value="NON VALIDER">Non Valider</option>
+												</td>
 
 
-																						</select>
-																					</div>
+												<td>
+
+													<div class="widget-26-job-title">
+														<span>
+															<a href="{{ path('admin_college_show',{'id': rapport.college.id }) }}">{{rapport.college.getNom()
+                                                                }}</a>
+														</span>
+
+													</div>
+												</td>
 
 
-																				</div>
-																			</div>
-																			<div class="modal-footer">
-																				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-																				<button type="submit" class="btn btn-primary">Enregistrer</button>
-																			</div>
-																		</form>
+												<td>
 
-																	</div>
+													<p>
+														{{ rapport.createdAt|date('Y-m-d H:i') }}</p>
+
+
+												</td>
+
+												<td>
+
+
+													<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#model{{rapport.id}}">
+														{% set color = (rapport.statut == "VALIDER" ) ? 'success' :  (rapport.statut == "EN ATTENTE" ? 'warning': 'danger') %}
+														{% set icon = (rapport.statut == "VALIDER" ) ? 'check-circle' :  (rapport.statut == "EN ATTENTE" ? 'check': 'trash') %}
+
+
+														<a class="btn btn-outline-{{ color }}  " type="button">
+															<i class="fa fa-solid fa-{{ icon }}"></i>
+
+															{{ rapport.statut }}
+														</a>
+
+													</button>
+
+
+													<div class="modal fade" id="model{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+
+														<div class="modal-dialog" role="document">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h5 class="modal-title">État Rapport</h5>
+																	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																		<span aria-hidden="true">&times;</span>
+																	</button>
 																</div>
+																<form action="{{ path("admin_rapport_update_state", { 'id': rapport.id } ) }}" method="post">
+
+																	<div class="modal-body">
+																		<div class="container-fluid">
+																			<div class="form-group">
+																				<label for="state">État actuelle:
+																					{{ rapport.statut }}
+																				</label>
+																				<select class="custom-select" name="state" id="state">
+																					{% set selected = 'selected' %}
+
+
+																					<option>Choisie...</option>
+																					<option {{ rapport.statut == 'EN ATTENTE' ? selected : '' }} value="EN ATTENTE">En Attente</option>
+																					<option {{ rapport.statut == 'VALIDER' ? selected : '' }} value="VALIDER">Valider</option>
+																					<option {{ rapport.statut == 'NON VALIDER' ? selected : '' }} value="NON VALIDER">Non Valider</option>
+
+
+																				</select>
+																			</div>
+
+
+																		</div>
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+																		<button type="submit" class="btn btn-primary">Enregistrer</button>
+																	</div>
+																</form>
+
 															</div>
+														</div>
+													</div>
 
 
-														</td>
+												</td>
 
 
-														<td>
+												<td style="width: 10%;">
+													<div class="btn-group">
+														<a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}" class="m-1 btn btn-outline-info btn-sm" type="button">
+															<i class="fa fa-eye" aria-hidden="true"></i>
+															Détails
+														</a>
+														{% if rapport.isDeleted == true %}
+															<a href="{{ path('admin_rapport_edit',{'id': rapport.id }) }}" class="m-1 btn btn-outline-dark btn-sm" type="button">
+																<i class="fa fa-edit" aria-hidden="true"></i>
+																Editer
+															</a>
+														{% endif %}
+														<a href="{{ path('app_mailler_send_rapport',{'id': rapport.id }) }}" class="m-1 btn btn-info btn-sm" type="button">
+															Envoyer le rapport
+															<i class="fas fa-mail-bulk"></i>
+														</a>
+													</div>
+												</td>
 
 
-															<div class="widget-26-job-starred btn-group ">
+											</tr>
+										</tbody>
+									</tbody>
 
 
-																<a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-outline-info " type="button">
-																	<i class="fa fa-eye" aria-hidden="true"></i>Détails
-
-																</a>
-
-																{% if  rapport.isDeleted == true %}
-																	<a href="{{ path('admin_rapport_edit',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-outline-dark " type="button">
-																		<i class="fa fa-edit" aria-hidden="true"></i>Editer
-
-																	</a>
-
-
-																{% endif %}
-
-
-															</div>
-														</td>
-													</tr>
-
-
-												{% endfor %}
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
+								{% endfor %}
+							</tbody>
+						</table>
 					</div>
-
 				</div>
 			</div>
-
 		</div>
 	</div>
-	<script>
-		$('#exampleModal').on('show.bs.modal', event => {
+
+</div></div></div></div><script>$('#exampleModal').on('show.bs.modal', event => {
 var button = $(event.relatedTarget);
 var modal = $(this);
 // Use above variables to manipulate the DOM
 
-});
-	</script>
-
-
-{% endblock %}
+});</script>{% endblock %}

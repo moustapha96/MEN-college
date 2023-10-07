@@ -15,7 +15,7 @@
 		<i class="m-1 fa fa-list"></i>
 		Liste</a>
 	{# <a href=" {{ path('admin_rapport_nouveau') }}" class=" btn btn-info float-right btn-sm" role="button">
-																																						    <i class="fa fa-plus" aria-hidden="true"></i> Ajouter </a> #}
+																																										    <i class="fa fa-plus" aria-hidden="true"></i> Ajouter </a> #}
 
 {% endblock %}
 
@@ -118,7 +118,7 @@
 									{% if rapport.activiteFichier %}
 										<p>
 											<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															                                                    d'activité</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															                                                    d'activité</a>
 										</p>
 									{% endif %}
 								</td>
@@ -132,7 +132,7 @@
 									{% if rapport.descriptionFichier %}
 										<p>
 											<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															                                                    description</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															                                                    description</a>
 										</p>
 									{% endif %}
 								</td>
@@ -144,7 +144,7 @@
 									{% if rapport.resultatFichier %}
 										<p>
 											<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															                                                    résultat</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															                                                    résultat</a>
 										</p>
 									{% endif %}
 								</td>
@@ -168,7 +168,7 @@
 							<i class="m-1 fa fa-print" aria-hidden="true"></i>Imprimer
 						</a>
 
-						<a href="{{ path('app_mailler_send_rapport',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-info " type="button">
+						<a href="{{ path('app_mailler_send_rapport',{'id': rapport.id }) }}" class="m-1 btn btn-info " type="button">
 
 							Envoyer le rapport
 							<i class="fas fa-mail-bulk"></i>

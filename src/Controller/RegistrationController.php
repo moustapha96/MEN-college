@@ -47,21 +47,6 @@ class RegistrationController extends AbstractController
 
         $referer = $request->headers->get('referer');
 
-
-        try {
-            $mail = $this->mailerService->sendMail(
-                "Compte creer avec success",
-                "",
-                "khouma964@gmail.com",
-                "alhusseinkhouma0@gmail.com",
-                'Test send mail'
-            );
-        } catch (\Throwable $th) {
-            throw $th;
-        }
-
-
-
         $data = $request->request->all();
 
         if ($request->isMethod('POST')) {
@@ -118,15 +103,12 @@ class RegistrationController extends AbstractController
                 $entityManager->flush();
 
 
-                $this->mailerService->sendMail(
-                    "Compte creer avec success",
-                    "",
-                    "khouma964@gmail.com",
-                    "alhusseinkhouma0@gmail.com",
-                    'Test send mail'
+                $this->mailerService->sendMailCompteCreer(
+                    $user,
+                    $data['plainPassword']
                 );
 
-                // generate a signed url and email it to the user
+
                 // $this->emailVerifier->sendEmailConfirmation(
                 //     'app_verify_email',
                 //     $user,
@@ -169,6 +151,6 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('app_home');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Rapport;
+use App\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -22,6 +23,79 @@ class MailerService
         $this->mail = $mailer;
     }
 
+    public function sendMailCompteBloque(User $user)
+    {
+
+        $email = (new TemplatedEmail())
+            ->from(new Address("moustaphakhouma964@gmail.com", 'Ministére de l\'Éducation National'))
+            ->to(new Address($user->getEmail()))
+            ->cc(new Address("khouma964@gmail.com"))
+            ->subject("Compte bolqué")
+            ->htmlTemplate('emails/template_base_compte.html.twig')
+            ->context([
+                "message" => "Votre compte à été bloqué",
+                "user" => $user,
+                "autre" => "Merci de contactez l'administrateur pour plus d'informations",
+                "type" => "compte_bloque"
+            ]);
+
+        try {
+            $this->mail->send($email);
+            return true;
+        } catch (\Throwable $th) {
+            return $th;
+        }
+    }
+
+    public function sendMailCompteActive(User $user)
+    {
+
+        $email = (new TemplatedEmail())
+            ->from(new Address("moustaphakhouma964@gmail.com", 'Ministére de l\'Éducation National'))
+            ->to(new Address($user->getEmail()))
+            ->cc(new Address("khouma964@gmail.com"))
+            ->subject("Compte Activé")
+            ->htmlTemplate('emails/template_base_compte.html.twig')
+            ->context([
+                "message" => "Votre compte à été activé",
+                "user" => $user,
+                "autre" => "Vous pouvez envoyer vos rapports tranquillement depuis la plateforme",
+                "type" => "compte_active"
+            ]);
+
+        try {
+            $this->mail->send($email);
+            return true;
+        } catch (\Throwable $th) {
+            return $th;
+        }
+    }
+
+    public function sendMailCompteCreer(User $user, string $password)
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address("moustaphakhouma964@gmail.com", 'Ministére de l\'Éducation National'))
+            ->to(new Address($user->getEmail()))
+            ->cc(new Address("khouma964@gmail.com"))
+            ->subject("Compte créé Avec succé")
+            ->htmlTemplate('emails/template_base_compte.html.twig')
+            ->context([
+                "message" => "Votre compte à été créé avec succès",
+                "user" => $user,
+                "autre" => "Vous pouvez maintenant vous connecter sur la plateforme",
+                "type" => "compte_creer",
+                "password" => $password
+            ]);
+
+        try {
+            $this->mail->send($email);
+            return true;
+        } catch (\Throwable $th) {
+            return $th;
+        }
+    }
+
+
     public function sendMail(
         string $message,
         string $college,
@@ -32,7 +106,7 @@ class MailerService
     ) {
 
         $email = (new TemplatedEmail())
-            ->from(new Address("moustaphakhouma964@gmail.com", 'MEN'))
+            ->from(new Address("moustaphakhouma964@gmail.com", 'Ministére de l\'Éducation National'))
             ->to(new Address($destinataire))
             ->cc(new Address($destinatairecc))
             ->subject("Rapport collège " . $college)
@@ -83,7 +157,5 @@ class MailerService
         } catch (\Throwable $th) {
             return $th;
         }
-
-        return true;
     }
 }
