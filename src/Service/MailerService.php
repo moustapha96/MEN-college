@@ -2,11 +2,14 @@
 
 namespace App\Service;
 
-
+use App\Entity\Rapport;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Part\DataPart;
+use Symfony\Component\Mime\Part\File;
+
 
 class MailerService
 {
@@ -21,36 +24,31 @@ class MailerService
 
     public function sendMail(
         string $message,
-        $detail,
+        string $college,
         string $destinataire,
         string $destinatairecc,
-        $objet
+        Rapport $rapport,
+        array $attachments = []
     ) {
-
-
-        $email = (new Email())
-            ->from('moustaphakhouma964@gmail.com')
-            ->to('khouma964@gmail.com')
-            ->subject('Sujet de l\'e-mail')
-            ->text('Contenu du message');
-
-        // Envoyez l'e-mail
-        $this->mail->send($email);
-
 
         $email = (new TemplatedEmail())
             ->from(new Address("moustaphakhouma964@gmail.com", 'MEN'))
             ->to(new Address($destinataire))
             ->cc(new Address($destinatairecc))
-            ->subject($objet)
+            ->subject("Rapport collège " . $college)
             ->htmlTemplate('emails/template_base.html.twig')
             ->context([
                 'message' => $message,
-                'prenom' => "Seydou",
-                'nom' =>
-                "Khouma",
-                'objet' => "Seydou",
+                'prenom' => "Pape",
+                'nom' => "Khouma",
+                'objet' => "Rapport college " . $college,
+                'rapport' => $rapport
             ]);
+
+
+        foreach ($attachments as $attachment) {
+            $email->addPart(new DataPart(new File($attachment['file']), $attachment['name']));
+        }
 
         try {
             $this->mail->send($email);
@@ -58,9 +56,9 @@ class MailerService
         } catch (\Throwable $th) {
             return $th;
         }
-
-        // return true;
     }
+
+
 
     public function sendVerifEmail(
         string $message,

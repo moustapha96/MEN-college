@@ -6,6 +6,7 @@
 
 namespace App\EventListener;
 
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -25,6 +26,7 @@ class LoginEventListener implements EventSubscriberInterface
 
     public function onLogin(InteractiveLoginEvent $event)
     {
+        /** @var User user */
         $user = $event->getAuthenticationToken()->getUser();
         $user->setIsActiveNow(true);
         $user->setLastActivityAt(new \DateTime());

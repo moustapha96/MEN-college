@@ -26,6 +26,7 @@ class LogoutEventListener implements EventSubscriberInterface
     {
         $token = $event->getToken();
         if ($token) {
+            /** @var User user */
             $user = $token->getUser();
 
             $user->setIsActiveNow(false);

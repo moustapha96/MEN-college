@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Security\AccountDisabledException;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
