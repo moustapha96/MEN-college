@@ -175,7 +175,7 @@ $.extend( RowGroup.prototype, {
 	 */
 
 	/**
-	 * Adjust column span when column visibility changes
+	 * Adjust column span when Colonne Visible changes
 	 * @private
 	 */
 	_adjustColspan: function ()

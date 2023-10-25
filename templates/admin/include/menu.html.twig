@@ -7,10 +7,18 @@
 
 
 <li class="nav-item">
+	<a href="{{ path('admin_college_liste') }}" class="nav-link">
+		<i class="nav-icon fas fa-file"></i>
+		<p>Gestion des Collèges</p>
+	</a>
+</li>
+
+
+{# <li class="nav-item">
 	<a href="#" class="nav-link">
 		<i class="nav-icon fas fa-copy"></i>
 		<p>
-			gestion des collèges
+			Gestion des collèges
 			<i class="fas fa-angle-left right"></i>
 
 		</p>
@@ -33,12 +41,20 @@
 
 
 	</ul>
-</li>
+</li> #}
+
 <li class="nav-item">
+	<a href="{{ path('admin_rapport_liste') }}" class="nav-link">
+		<i class="nav-icon fas fa-edit"></i>
+		<p>Gestion des Rapports</p>
+	</a>
+</li>
+
+{# <li class="nav-item">
 	<a href="#" class="nav-link">
 		<i class="nav-icon fas fa-copy"></i>
 		<p>
-			gestion des rapports
+			Gestion des rapports
 			<i class="fas fa-angle-left right"></i>
 
 		</p>
@@ -61,30 +77,17 @@
 
 
 	</ul>
-</li>
+</li> #}
+
 
 <li class="nav-item">
-	<a href="#" class="nav-link">
-		<i class="nav-icon fas fa-copy"></i>
-		<p>
-			gestion des Inspecteurs
-			<i class="fas fa-angle-left right"></i>
+	<a href="{{ path('app_user_index') }}" class="nav-link">
 
-		</p>
+		<i class="nav-icon fas fa-users"></i>
+		<p>Gestion des Inspecteurs</p>
 	</a>
-	<ul class="nav nav-treeview">
-
-		<li class="nav-item">
-			<a href="{{ path('app_user_index') }}" class="nav-link">
-				<i class="far fa-users nav-icon"></i>
-				<p>liste
-				</p>
-			</a>
-		</li>
-
-
-	</ul>
 </li>
+
 <li class="nav-item">
 	<a href="{{ path('admin_profil') }}" class="nav-link">
 		<i class="nav-icon fas fa-user"></i>

@@ -8,8 +8,5 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import "./styles/app.css";
 
-// CSS
-import "../css/app.scss";
-
 // JS
 import "bootstrap";

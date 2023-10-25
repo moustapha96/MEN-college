@@ -361,7 +361,7 @@ $.fn.dataTableExt.oApi.fnColReorder = function ( oSettings, iFrom, iTo, drop, in
 };
 
 /**
- * ColReorder provides column visibility control for DataTables
+ * ColReorder provides Colonne Visible control for DataTables
  * @class ColReorder
  * @constructor
  * @param {object} dt DataTables settings object

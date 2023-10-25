@@ -13,6 +13,8 @@
   // setTimeout(function () {
   //   if (window.___browserSync___ === undefined && Number(localStorage.getItem('AdminLTE:Demo:MessageShowed')) < Date.now()) {
   //     localStorage.setItem('AdminLTE:Demo:MessageShowed', (Date.now()) + (15 * 60 * 1000))
+  //     // eslint-disable-next-line no-alert
+  //     alert('You load AdminLTE\'s "demo.js", \nthis file is only created for testing purposes!')
   //   }
   // }, 1000)
 
@@ -64,7 +66,7 @@
   var $dark_mode_checkbox = $('<input />', {
     type: 'checkbox',
     value: 1,
-    checked: true ,
+    checked: $('body').hasClass('dark-mode'),
     class: 'mr-1'
   }).on('click', function () {
     if ($(this).is(':checked')) {
@@ -104,7 +106,6 @@
       $('.main-header').removeClass('dropdown-legacy')
     }
   })
-
   var $dropdown_legacy_offset_container = $('<div />', { class: 'mb-1' }).append($dropdown_legacy_offset_checkbox).append('<span>Dropdown Legacy Offset</span>')
   $container.append($dropdown_legacy_offset_container)
 

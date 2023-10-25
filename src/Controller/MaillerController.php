@@ -8,14 +8,13 @@ use App\Service\MailerService;
 use DateTime;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Request;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use DoctrineExtensions\Query\Mysql\Date;
-
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Part\DataPart;
 
 
@@ -50,24 +49,27 @@ class MaillerController extends AbstractController
 
     public function sendMailCompteBloque(User $user, MailerService $mailer): Response
     {
-       
-       
-        $mail =  $mailer->sendMailCompteBloque(
-            "Veuillez recevoir le rapport de " . $user->getFirstName() . " " . $user->getLastName(),
-            $college->getNom(),
-            $user->getEmail(),
-            "khouma964@gmail.com",
-            $rapport,
-            $attachments
-        );
+
+
+        // $mail =  $mailer->sendMailCompteBloque(
+        //     "Veuillez recevoir le rapport de " . $user->getFirstName() . " " . $user->getLastName(),
+        //     $college->getNom(),
+        //     $user->getEmail(),
+        //     "khouma964@gmail.com",
+        //     $rapport,
+        //     $attachments,
+
+        // );
         // dd($mail);
 
         $this->addFlash('success', "Mail test envoyer avec success");
         return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/{id}/mail-rapport', name: 'send_rapport')]
-    public function sendMailRapport(Rapport $rapport, MailerService  $mailer): Response
+    #[Route('/{id}/mail-rapport', name: 'send_rapport', methods: ['POST'])]
+    public function sendMailRapport(Rapport $rapport, Request $request, MailerService  $mailer): Response
     {
+        $email = $request->request->get('email');
+
         $college =  $rapport->getCollege();
         $user = $rapport->getUser();
         $fichier_resultat = $rapport->getResultatFichier();
@@ -91,14 +93,13 @@ class MaillerController extends AbstractController
         $mail =  $mailer->sendMail(
             "Veuillez recevoir le rapport de " . $user->getFirstName() . " " . $user->getLastName(),
             $college->getNom(),
-            $user->getEmail(),
+            $email,
             "khouma964@gmail.com",
             $rapport,
             $attachments
         );
-        // dd($mail);
 
-        $this->addFlash('success', "Mail test envoyer avec success");
+        $this->addFlash('success', "Mail envoyer avec succès");
         return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
     }
 

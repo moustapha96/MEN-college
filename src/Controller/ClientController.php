@@ -101,6 +101,7 @@ class ClientController extends AbstractController
         $rapport = new Rapport();
         $college = $collegeRepository->find($id);
         $rapport->setCollege($college);
+        $rapport->setStatut("EN ATTENTE");
         $form = $this->createForm(RapportType::class, $rapport);
 
         $form->handleRequest($request);
@@ -146,7 +147,7 @@ class ClientController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $rapports = $rapportRepository->findBy(['college' => $user->getCollege(), 'isDeleted' => 0]);
+        $rapports = $rapportRepository->findBy(['college' => $user->getCollege()]);
         return $this->render("client/rapport/index.html.twig", [
             'titre' => 'Liste des rapports d\'activités',
             "rapports" => $rapports,
@@ -162,6 +163,7 @@ class ClientController extends AbstractController
         $user = $this->getUser();
         $rapport = new Rapport();
         $rapport->setCollege($user->getCollege());
+        $rapport->setStatut("EN ATTENTE");
         $form = $this->createForm(RapportType::class, $rapport);
         $form->handleRequest($request);
         $user = $this->getUser();

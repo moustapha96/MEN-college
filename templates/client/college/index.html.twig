@@ -11,7 +11,7 @@
 {# {% operation possible %}#}
 {% block option %}
 	{# <a href=" {{ path('app_rapport_new') }}" class=" btn btn-info float-right btn-sm" role="button">
-																		  <i class="fa fa-plus" aria-hidden="true"></i> nouveau college</a> #}
+																																																													  <i class="fa fa-plus" aria-hidden="true"></i> nouveau college</a> #}
 {% endblock %}
 
 {# {% les donnees affichees %}#}
@@ -22,75 +22,50 @@
 		<div class="col-12">
 			<div class="card card-margin">
 				<div class="card-body">
-					<div class="row search-body">
-						<div class="col-lg-12">
-							<div class="search-result">
+					<div class="table-responsive">
 
-								<div class="result-body">
-									<div class="table-responsive">
-										<table class="table widget-26" id="sampleTable2">
+						<table id="example1" class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Nom</th>
+									<th>Description</th>
+									<th>Rapport</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for college in colleges %}
 
-											<thead>
-												<tr>
+									<tr>
+										<td>
+											<span>{{college.nom}}</span>
+										</td>
 
-													<th>Nom</th>
-													<th>Description</th>
-													<th>Rapport</th>
-													{# <th>actions</th> #}
+										<td>{{ college.description }}</td>
 
-												</tr>
-											</thead>
-											<tbody>
-
-												{% for college in colleges %}
-													<tr>
-														<td>
-															<div class="widget-26-job-title">
-																<span>{{college.nom}}</span>
-															</div>
-														</td>
-														<td>{{ college.description }}</td>
-														<td>
-															{% if app.user.roles[0] == "ROLE_USER" %}
+										<td>
+											{% if app.user.roles[0] == "ROLE_USER" %}
 
 
-																<a href="{{ path('client_college_rapport_nouveau', { 'id' : college.id } ) }}" class="btn btn-outline-info" type="button">
-																	<i class="m-1 fa fa-plus" aria-hidden="true"></i>Ajouter
+												<a href="{{ path('client_college_rapport_nouveau', { 'id' : college.id } ) }}" class="btn btn-outline-info" type="button">
+													<i class="m-1 fa fa-plus" aria-hidden="true"></i>Ajouter
 
-																</a>
+												</a>
 
-															{% endif %}
-														</td>
-
-
-														<td>
-															<div class="widget-26-job-starred btn-group">{# <a href="{{ path('client_college_show', { 'id' : college.id } ) }}" class="btn btn-outline-dark " type="button">
-																																																																																																																																																																																																	<i class="fa fa-eye" aria-hidden="true"></i>Détails
-																																																																																																																																																																																																</a> #}
+											{% endif %}
+										</td>
 
 
-																{# <a href="{{ path('admin_college_edit', { 'id' : college.id } ) }}" class="btn btn-outline-info" type="button">
-																																																																																																																																																																																																																	<i class="fa fa-edit" aria-hidden="true"></i>Editer
-																																																																																																																																																																																																																</a> #}
+									</tr>
+								{% endfor %}
 
-
-															</div>
-														</td>
-													</tr>
-
-
-												{% endfor %}
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+							</tbody>
+						</tbody>
+					</table>
 
 				</div>
+
 			</div>
 		</div>
-
 	</div>
-{% endblock %}
+
+</div>{% endblock %}

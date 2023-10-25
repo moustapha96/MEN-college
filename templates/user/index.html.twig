@@ -12,10 +12,10 @@
 {% block option %}
 
 	{# {% for label, messages in app.flashes %}
-																																																																																																												{% for message in messages %}
-																																																																																																													<div class="alert alert-{{ label }}">{{ message }}</div>
-																																																																																																												{% endfor %}
-																																																																																																											{% endfor %} #}
+																																																																																																																														{% for message in messages %}
+																																																																																																																															<div class="alert alert-{{ label }}">{{ message }}</div>
+																																																																																																																														{% endfor %}
+																																																																																																																													{% endfor %} #}
 
 	<a href=" {{ path('app_generate_pdf_users') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
 
@@ -42,22 +42,23 @@
 
 								<div class="result-body">
 									<div class="table-responsive">
-										<table class="table widget-26" id="sampleTable">
+										<table id="example1" class="table table-bordered table-striped">
+
 											<thead>
 												<tr>
 
 													<th>Matricule</th>
 													<th>Email</th>
 
-													<th>Prenom</th>
 													<th>Nom</th>
+
 
 													<th>Téléphone</th>
 
-													<th>Collège</th>
 
 													<th>Adresse</th>
-													<th>Sexe</th>
+													<th>Collège</th>
+
 													<th>Rapports</th>
 													<th>Compte</th>
 													<th>actions</th>
@@ -70,12 +71,13 @@
 													<tr>
 														<td>{{ user.matricule }}</td>
 														<td>{{ user.email }}</td>
-														<td>{{ user.firstName }}</td>
-														<td>{{ user.lastName }}</td>
+														<td>{{ user.firstName ~' '~ user.lastName }}</td>
 														<td>{{ user.phone }}</td>
+														<td>{{ user.adresse }}</td>
+
 														<td>
 															{% if user.college %}
-																<button type="button" class="btn btn-outline-dark btn-bg " data-toggle="modal" data-target="#modal-{{ user.id }}">{{ user.college.nom }}
+																<button type="button" class="btn btn-outline-dark btn-sm " data-toggle="modal" data-target="#modal-{{ user.id }}">{{ user.college.nom }}
 
 																</button>
 
@@ -111,7 +113,7 @@
 
 															{% endif %}
 															{% if user.college == null %}
-																<button type="button" class="btn btn-outline-primary btn-bg " data-toggle="modal" data-target="#modal-{{ user.id }}">Attribution Collège
+																<button type="button" class="btn btn-outline-primary btn-bg " data-toggle="modal" data-target="#modal-{{ user.id }}">Relier au college
 
 																</button>
 
@@ -147,11 +149,9 @@
 
 														</td>
 
-														<td>{{ user.adresse }}</td>
-														<td>{{ user.sexe }}</td>
 
 														<td>
-															<a href="{{ path('admin_college_rapport_client_show', { 'id' : user.id } ) }}" class="m-1 btn btn-outline-dark" type="button">
+															<a href="{{ path('admin_college_rapport_client_show', { 'id' : user.id } ) }}" class="m-1 btn btn-sm btn-outline-dark" type="button">
 																<i class="fa fa-list"></i>
 																{{ user.rapports | length }}
 															</a>
@@ -159,7 +159,7 @@
 
 
 														<td>
-															<a href="{{ path('app_user_acount', { 'id' : user.id } ) }}" class="m-1 btn btn-outline-{{ user.enabled ? 'success' : 'danger'}}  " type="button">
+															<a href="{{ path('app_user_acount', { 'id' : user.id } ) }}" class="m-1 btn btn-sm btn-outline-{{ user.enabled ? 'success' : 'danger'}}  " type="button">
 																<i class="fa fa-{{ user.enabled ? 'unlock-alt': 'lock' }}" aria-hidden="true"></i>
 																{{ user.enabled ? 'Activer': 'Blocker' }}
 															</a>
@@ -167,15 +167,16 @@
 
 
 														<td>
+															<div class="widget-26-job-starred btn-group btn-group-toggle">
+																<a href="{{ path('app_user_show', { 'id' : user.id } ) }}" class="m-1 btn btn-sm  btn-outline-dark " type="button">
 
-															<a href="{{ path('app_user_show', { 'id' : user.id } ) }}" class="m-1 btn btn-outline-dark " type="button">
+																	<i class="fa fa-eye" aria-hidden="true"></i>
+																</a>
 
-																<i class="fa fa-eye" aria-hidden="true"></i>Détails
-															</a>
-
-															<a href="{{ path('app_user_edit', { 'id' : user.id } ) }}" class="m-1 btn btn-outline-info" type="button">
-																<i class="fa fa-edit" aria-hidden="true"></i>Editer
-															</a>
+																<a href="{{ path('app_user_edit', { 'id' : user.id } ) }}" class="m-1 btn btn-sm btn-outline-info" type="button">
+																	<i class="fa fa-edit" aria-hidden="true"></i>
+																</a>
+															</div>
 
 														</td>
 													</tr>

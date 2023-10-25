@@ -3,9 +3,7 @@
 {#{% titre de l'activite %}#}
 {% block title_job %}
 	<h1 class="card-title">
-		{{ titre }}
-		=>
-		{{ rapport.id }}
+		Détail Rapport
 	</h1>
 {% endblock %}
 
@@ -131,7 +129,7 @@
 												{% if rapport.activiteFichier %}
 													<p>
 														<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}">Fichier
-																																																																																																																																																																																																																																																																																																																																																						                                                    d'activité</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																		                                                    d'activité</a>
 													</p>
 												{% endif %}
 											</td>
@@ -145,7 +143,7 @@
 												{% if rapport.descriptionFichier %}
 													<p>
 														<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																						                                                    description</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																		                                                    description</a>
 													</p>
 												{% endif %}
 											</td>
@@ -157,7 +155,7 @@
 												{% if rapport.resultatFichier %}
 													<p>
 														<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																						                                                    résultat</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																		                                                    résultat</a>
 													</p>
 												{% endif %}
 											</td>
@@ -165,6 +163,12 @@
 										<tr>
 											<th>Date rapport</th>
 											<td>{{ rapport.createdAt|date('Y-m-d H:i:s') }}</td>
+
+
+										</tr>
+										<tr>
+											<th>Etat du rapport</th>
+											<td>{{ rapport.statut}}</td>
 
 
 										</tr>
