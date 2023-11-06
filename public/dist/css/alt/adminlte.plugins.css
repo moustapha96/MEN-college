@@ -459,12 +459,13 @@
 }
 
 .select2-container--default .select2-results__option--highlighted {
-  background-color: #007bff;
+ 
+background-color: #17a2b8;
   color: #fff;
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[aria-selected]:hover {
-  background-color: #0074f0;
+background-color: #17a2b8;
   color: #fff;
 }
 
@@ -497,8 +498,8 @@
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-  background-color: #007bff;
-  border-color: #006fe6;
+ background-color: #17a2b8;
+  border-color: #17a2b8;
   color: #fff;
   padding: 0 10px;
   margin-top: .31rem;

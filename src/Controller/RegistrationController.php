@@ -79,10 +79,10 @@ class RegistrationController extends AbstractController
                 return $this->redirect($referer);
             } else {
 
-                $user->setEnabled(false);
+                $user->setEnabled(true);
                 $user->setStatus("ACTIVE");
-                $user->setIsActiveNow(true);
-                $user->setAvatar('avatar.png');
+                $user->setIsActiveNow(false);
+                $user->setAvatar('avatar.jpeg');
                 $user->setRoles(['ROLE_USER']);
                 $user->setPhone($data['phone']);
                 $user->setFirstName($data['firstName']);

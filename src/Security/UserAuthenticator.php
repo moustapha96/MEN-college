@@ -2,6 +2,9 @@
 
 namespace App\Security;
 
+use App\Entity\User;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,11 +26,14 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
     public $tokenSI;
+    public $em;
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        EntityManagerInterface $entityManager
     ) {
         $this->tokenSI = $tokenStorage;
+        $this->em = $entityManager;
     }
 
     public function authenticate(Request $request): Passport
@@ -61,14 +67,20 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         $user = $token->getUser();
 
         if ($user->getEnabled() == false) {
-            throw new AccountDisabledException("votre compte a été desactivé ");
-            $this->logout();
-            return new RedirectResponse($this->urlGenerator->generate('app_logout'));
-        } else if ($user->getEnabled() == true &&  "ROLE_ADMIN" === $user->getRoles()[0]) {
+            throw new AccountDisabledException("Votre compte a été desactivé ");
+        } else {
 
-            return new RedirectResponse($this->urlGenerator->generate('admin_home'));
-        } else if ($user->getEnabled() == true && "ROLE_USER" === $user->getRoles()[0]) {
-            return new RedirectResponse($this->urlGenerator->generate('client_home'));
+            $user->setIsActiveNow(true);
+            $user->setLastActivityAt(new DateTime());
+            $this->em->persist($user);
+            $this->em->flush();
+
+
+            if ($user->getEnabled() == true &&  "ROLE_ADMIN" === $user->getRoles()[0]) {
+                return new RedirectResponse($this->urlGenerator->generate('admin_home'));
+            } else if ($user->getEnabled() == true && "ROLE_USER" === $user->getRoles()[0]) {
+                return new RedirectResponse($this->urlGenerator->generate('client_home'));
+            }
         }
 
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {

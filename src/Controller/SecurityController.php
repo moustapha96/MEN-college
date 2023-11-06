@@ -11,15 +11,18 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
 
+    private $tokenSI;
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
-
+        TokenStorageInterface $tokenStorage
     ) {
+        $this->tokenSI = $tokenStorage;
     }
 
 
@@ -34,22 +37,6 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-
-        /** @var User $user */
-        $user = $this->getUser();
-        if ($user) {
-
-            if ($user->getEnabled() == false) {
-                throw new AccountDisabledException("votre compte a été desactivé  depuis votre derniere connexion");
-
-                return new RedirectResponse($this->urlGenerator->generate('app_logout'));
-            } else if ($user->getEnabled() == true &&  "ROLE_ADMIN" === $user->getRoles()[0]) {
-                return new RedirectResponse($this->urlGenerator->generate('admin_home'));
-            } else if ($user->getEnabled() == true && "ROLE_USER" === $user->getRoles()[0]) {
-                return new RedirectResponse($this->urlGenerator->generate('client_home'));
-            }
-        }
-
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
@@ -64,6 +51,7 @@ class SecurityController extends AbstractController
         $user = $this->getUser();
         $user->setIsActiveNow(false);
         $user->setLastActivityAt(new DateTime());
+        $this->tokenSI->setToken(null);
         $entityManager->persist($user);
         $entityManager->flush();
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');

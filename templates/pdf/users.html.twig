@@ -68,7 +68,8 @@
 						<td>{{ r.lastName }}</td>
 						<td>{{ r.adresse }}</td>
 						<td>{{ r.phone }}</td>
-						<td>{{ r.college.nom }}</td>
+<td>{{ r.college? r.college.nom: 'NA' }}</td>
+
 
 						{% set i= i+1 %}
 					</tr>

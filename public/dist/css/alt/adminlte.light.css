@@ -3447,7 +3447,7 @@ input[type="button"].btn-block {
 .dropdown-item.active, .dropdown-item:active {
   color: #fff;
   text-decoration: none;
-  background-color: #007bff;
+  background-color: #17a2b8;
 }
 
 .dropdown-item.disabled, .dropdown-item:disabled {
@@ -5643,7 +5643,8 @@ a.badge-dark:focus, a.badge-dark.focus {
 .list-group-item.active {
   z-index: 2;
   color: #fff;
-  background-color: #007bff;
+  /* background-color: #007bff; */
+background-color: #17a2b8;
   border-color: #007bff;
 }
 

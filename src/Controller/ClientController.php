@@ -65,7 +65,7 @@ class ClientController extends AbstractController
         $user = $this->getUser();
         return $this->render("client/college/index.html.twig", [
             'titre' => 'Gestion des Collèges',
-            'colleges' => $collegeRepository->findBy(['id' =>  $user->getCollege()->getId()])
+            'colleges' => $user->getCollege() ?  $collegeRepository->findBy(['id' =>  $user->getCollege()->getId()]) : []
         ]);
     }
 

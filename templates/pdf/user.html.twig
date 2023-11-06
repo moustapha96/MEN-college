@@ -6,7 +6,7 @@
 
 
 		<title>
-			{% block title %}Welcome!
+			{% block title %}pdf Utilisateur
 			{% endblock %}
 		</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -89,9 +89,9 @@
 							<td>{{ user.lastName }}</td>
 						</tr>
 						{# <tr>
-																															<th>État Compte</th>
-																															<td>{{ user.enabled ? 'Activé' : 'Désactivé' }}</td>
-																														</tr> #}
+																																																	<th>État Compte</th>
+																																																	<td>{{ user.enabled ? 'Activé' : 'Désactivé' }}</td>
+																																																</tr> #}
 						<tr>
 							<th>Téléphone</th>
 							<td>{{ user.phone }}</td>
@@ -117,6 +117,8 @@
 								<th>Activité</th>
 								<th>Description</th>
 								<th>Résultats</th>
+								<th>Date</th>
+
 							</tr>
 						</thead>
 						<tbody>
@@ -133,7 +135,7 @@
 										{% if r.activiteFichier %}
 
 											<a href="{{ asset('uploads/' ~ r.activiteFichier) }}">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						                                                    d'activité</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										                                                    d'activité</a>
 										{% endif %}
 
 
@@ -144,7 +146,7 @@
 										{% if r.descriptionFichier %}
 
 											<a href="{{ asset('uploads/' ~ r.descriptionFichier) }}">Fichier 
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						                                                    description</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										                                                    description</a>
 										{% endif %}
 
 									</td>
@@ -154,7 +156,7 @@
 										{% if r.resultatFichier %}
 
 											<a href="{{ asset('uploads/' ~ r.resultatFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					                                                    résultat</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									                                                    résultat</a>
 
 										{% endif %}
 

@@ -62,340 +62,335 @@
 										<table id="example1" class="table table-bordered table-striped">
 
 											<thead>
-												<tr style="height: 5px"></tr>
+												<tr>
 
-												<th>Activité</th>
-												<th>Déscription</th>
-												<th>Résultat</th>
-												<th>Inspecteur</th>
-												<th>Collège</th>
-												<th style="width: 0px ">Date</th>
-												<th>Statut</th>
-												<th>Actions</th>
+													<th>Activité</th>
+													<th>Déscription</th>
+													<th>Résultat</th>
+													<th>Inspecteur</th>
+													<th>Collège</th>
+													<th style="width: 0px ">Date</th>
+													<th>Statut</th>
+													<th>Actions</th>
+
+												</tr>
 											</thead>
-										</tr>
-									</thead>
 
 
-									<tbody>
+											<tbody>
 
-										{% for rapport in rapports %}
-											<tr>
-												<td style="width: 10%;">
+												{% for rapport in rapports %}
+													<tr>
+														<td style="width: 10%;">
 
-													<div class="widget-26-job-title">
-														<span>
+															<div class="widget-26-job-title">
+
+
+																<a type="button" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
+																	{{rapport.activite |slice(0, 50)}}....
+																</a>
+
+
+																<div class="modal fade " id="model--{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+
+																	<div class="modal-dialog" role="document">
+																		<div class="modal-content centered-modal">
+
+																			<div class="modal-header">
+																				<h5 class="modal-title">Détails rapport</h5>
+																				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																					<span aria-hidden="true">&times;</span>
+																				</button>
+																			</div>
+																			<div class="modal-body">
+																				<div class="container-fluid">
+																					<div class="row">
+																						<div class="col-md-6">
+																							<b>
+																								Collège
+																							</b>
+																							:
+
+																							{{rapport.college.nom}}
+																						</div>
+
+																						<div class="col-md-6">
+																							<b>
+																								Date
+																							</b>
+																							:
+
+																							{{ rapport.createdAt|date('Y-m-d H:i') }}</div>
+
+																					</div>
+
+																					<div>
+																						<h2>Activité</h2>
+
+																						<p>
+																							{{rapport.activite}}</p>
+
+																					</div>
+																					<div>
+																						<h2>Description</h2>
+
+																						<p>
+																							{{rapport.description}}</p>
+
+																					</div>
+																					<div>
+																						<h2>Resultat</h2>
+
+																						<p>
+																							{{rapport.resultat}}</p>
+																						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe quibusdam dolore quisquam deserunt, et earum maiores placeat! Odio aliquid quaerat quod fugit pariatur nobis, illum tenetur, nisi voluptates distinctio quae.
+
+																					</div>
+
+
+																				</div>
+																			</div>
+																			<div class="modal-footer  d-flex align-items-end ">
+
+																				<button type="button" class="btn btn-secondary  float-right " data-dismiss="modal">Fermer</button>
+
+																			</div>
+																		</div>
+																	</div>
+																</div>
+
+
+																{% if rapport.activiteFichier %}
+																	<p>
+																		<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}" target="_blank">Fichier
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										                                                                d'activité</a>
+																	</p>
+																{% endif %}
+															</div>
+														</td>
+
+														<td>
+
 
 															<a type="button" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
-																{{rapport.activite |slice(0, 50)}}....
+																{{rapport.description |slice(0, 50)}}....
 															</a>
 
-
-															<div class="modal fade " id="model--{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-
-																<div class="modal-dialog" role="document">
-																	<div class="modal-content centered-modal">
-
-																		<div class="modal-header">
-																			<h5 class="modal-title">Détails rapport</h5>
-																			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-																				<span aria-hidden="true">&times;</span>
-																			</button>
-																		</div>
-																		<div class="modal-body">
-																			<div class="container-fluid">
-																				<div class="row">
-																					<div class="col-md-6">
-																						<b>
-																							Collège
-																						</b>
-																						:
-
-																						{{rapport.college.nom}}
-																					</div>
-
-																					<div class="col-md-6">
-																						<b>
-																							Date
-																						</b>
-																						:
-
-																						{{ rapport.createdAt|date('Y-m-d H:i') }}</div>
-
-																				</div>
-
-																				<div>
-																					<h2>Activité</h2>
-
-																					<p>
-																						{{rapport.activite}}</p>
-
-																				</div>
-																				<div>
-																					<h2>Description</h2>
-
-																					<p>
-																						{{rapport.description}}</p>
-
-																				</div>
-																				<div>
-																					<h2>Resultat</h2>
-
-																					<p>
-																						{{rapport.resultat}}</p>
-																					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe quibusdam dolore quisquam deserunt, et earum maiores placeat! Odio aliquid quaerat quod fugit pariatur nobis, illum tenetur, nisi voluptates distinctio quae.
-
-																				</div>
-
-
-																			</div>
-																		</div>
-																		<div class="modal-footer  d-flex align-items-end ">
-
-																			<button type="button" class="btn btn-secondary  float-right " data-dismiss="modal">Fermer</button>
-
-																		</div>
-																	</div>
-																</div>
-															</div>
-
-
-															{% if rapport.activiteFichier %}
+															{% if rapport.descriptionFichier %}
 																<p>
-																	<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							                                                                d'activité</a>
+																	<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}" target="_blank">Fichier
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									                                                                de description</a>
 																</p>
 															{% endif %}
-														</div>
-													</td>
-												</td>
-												<td>
 
+														</td>
 
-													<a type="button" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
-														{{rapport.description |slice(0, 50)}}....
-													</a>
+														<td>
 
-													{% if rapport.descriptionFichier %}
-														<p>
-															<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	                                                                de description</a>
-														</p>
-													{% endif %}
-
-												</td>
-
-												<td>
-
-													<a type="button" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
-														{{rapport.resultat |slice(0, 50)}}....
-													</a>
-
-													{% if rapport.resultatFichier %}
-														<p>
-															<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	                                                                de résultat</a>
-														</p>
-													{% endif %}
-
-												</td>
-
-												<td>
-
-
-													<span>
-														<a href="{{ path('app_user_show',{'id': rapport.user.getId() }) }}">{{rapport.user.getMatricule()
-}}
-															=>
-															{{rapport.user
-                                                                }}</a>
-
-													</span>
-
-
-												</td>
-
-
-												<td>
-
-													<div class="widget-26-job-title">
-														<span>
-															<a href="{{ path('admin_college_show',{'id': rapport.college.id }) }}">{{rapport.college.getNom()
-                                                                }}</a>
-														</span>
-
-													</div>
-												</td>
-
-
-												<td>
-
-													<p>
-														{{ rapport.createdAt|date('Y-m-d') }}</p>
-
-
-												</td>
-
-												<td>
-
-
-													<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#model{{rapport.id}}">
-														{% set color = (rapport.statut == "VALIDER" ) ? 'success' :  (rapport.statut == "EN ATTENTE" ? 'warning': 'danger') %}
-														{% set icon = (rapport.statut == "VALIDER" ) ? 'check-circle' :  (rapport.statut == "EN ATTENTE" ? 'check': '') %}
-
-														<a class="btn btn-outline-{{ color }}  " type="button">
-															<i class="fa fa-solid fa-{{ icon }}"></i>
-															{{ rapport.statut }}
-														</a>
-													</button>
-
-													<div class="modal fade" id="model{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-
-														<div class="modal-dialog" role="document">
-															<div class="modal-content">
-																<div class="modal-header">
-																	<h5 class="modal-title">État Rapport</h5>
-																	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-																		<span aria-hidden="true">&times;</span>
-																	</button>
-																</div>
-																<form action="{{ path("admin_rapport_update_state", { 'id': rapport.id } ) }}" method="post">
-
-																	<div class="modal-body">
-																		<div class="container-fluid">
-																			<div class="form-group">
-																				<label for="state">État actuelle:
-																					{{ rapport.statut }}
-																				</label>
-																				<select class="custom-select" name="state" id="state">
-																					{% set selected = 'selected' %}
-
-
-																					<option>Choisie...</option>
-																					<option {{ rapport.statut == 'EN ATTENTE' ? selected : '' }} value="EN ATTENTE">En Attente</option>
-																					<option {{ rapport.statut == 'VALIDER' ? selected : '' }} value="VALIDER">Valider</option>
-																					<option {{ rapport.statut == 'NON VALIDER' ? selected : '' }} value="NON VALIDER">Non Valider</option>
-
-
-																				</select>
-																			</div>
-
-
-																		</div>
-																	</div>
-																	<div class="modal-footer">
-																		<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-																		<button type="submit" class="btn btn-primary">Enregistrer</button>
-																	</div>
-																</form>
-
-															</div>
-														</div>
-													</div>
-												</td>
-
-
-												<td style="width: 10%;">
-													<div class="widget-26-job-starred btn-group btn-group-toggle">
-
-														<a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}" class="m-1 btn btn-outline-info btn-sm" type="button">
-															<i class="fa fa-eye" aria-hidden="true"></i>
-															Détails
-														</a>
-														{% if rapport.statut == "VALIDER" %}
-
-															{# <a href="{{ path('app_mailler_send_rapport',{'id': rapport.id }) }}" class="m-1 btn btn-info btn-sm" type="button">
-																																																																																																																																																																																																																			Envoyer
-																																																																																																																																																																																																																			<i class="fas fa-mail-bulk"></i>
-																																																																																																																																																																																																																		</a> #}
-
-
-															<a class="m-1 btn btn-info btn-sm" type="button" data-toggle="modal" data-target="#modelMail--{{rapport.id}}">
-
-																Envoyer
-																<i class="fas fa-mail-bulk"></i>
+															<a type="button" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
+																{{rapport.resultat |slice(0, 50)}}....
 															</a>
 
+															{% if rapport.resultatFichier %}
+																<p>
+																	<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}" target="_blank">Fichier
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									                                                                de résultat</a>
+																</p>
+															{% endif %}
 
-															<!-- Modal -->
-															<div class="modal fade" id="modelMail--{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleMail" aria-hidden="true">
+														</td>
+
+														<td>
 
 
-																<div class="modal-dialog modal-lg" role="document">
+															<span>
+																<a href="{{ path('app_user_show',{'id': rapport.user.getId() }) }}">{{rapport.user.getMatricule()
+}}
+																	=>
+																	{{rapport.user
+                                                                }}</a>
+
+															</span>
+
+
+														</td>
+
+
+														<td>
+
+															<div class="widget-26-job-title">
+																<span>
+																	<a href="{{ path('admin_college_show',{'id': rapport.college.id }) }}">{{rapport.college.getNom()
+                                                                }}</a>
+																</span>
+
+															</div>
+														</td>
+
+
+														<td>
+
+															<p>
+																{{ rapport.createdAt|date('Y-m-d') }}</p>
+
+														</td>
+
+														<td>
+
+
+															<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#model{{rapport.id}}">
+																{% set color = (rapport.statut == "VALIDER" ) ? 'success' :  (rapport.statut == "EN ATTENTE" ? 'warning': 'danger') %}
+																{% set icon = (rapport.statut == "VALIDER" ) ? 'check-circle' :  (rapport.statut == "EN ATTENTE" ? 'check': '') %}
+
+																<a class="btn btn-outline-{{ color }}  " type="button">
+																	<i class="fa fa-solid fa-{{ icon }}"></i>
+																	{{ rapport.statut }}
+																</a>
+															</button>
+
+															<div class="modal fade" id="model{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+
+																<div class="modal-dialog" role="document">
 																	<div class="modal-content">
 																		<div class="modal-header">
-																			<h5 class="modal-title">A qui envoyer le Mail ?</h5>
+																			<h5 class="modal-title">État Rapport</h5>
 																			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 																				<span aria-hidden="true">&times;</span>
 																			</button>
 																		</div>
-																		<form action="{{ path('app_mailler_send_rapport',{'id': rapport.id }) }}" method="post">
+																		<form action="{{ path("admin_rapport_update_state", { 'id': rapport.id } ) }}" method="post">
 
 																			<div class="modal-body">
-																				<div class="form-check">
+																				<div class="container-fluid">
+																					<div class="form-group">
+																						<label for="state">État actuelle:
+																							{{ rapport.statut }}
+																						</label>
+																						<select class="custom-select" name="state" id="state">
+																							{% set selected = 'selected' %}
 
-																					<div class="form-group w-100 ">
 
-																						<label for="">Email du destinataire..</label>
-																						<input type="email" class="form-control" name="email" id="email" value="{{rapport.user.email }}" aria-describedby="emailHelpId" placeholder="">
-																						<small id="emailHelpId" class="form-text text-muted">Email destinataire..</small>
+																							<option>Choisie...</option>
+																							<option {{ rapport.statut == 'EN ATTENTE' ? selected : '' }} value="EN ATTENTE">En Attente</option>
+																							<option {{ rapport.statut == 'VALIDER' ? selected : '' }} value="VALIDER">Valider</option>
+																							<option {{ rapport.statut == 'NON VALIDER' ? selected : '' }} value="NON VALIDER">Non Valider</option>
+
+
+																						</select>
 																					</div>
+
 
 																				</div>
 																			</div>
 																			<div class="modal-footer">
-																				<button type="reset" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-																				<button type="submit" class="btn btn-success">Envoyer le Mail</button>
-
+																				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+																				<button type="submit" class="btn btn-info">Enregistrer</button>
 																			</div>
-
-
 																		</form>
 
 																	</div>
 																</div>
 															</div>
-														{% else %}
-															<a href="{{ path('admin_rapport_edit',{'id': rapport.id }) }}" class="m-1 btn btn-outline-dark btn-sm" type="button">
-																<i class="fa fa-edit" aria-hidden="true"></i>
-																Editer
-															</a>
-
-														{% endif %}
+														</td>
 
 
-													</div>
-												</td>
+														<td style="width: 10%;">
+															<div class="widget-26-job-starred btn-group btn-group-toggle">
+
+																<a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}" class="m-1 btn btn-outline-info btn-sm" type="button">
+																	<i class="fa fa-eye" aria-hidden="true"></i>
+																	Détails
+																</a>
+																{% if rapport.statut == "VALIDER" %}
+
+																	{# <a href="{{ path('app_mailler_send_rapport',{'id': rapport.id }) }}" class="m-1 btn btn-info btn-sm" type="button">
+																																																																																																																																																																																																																																																																																																																					Envoyer
+																																																																																																																																																																																																																																																																																																																					<i class="fas fa-mail-bulk"></i>
+																																																																																																																																																																																																																																																																																																																				</a> #}
 
 
-											</tr>
-										</tbody>
-									</tbody>
+																	<a class="m-1 btn btn-info btn-sm" type="button" data-toggle="modal" data-target="#modelMail--{{rapport.id}}">
+
+																		Envoyer
+																		<i class="fas fa-mail-bulk"></i>
+																	</a>
 
 
-								{% endfor %}
-							</tbody>
-						</table>
+																	<!-- Modal -->
+																	<div class="modal fade" id="modelMail--{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleMail" aria-hidden="true">
+
+
+																		<div class="modal-dialog modal-lg" role="document">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																					<h5 class="modal-title">A qui envoyer le Mail ?</h5>
+																					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																						<span aria-hidden="true">&times;</span>
+																					</button>
+																				</div>
+																				<form action="{{ path('app_mailler_send_rapport',{'id': rapport.id }) }}" method="post">
+
+																					<div class="modal-body">
+																						<div class="form-check">
+
+																							<div class="form-group w-100 ">
+
+																								<label for="">Email du destinataire..</label>
+																								<input type="email" class="form-control" name="email" id="email" value="{{rapport.user.email }}" aria-describedby="emailHelpId" placeholder="">
+																								<small id="emailHelpId" class="form-text text-muted">Email destinataire..</small>
+																							</div>
+
+																						</div>
+																					</div>
+																					<div class="modal-footer">
+																						<button type="reset" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+																						<button type="submit" class="btn btn-success">Envoyer le Mail</button>
+
+																					</div>
+
+
+																				</form>
+
+																			</div>
+																		</div>
+																	</div>
+																{% else %}
+																	<a href="{{ path('admin_rapport_edit',{'id': rapport.id }) }}" class="m-1 btn btn-outline-dark btn-sm" type="button">
+																		<i class="fa fa-edit" aria-hidden="true"></i>
+																		Editer
+																	</a>
+
+																{% endif %}
+
+
+															</div>
+														</td>
+													</tr>
+
+
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 
-	<script>
-		$('#exampleModal').on('show.bs.modal', event => {
+					<script>
+						$('#exampleModal').on('show.bs.modal', event => {
 var button = $(event.relatedTarget);
 var modal = $(this);
 // Use above variables to manipulate the DOM
 
 });
-	</script>
-	<script>
-		$('#exampleModal').on('show.bs.modal', event => {
+					</script>
+					<script>
+						$('#exampleModal').on('show.bs.modal', event => {
 var button = $(event.relatedTarget);
 var modal = $(this);
 // Use above variables to manipulate the DOM
 
 });
-	</script>
-{% endblock %}
+					</script>
+				{% endblock %}
