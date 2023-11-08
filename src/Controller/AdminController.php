@@ -285,6 +285,35 @@ class AdminController extends AbstractController
         ]);
     }
 
+    #[Route('/rapports/{id}/synthese',  name: "college_synthese", methods: ['GET'])]
+    public function syntheseRapportCollege(
+        College $college,
+        Request $request,
+        CollegeRepository $collegeRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+
+
+
+        $allDataText = "";
+        $rapports = $college->getRapports();
+
+        foreach ($rapports as $r) {
+            $allDataText .= $r->getActivite() . "\n";
+            $allDataText .= $r->getResultat() . "\n";
+            $allDataText .= $r->getDescription() . "\n";
+        }
+
+
+
+
+
+        return $this->render('admin/college/rapport_new.html.twig', [
+
+            'titre' => "Nouveau Rapport d'Activité"
+        ]);
+    }
+
     #[Route('/rapports/{id}/show',  name: "rapport_show", methods: ['GET'])]
     public function show(Rapport $rapport): Response
     {

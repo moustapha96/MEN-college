@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CollegeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CollegeRepository::class)]
@@ -27,6 +28,9 @@ class College
 
     #[ORM\OneToMany(mappedBy: 'college', targetEntity: User::class)]
     private Collection $user;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $rapport = null;
 
 
     public function __construct()
@@ -124,6 +128,18 @@ class College
                 $user->setCollege(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRapport(): ?string
+    {
+        return $this->rapport;
+    }
+
+    public function setRapport(?string $rapport): static
+    {
+        $this->rapport = $rapport;
 
         return $this;
     }
