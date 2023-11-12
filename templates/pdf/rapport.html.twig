@@ -26,9 +26,14 @@
 			}
 			th,
 			td {
+				word-wrap: break-word;
+				white-space: pre-line;
+
 				border: 1px solid black;
 				padding: 8px;
 				text-align: left;
+				overflow: hidden;
+				text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
 			}
 			th {
 				background-color: #f2f2f2;
@@ -114,6 +119,16 @@
 								{{ rapport.statut }}
 							</td>
 						</tr>
+						{% if rapport.statut == "NON VALIDER" %}
+							<tr>
+								<th>Raison Non validation</th>
+								<td>
+									{{ rapport.comment }}
+								</td>
+							</tr>
+
+						{% endif %}
+
 
 						<tr>
 							<th>Activité</th>
@@ -121,12 +136,6 @@
 
 								<br>
 
-								{% if rapport.activiteFichier %}
-
-									<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		                                                    d'activité</a>
-
-								{% endif %}
 
 							</td>
 
@@ -136,30 +145,13 @@
 							<th>Description</th>
 							<td>{{ rapport.description }}
 
-								<br>
-								{% if rapport.descriptionFichier %}
-
-									<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						                                                    description</a>
-								{% endif %}
 
 							</td>
-
 
 						</tr>
 						<tr>
 							<th>Résultat</th>
 							<td>{{ rapport.resultat }}
-								<br>
-
-								{% if rapport.resultatFichier %}
-
-									<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										                                                    résultat</a>
-
-								{% endif %}
-
-
 							</td>
 						</tr>
 						<tr>

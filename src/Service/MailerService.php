@@ -102,7 +102,8 @@ class MailerService
         string $destinataire,
         string $destinatairecc,
         Rapport $rapport,
-        array $attachments = []
+        array $attachments = [],
+        User $user
     ) {
 
         $email = (new TemplatedEmail())
@@ -113,8 +114,8 @@ class MailerService
             ->htmlTemplate('emails/template_base.html.twig')
             ->context([
                 'message' => $message,
-                'prenom' => "Pape",
-                'nom' => "Khouma",
+                'prenom' => $user->getFirstName(),
+                'nom' => $user->getLastName(),
                 'objet' => "Rapport college " . $college,
                 'rapport' => $rapport
             ]);

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -24,5 +25,16 @@ class HomeController extends AbstractController
     {
         $referer = $request->headers->get('referer');
         $session->set('previous_page', $referer);
+    }
+
+
+    public function pagePrecedente(Request $request, SessionInterface $session): RedirectResponse
+    {
+        $referer = $request->headers->get('referer');
+
+        $uri = $request->attributes->get("_route");
+        dd($uri);
+
+        return $this->redirect($referer);
     }
 }

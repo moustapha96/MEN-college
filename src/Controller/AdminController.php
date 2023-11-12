@@ -19,7 +19,7 @@ use App\Repository\UserRepository;
 use App\Service\MailerService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Service\ChatGPTService;
-
+use Symfony\Component\HttpFoundation\RequestStack;
 
 #[Route('/admin',  name: "admin_")]
 // #[AttributeIsGranted("ROLE_ADMIN", statusCode: 404, message: "Page non accéssible")]
@@ -117,7 +117,7 @@ class AdminController extends AbstractController
     ): Response {
         return $this->render('admin/college/liste_rapport_client.html.twig', [
             'titre' => 'Rapports de',
-            'rapports' => $rapportRepository->findBy(['user' => $user]),
+            'rapports' => $rapportRepository->findBy(['user' => $user], ['orderBy' => ['createdAt' => 'DESC']]),
             "user" =>  $user
         ]);
     }
@@ -135,7 +135,7 @@ class AdminController extends AbstractController
     #[Route('/colleges/{id}/rapport', name: 'college_rapport', methods: ['GET'])]
     public function showCollegeRapport(College $college, RapportRepository $rapportRepository): Response
     {
-        $rapports = $rapportRepository->findBy(['college' => $college]);
+        $rapports = $rapportRepository->findBy(['college' => $college], ['orderBy' => ['createdAt' => 'DESC']]);
 
         return $this->render('admin/college/rapport.html.twig', [
             'titre' => 'Liste Rapports Collège => ' . $college->getNom(),
@@ -198,7 +198,7 @@ class AdminController extends AbstractController
     {
         return $this->render("admin/rapport/index.html.twig", [
             'titre' => 'Gestion des Rapports d\'Activités',
-            'rapports' => $rapportRepository->findAll()
+            'rapports' => $rapportRepository->findAll(['orderBy' => ['createdAt' => 'DESC']])
         ]);
     }
 
@@ -206,7 +206,6 @@ class AdminController extends AbstractController
     #[Route('/rapports/nouveau',  name: "rapport_nouveau", methods: ['GET', 'POST'])]
     public function NouveauRpport(
         Request $request,
-        CollegeRepository $collegeRepository,
         EntityManagerInterface $entityManager
     ): Response {
 
@@ -215,29 +214,8 @@ class AdminController extends AbstractController
         $form = $this->createForm(RapportType::class, $rapport);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-
             $user = $this->getUser();
-
             $rapport->setUser($user);
-            $activiteFile = $form->get('activiteFichier')->getData();
-            if ($activiteFile instanceof UploadedFile) {
-                $activiteFilename = uniqid() . '.' . $activiteFile->guessExtension();
-                $activiteFile->move($this->getParameter('pdf_directory'), $activiteFilename);
-                $rapport->setActiviteFichier($activiteFilename);
-            }
-            $descriptionFile = $form->get('descriptionFichier')->getData();
-            if ($descriptionFile instanceof UploadedFile) {
-                $descriptionFilename = uniqid() . '.' . $descriptionFile->guessExtension();
-                $descriptionFile->move($this->getParameter('pdf_directory'), $descriptionFilename);
-                $rapport->setDescriptionFichier($descriptionFilename);
-            }
-
-            $resultatFile = $form->get('resultatFichier')->getData();
-            if ($resultatFile instanceof UploadedFile) {
-                $resultatFilename = uniqid() . '.' . $resultatFile->guessExtension();
-                $resultatFile->move($this->getParameter('pdf_directory'), $resultatFilename);
-                $rapport->setResultatFichier($resultatFilename);
-            }
 
             $fichiers = [];
             $files = $form->get('fichier')->getData();
@@ -264,6 +242,26 @@ class AdminController extends AbstractController
     }
 
 
+
+    #[Route('/rapports/{id}/commenter',  name: "rapport_comment", methods: ['GET', 'POST'])]
+
+    public function commneterRapport(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        Rapport $rapport
+    ): Response {
+        $commentaire = $request->request->get('commentaire');
+
+        $referer = $request->headers->get('referer');
+
+        $rapport->setComment($commentaire);
+        $entityManager->persist($rapport);
+        $entityManager->flush();
+        $this->addFlash('success', "Rapport d'activité créé avec succés ");
+
+        return $this->redirect($referer);
+    }
+
     #[Route('/rapports/{id}/nouveau',  name: "college_rapport_nouveau", methods: ['GET', 'POST'])]
     public function NouveauRpportCollege(
         $id,
@@ -282,25 +280,6 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $rapport->setUser($user);
-            $activiteFile = $form->get('activiteFichier')->getData();
-            if ($activiteFile instanceof UploadedFile) {
-                $activiteFilename = uniqid() . '.' . $activiteFile->guessExtension();
-                $activiteFile->move($this->getParameter('pdf_directory'), $activiteFilename);
-                $rapport->setActiviteFichier($activiteFilename);
-            }
-            $descriptionFile = $form->get('descriptionFichier')->getData();
-            if ($descriptionFile instanceof UploadedFile) {
-                $descriptionFilename = uniqid() . '.' . $descriptionFile->guessExtension();
-                $descriptionFile->move($this->getParameter('pdf_directory'), $descriptionFilename);
-                $rapport->setDescriptionFichier($descriptionFilename);
-            }
-
-            $resultatFile = $form->get('resultatFichier')->getData();
-            if ($resultatFile instanceof UploadedFile) {
-                $resultatFilename = uniqid() . '.' . $resultatFile->guessExtension();
-                $resultatFile->move($this->getParameter('pdf_directory'), $resultatFilename);
-                $rapport->setResultatFichier($resultatFilename);
-            }
 
             $fichiers = [];
             $files = $form->get('fichier')->getData();
@@ -368,51 +347,11 @@ class AdminController extends AbstractController
     {
 
         $rapportAvant = clone $rapport;
-        $rapport->setActiviteFichier(null);
-        $rapport->setResultatFichier(null);
-        $rapport->setDescriptionFichier(null);
 
         $form = $this->createForm(RapportType::class, $rapport);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $activiteFile = $form->get('activiteFichier')->getData();
-
-            if (!$rapport->getActiviteFichier()) {
-                $rapport->setActiviteFichier($rapportAvant->getActiviteFichier());
-            } else {
-                if ($activiteFile instanceof UploadedFile || $activiteFile != null) {
-                    $activiteFilename = uniqid() . '.' . $activiteFile->guessExtension();
-                    $activiteFile->move($this->getParameter('pdf_directory'), $activiteFilename);
-                    $rapport->setActiviteFichier($activiteFilename);
-                }
-            }
-
-
-            $descriptionFile = $form->get('descriptionFichier')->getData();
-
-            if (!$rapport->getDescriptionFichier()) {
-                $rapport->setDescriptionFichier($rapportAvant->getDescriptionFichier());
-            } else {
-                if ($descriptionFile instanceof UploadedFile || $descriptionFile != null) {
-                    $descriptionFilename = uniqid() . '.' . $descriptionFile->guessExtension();
-                    $descriptionFile->move($this->getParameter('pdf_directory'), $descriptionFilename);
-                    $rapport->setDescriptionFichier($descriptionFilename);
-                }
-            }
-
-            $resultatFile = $form->get('resultatFichier')->getData();
-
-            if (!$rapport->getResultatFichier()) {
-                $rapport->setResultatFichier($rapportAvant->getResultatFichier());
-            } else {
-                if ($resultatFile instanceof UploadedFile || $resultatFile != null) {
-                    $resultatFilename = uniqid() . '.' . $resultatFile->guessExtension();
-                    $resultatFile->move($this->getParameter('pdf_directory'), $resultatFilename);
-                    $rapport->setResultatFichier($resultatFilename);
-                }
-            }
+        if ($form->isSubmitted()) {
 
             $fichiers = [];
             $files = $form->get('fichier')->getData();

@@ -45,7 +45,7 @@
 												<span class="hidden-sm-up">
 													<i class="ti-write"></i>
 												</span>
-												<span class="hidden-xs-down">College</span>
+												<span class="hidden-xs-down">Collège</span>
 											</a>
 										</li>
 
@@ -161,7 +161,15 @@
 													<tr>
 														<th>Statut</th>
 														<td>
-															{{ rapport.statut }}
+															{% set color = (rapport.statut == "VALIDER" ) ? 'success' :  (rapport.statut == "EN ATTENTE" ? 'warning': 'danger') %}
+															{% set icon = (rapport.statut == "VALIDER" ) ? 'check-circle' :  (rapport.statut == "EN ATTENTE" ? 'check': 'thumbs-down') %}
+
+
+															<span class="text-{{ color }}  ">
+																<i class="fa fa-solid fa-{{ icon }}"></i>
+																{{ rapport.statut }}
+															</span>
+
 														</td>
 													</tr>
 
@@ -170,49 +178,25 @@
 														</th>
 														<td>{{ rapport.activite }}
 														</td>
-														<td>
 
-															{% if rapport.activiteFichier %}
-																<p>
-																	<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															                                                    d'activité</a>
-																</p>
-															{% endif %}
-														</td>
 													</tr>
 
 													<tr>
 														<th>Description</th>
 														<td>{{ rapport.description }}
 														</td>
-														<td>
 
-															{% if rapport.descriptionFichier %}
-																<p>
-																	<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															                                                    description</a>
-																</p>
-															{% endif %}
-														</td>
 													</tr>
 
 													<tr>
 														<th>Resultat</th>
 														<td>{{ rapport.resultat }}</td>
-														<td>
-															{% if rapport.resultatFichier %}
-																<p>
-																	<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															                                                    résultat</a>
-																</p>
-															{% endif %}
-														</td>
+
 													</tr>
 
 													<tr>
 														<th>Date rapport</th>
-														<td>{{ rapport.createdAt|date('Y-m-d H:i:s') }}</td>
-
+														<td>{{ rapport.createdAt|date('Y-m-d H:i') }}</td>
 													</tr>
 
 												</tbody>

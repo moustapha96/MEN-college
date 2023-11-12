@@ -15,6 +15,13 @@
 	<ul
 		class="navbar-nav ml-auto">
 		<!-- Navbar Search -->
+
+		<a class="m-1 btn btn-outline float-right ml-1 btn-sm" title="Page précedente" onclick="javascript:history.back(); return false;">
+
+			<i class="fa fa-reply"></i>
+			Retour
+		</a>
+
 		<li class="nav-item">
 			<a class="nav-link" data-widget="navbar-search" href="#" role="button">
 				<i class="fas fa-search"></i>
@@ -35,6 +42,7 @@
 				</form>
 			</div>
 		</li>
+
 
 		<li class="nav-item">
 			<a class="nav-link " data-bs-toggle="tooltip" title="déconnexion" href="{{ path('app_logout') }}" role="button">

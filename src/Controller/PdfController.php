@@ -27,7 +27,7 @@ class PdfController extends AbstractController
         ]);
     }
 
-    #[Route('/generate-user/{id}', name: 'app_generate_pdf_user', methods: ['GET'])]
+    #[Route('/inspecteur-pdf/{id}', name: 'app_generate_pdf_user', methods: ['GET'])]
     public function generatePdfUser(User $user): Response
     {
 
@@ -42,7 +42,7 @@ class PdfController extends AbstractController
             'Content-Disposition' => 'inline; filename="editeur.pdf"',
         ]);
     }
-    #[Route('/generate-users', name: 'app_generate_pdf_users', methods: ['GET'])]
+    #[Route('/inpecteurs-pdf', name: 'app_generate_pdf_users', methods: ['GET'])]
     public function generatePdfUsers(UserRepository $userRepository): Response
     {
 
@@ -58,7 +58,7 @@ class PdfController extends AbstractController
             'Content-Disposition' => 'inline; filename="inspecteurs.pdf"',
         ]);
     }
-    #[Route('/generate-rapport/{id}', name: 'app_generate_pdf_rapport', methods: ['GET'])]
+    #[Route('/rapport/{id}/pdf', name: 'app_generate_pdf_rapport', methods: ['GET'])]
     public function generatePdfRapport(Rapport $rapport): Response
     {
 
@@ -74,7 +74,7 @@ class PdfController extends AbstractController
         ]);
     }
 
-    #[Route('/generate-rapports', name: 'app_generate_pdf_rapports', methods: ['GET'])]
+    #[Route('/rapports-pdf', name: 'app_generate_pdf_rapports', methods: ['GET'])]
     public function generatePdfRapports(RapportRepository $rapportRepository): Response
     {
 

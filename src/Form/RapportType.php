@@ -63,49 +63,6 @@ class RapportType extends AbstractType
             ])
 
 
-            ->add('activiteFichier', FileType::class, [
-                'attr' => ['class' => 'col-6 mx-auto form-control '],
-                'required' => false,
-                'label' => 'Fichier joint pour activité',
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => [
-                            'application/pdf', // Ajoutez le mime type pour les fichiers PDF
-                        ],
-                        'maxSize' => '4096k',
-                        'mimeTypesMessage' => 'Veuillez choisir un fichier PDF.',
-                    ]),
-                ]
-            ])
-
-            ->add('descriptionFichier', FileType::class, [
-                'attr' => ['class' => 'col-6 mx-auto form-control '],
-                'required' => false,
-                'label' => 'Fichier joint pour descritption',
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => [
-                            'application/pdf', // Ajoutez le mime type pour les fichiers PDF
-                        ],
-                        'maxSize' => '4096k',
-                        'mimeTypesMessage' => 'Veuillez choisir un fichier PDF.',
-                    ]),
-                ]
-            ])
-            ->add('resultatFichier', FileType::class, [
-                'attr' => ['class' => 'col-6 mx-auto form-control '],
-                'required' => false,
-                'label' => 'Fichier joint pour résultat',
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => [
-                            'application/pdf', // Ajoutez le mime type pour les fichiers PDF
-                        ],
-                        'maxSize' => '4096k',
-                        'mimeTypesMessage' => 'Veuillez choisir un fichier PDF.',
-                    ]),
-                ]
-            ])
 
             ->add('statut', ChoiceType::class, [
                 'attr' => ['class' => 'col-6 mx-auto form-control'],

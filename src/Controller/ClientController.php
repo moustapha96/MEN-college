@@ -3,30 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\College;
-use App\Entity\Emprunt;
-use App\Entity\Livre;
 use App\Entity\Rapport;
 use App\Entity\User;
 use App\Form\RapportType;
-use App\Form\RapportTypeEdit;
 use App\Repository\CollegeRepository;
-use App\Repository\EmpruntRepository;
-use App\Repository\UserRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\LivreRepository;
 use App\Repository\RapportRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Http\Attribute\IsGranted as AttributeIsGranted;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 #[Route('/client',  name: "client_")]
@@ -41,19 +31,28 @@ class ClientController extends AbstractController
     #[Route('/',  name: "home")]
     public function index(
         CollegeRepository $collegeRepository,
-        // UserRepository $userRepository,
-        RapportRepository $rapportRepository
+        RapportRepository $rapportRepository,
+        UserRepository $userRepository
     ): Response {
         /** @var User $user */
         $user = $this->getUser();
         return $this->render("client/dashboard/index.html.twig", [
             'titre' => 'Inspecteur / Inspectrice',
+
             'rapports' => $rapportRepository->findBy(['user' => $user]),
             'colleges' => $collegeRepository->findAll(),
-            'rapports_college' =>  $rapportRepository->findBy(['college' => $user->getCollege()]),
+            'inspecteurs' => $userRepository->findBy(['college' => $user->getCollege()]),
+            'rapports_college' =>  $rapportRepository->findBy(['user' => $user, 'college' => $user->getCollege()]),
+            'rapports_colleges' =>  $rapportRepository->findBy(['college' => $user->getCollege()]),
+
             "rapports_en_attente" => $rapportRepository->findBy(['statut' => "EN ATTENTE", 'user' => $user]),
+            "rapports_en_attentes" => $rapportRepository->findBy(['statut' => "EN ATTENTE", 'user' => $user, 'college' => $user->getCollege()]),
+
             "rapports_valider" => $rapportRepository->findBy(['statut' => "VALIDER", 'user' => $user]),
+            "rapports_validers" => $rapportRepository->findBy(['statut' => "VALIDER", 'user' => $user, 'college' => $user->getCollege()]),
+
             "rapports_non_valider" => $rapportRepository->findBy(['statut' => "NON VALIDER", 'user' => $user]),
+            "rapports_non_validers" => $rapportRepository->findBy(['statut' => "NON VALIDER", 'college' => $user->getCollege()]),
         ]);
     }
 
@@ -105,28 +104,21 @@ class ClientController extends AbstractController
         $form = $this->createForm(RapportType::class, $rapport);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
 
             $rapport->setUser($user);
-            $activiteFile = $form->get('activiteFichier')->getData();
-            if ($activiteFile instanceof UploadedFile) {
-                $activiteFilename = uniqid() . '.' . $activiteFile->guessExtension();
-                $activiteFile->move($this->getParameter('pdf_directory'), $activiteFilename);
-                $rapport->setActiviteFichier($activiteFilename);
-            }
-            $descriptionFile = $form->get('descriptionFichier')->getData();
-            if ($descriptionFile instanceof UploadedFile) {
-                $descriptionFilename = uniqid() . '.' . $descriptionFile->guessExtension();
-                $descriptionFile->move($this->getParameter('pdf_directory'), $descriptionFilename);
-                $rapport->setDescriptionFichier($descriptionFilename);
+
+            $fichiers = [];
+            $files = $form->get('fichier')->getData();
+            foreach ($files as $file) {
+                if ($file instanceof UploadedFile) {
+                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $file->move($this->getParameter('pdf_directory'), $fileName);
+                    $fichiers[] = $fileName;
+                }
             }
 
-            $resultatFile = $form->get('resultatFichier')->getData();
-            if ($resultatFile instanceof UploadedFile) {
-                $resultatFilename = uniqid() . '.' . $resultatFile->guessExtension();
-                $resultatFile->move($this->getParameter('pdf_directory'), $resultatFilename);
-                $rapport->setResultatFichier($resultatFilename);
-            }
+            $rapport->setFichier($fichiers);
 
 
             $entityManager->persist($rapport);
@@ -147,7 +139,7 @@ class ClientController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $rapports = $rapportRepository->findBy(['college' => $user->getCollege()]);
+        $rapports = $rapportRepository->findBy(['college' => $user->getCollege()], ['orderBy' => ['createdAt' => 'DESC']]);
         return $this->render("client/rapport/index.html.twig", [
             'titre' => 'Liste des rapports d\'activités',
             "rapports" => $rapports,
@@ -167,9 +159,21 @@ class ClientController extends AbstractController
         $form = $this->createForm(RapportType::class, $rapport);
         $form->handleRequest($request);
         $user = $this->getUser();
+
         if ($form->isSubmitted()) {
             /** @var User $user */
 
+            $fichiers = [];
+            $files = $form->get('fichier')->getData();
+            foreach ($files as $file) {
+                if ($file instanceof UploadedFile) {
+                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $file->move($this->getParameter('pdf_directory'), $fileName);
+                    $fichiers[] = $fileName;
+                }
+            }
+
+            $rapport->setFichier($fichiers);
             $rapport->setCollege($user->getCollege());
             $rapport->setUser($user);
             $entityManager->persist($rapport);
@@ -210,42 +214,21 @@ class ClientController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
 
             $activiteFile = $form->get('activiteFichier')->getData();
 
-            if (!$rapport->getActiviteFichier()) {
-                $rapport->setActiviteFichier($rapportAvant->getActiviteFichier());
-            } else {
-                if ($activiteFile instanceof UploadedFile || $activiteFile != null) {
-                    $activiteFilename = uniqid() . '.' . $activiteFile->guessExtension();
-                    $activiteFile->move($this->getParameter('pdf_directory'), $activiteFilename);
-                    $rapport->setActiviteFichier($activiteFilename);
+            $fichiers = [];
+            $files = $form->get('fichier')->getData();
+            foreach ($files as $file) {
+                if ($file instanceof UploadedFile) {
+                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $file->move($this->getParameter('pdf_directory'), $fileName);
+                    $fichiers[] = $fileName;
                 }
             }
 
-            $descriptionFile = $form->get('descriptionFichier')->getData();
-            if (!$rapport->getDescriptionFichier()) {
-                $rapport->setDescriptionFichier($rapportAvant->getDescriptionFichier());
-            } else {
-                if ($descriptionFile instanceof UploadedFile || $descriptionFile != null) {
-                    $descriptionFilename = uniqid() . '.' . $descriptionFile->guessExtension();
-                    $descriptionFile->move($this->getParameter('pdf_directory'), $descriptionFilename);
-                    $rapport->setDescriptionFichier($descriptionFilename);
-                }
-            }
-
-            $resultatFile = $form->get('resultatFichier')->getData();
-            if (!$rapport->getResultatFichier()) {
-                $rapport->setResultatFichier($rapportAvant->getResultatFichier());
-            } else {
-                if ($resultatFile instanceof UploadedFile || $resultatFile != null) {
-                    $resultatFilename = uniqid() . '.' . $resultatFile->guessExtension();
-                    $resultatFile->move($this->getParameter('pdf_directory'), $resultatFilename);
-                    $rapport->setResultatFichier($resultatFilename);
-                }
-            }
-
+            $rapport->setFichier($fichiers);
             $entityManager->flush();
             $this->addFlash('success', "Rapport d'activité mise à jour avec succès");
             return $this->redirectToRoute('client_rapport_liste', [], Response::HTTP_SEE_OTHER);
@@ -269,5 +252,15 @@ class ClientController extends AbstractController
             $this->addFlash('warning', "Suppression Rapport d'activité éffectif");
         }
         return $this->redirectToRoute('client_rapport_liste', [], Response::HTTP_SEE_OTHER);
+    }
+
+    //fichier d'un rapport
+    #[Route("/rapport/{id}/fichiers", name: "rapport_fichier", methods: ["GET"])]
+    public function showFichierRapport(Request $request, Rapport $rapport): Response
+    {
+        return $this->render('client/rapport/fichier.html.twig', [
+            'titre' => 'Liste Fichier',
+            'rapport' => $rapport,
+        ]);
     }
 }

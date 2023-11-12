@@ -31,20 +31,7 @@ class MaillerController extends AbstractController
     }
 
 
-    #[Route('/test', name: 'test')]
-    public function testSendMail(MailerService  $mailer): Response
-    {
-        $mailer->sendMail(
-            "Ce mail est un test",
-            "",
-            "khouma964@gmail.com",
-            "alhusseinkhouma0@gmail.com",
-            ""
-        );
 
-        $this->addFlash('success', "Mail test envoyer avec success");
-        return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
-    }
 
 
     public function sendMailCompteBloque(User $user, MailerService $mailer): Response
@@ -72,22 +59,14 @@ class MaillerController extends AbstractController
 
         $college =  $rapport->getCollege();
         $user = $rapport->getUser();
-        $fichier_resultat = $rapport->getResultatFichier();
-        $fichier_desciption = $rapport->getDescriptionFichier();
-        $fichier_activite = $rapport->getActiviteFichier();
+        $fichiers = $rapport->getFichier();
+
 
         $attachments = [];
-
-        if ($fichier_resultat) {
-            $attachments[] = ["file" => $this->getParameter('pdf_directory') . '/' . $fichier_resultat, "name" => "fichier resultat"];
-        }
-        if ($fichier_desciption) {
-            $attachments[] =
-                ["file" => $this->getParameter('pdf_directory') . '/' . $fichier_desciption, "name" => "fichier description"];
-        }
-        if ($fichier_activite) {
-            $attachments[] =
-                ["file" => $this->getParameter('pdf_directory') . '/' . $fichier_activite, "name" => "fichier activité"];
+        if (count($fichiers) > 0) {
+            foreach ($fichiers as $key => $fiche) {
+                $attachments[] = ["file" => $this->getParameter('pdf_directory') . '/' . $fiche, "name" => "fichier " . $key + 1];
+            }
         }
 
         $mail =  $mailer->sendMail(
@@ -96,7 +75,8 @@ class MaillerController extends AbstractController
             $email,
             "khouma964@gmail.com",
             $rapport,
-            $attachments
+            $attachments,
+            $user
         );
 
         $this->addFlash('success', "Mail envoyer avec succès");

@@ -11,8 +11,7 @@
 {# {% operation possible %}#}
 {% block option %}
 
-	<a href=" {{ path('app_generate_pdf_rapports') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
-
+	<a href=" {{ path('app_generate_pdf_rapports') }}" title="Imprimer" class="m-1 btn btn-info float-right btn-sm" role="button">
 		<i class="m-1 fa fa-print" aria-hidden="true"></i>Imprimer
 	</a>
 
@@ -59,7 +58,8 @@
 
 								<div class="result-body">
 									<div class="table-responsive">
-										<table id="example1" class="table table-bordered table-striped">
+										<table id="example1" class="table table-bordered table-striped table-head-fixed">
+
 
 											<thead>
 												<tr>
@@ -90,7 +90,6 @@
 																<a type="button" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
 																	{{rapport.activite |slice(0, 50)}}....
 																</a>
-
 
 																<div class="modal fade " id="model--{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
 
@@ -166,8 +165,7 @@
 
 														<td>
 
-
-															<a type="button" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
+															<a type="button" title="{{rapport.description}}" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
 																{{rapport.description |slice(0, 50)}}....
 															</a>
 
@@ -176,7 +174,7 @@
 
 														<td>
 
-															<a type="button" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
+															<a type="button" title="{{rapport.resultat}}" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
 																{{rapport.resultat |slice(0, 50)}}....
 															</a>
 
@@ -187,6 +185,7 @@
 																<a class="btn btn-link" href="{{ path('admin_rapport_fichier', {'id': rapport.id } ) }}">{{ rapport.fichier|length  }}</a>
 															{% else %}
 																<a class="btn btn-link ">{{ rapport.fichier|length  }}</a>
+
 															{% endif %}
 
 														</td>
@@ -194,11 +193,10 @@
 
 
 															<span>
-																<a href="{{ path('app_user_show',{'id': rapport.user.getId() }) }}">{{rapport.user.getMatricule()
-}}
-																	=>
-																	{{rapport.user
-                                                                }}</a>
+																<a href="{{ path('app_user_show',{'id': rapport.user.getId() }) }}" title="Détails Inspecteur">{{rapport.user.getMatricule()}}=>
+
+																	{{rapport.user }}
+																</a>
 
 															</span>
 
@@ -210,7 +208,8 @@
 
 															<div class="widget-26-job-title">
 																<span>
-																	<a href="{{ path('admin_college_show',{'id': rapport.college.id }) }}">{{rapport.college.getNom()
+																	<a href="{{ path('admin_college_show',{'id': rapport.college.id }) }}" title="Détails College">{{rapport.college.getNom()
+
                                                                 }}</a>
 																</span>
 
@@ -231,7 +230,6 @@
 															<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#model{{rapport.id}}">
 																{% set color = (rapport.statut == "VALIDER" ) ? 'success' :  (rapport.statut == "EN ATTENTE" ? 'warning': 'danger') %}
 																{% set icon = (rapport.statut == "VALIDER" ) ? 'check-circle' :  (rapport.statut == "EN ATTENTE" ? 'check': 'thumbs-down') %}
-
 
 																<a class="btn btn-outline-{{ color }}  " type="button">
 																	<i class="fa fa-solid fa-{{ icon }}"></i>
@@ -291,13 +289,13 @@
 														<td style="width: 10%;">
 															<div class="widget-26-job-starred btn-group btn-group-toggle">
 
-																<a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}" class="m-1 btn btn-outline-info" type="button">
+																<a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}" title="Détails Rapport" class="m-1 btn btn-outline-info" type="button">
 																	<i class="fa fa-eye" aria-hidden="true"></i>
 
 																</a>
 																{% if rapport.statut == "VALIDER" %}
 
-																	<a class="m-1 btn btn-info" type="button" data-toggle="modal" data-target="#modelMail--{{rapport.id}}">
+																	<a class="m-1 btn btn-info" type="button" title="Envoyer un mail" data-toggle="modal" data-target="#modelMail--{{rapport.id}}">
 																		<i class="fas fa-mail-bulk"></i>
 																	</a>
 																	<!-- Modal -->
@@ -337,10 +335,43 @@
 																	</div>
 
 																{% else %}
-																	<a href="{{ path('admin_rapport_edit',{'id': rapport.id }) }}" class="m-1 btn btn-outline-dark" type="button">
+																	<a href="{{ path('admin_rapport_edit',{'id': rapport.id }) }}" title="Modifier le rapport" class="m-1 btn btn-outline-dark" type="button">
 																		<i class="fa fa-edit" aria-hidden="true"></i>
-
 																	</a>
+																{% endif %}
+																{% if rapport.statut == "NON VALIDER" %}
+																	<a class="m-1 btn btn-outline-dark" data-toggle="modal" title="Commenter la non validation" data-target="#modelC--{{rapport.id}}">
+																		Commenter
+																	</a>
+
+																	<!-- Modal -->
+																	<div class="modal fade" id="modelC--{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<form action="{{ path('admin_rapport_comment',{'id': rapport.id }) }}" method="post">
+
+																					<div class="modal-header">
+																						<h5 class="modal-title">Ajouter un commentaire</h5>
+																						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																							<span aria-hidden="true">&times;</span>
+																						</button>
+																					</div>
+																					<div class="modal-body">
+																						<div class="container-fluid">
+																							<textarea name="commentaire" id="comment" class="form-control" rows="10">{{rapport.comment}}</textarea>
+																						</div>
+																					</div>
+																					<div class="modal-footer  justify-content-between ">
+
+																						<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+																						<button type="submit" class="btn btn-success">Enregistrer</button>
+																					</div>
+																				</form>
+
+																			</div>
+																		</div>
+																	</div>
 
 																{% endif %}
 
@@ -359,31 +390,5 @@
 						</div>
 					</div>
 
-					<script>
-						$('#exampleModal').on('show.bs.modal', event => {
-var button = $(event.relatedTarget);
-var modal = $(this);
-// Use above variables to manipulate the DOM
-
-});
-					</script>
-					<script>
-						$('#exampleModal').on('show.bs.modal', event => {
-var button = $(event.relatedTarget);
-var modal = $(this);
-// Use above variables to manipulate the DOM
-
-});
-					</script>
-					<script>
-						document.getElementById("state").addEventListener("change", function () {
-var commentTextarea = document.getElementById("comment-textarea");
-if (this.value === "NON VALIDER") {
-commentTextarea.style.display = "block";
-} else {
-commentTextarea.style.display = "none";
-}
-});
-					</script>
 
 				{% endblock %}
