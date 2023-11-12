@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\College;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\CollegeRepository;
@@ -18,8 +19,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository, CollegeRepository $collegeRepository): Response
-    {
+    public function index(
+        UserRepository $userRepository,
+        CollegeRepository $collegeRepository
+    ): Response {
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'titre' => "Liste des Inspecteurs",
@@ -163,17 +166,58 @@ class UserController extends AbstractController
         EntityManagerInterface $entityManager,
         User $user,
         CollegeRepository $collegeRepository,
-
+        UserRepository $userRepository,
     ): Response {
 
         $college = $collegeRepository->find($request->request->all()['college']);
+        // if ($college->getSousCategories()) {
+
+        //     return $this->render('user/index.html.twig', [
+        //         'users' => $userRepository->findAll(),
+        //         'titre' => "Liste des Inspecteurs",
+        //         "colleges" => $collegeRepository->findAll(),
+        //         "college" => $college
+        //     ]);
+        // } else {
+        // }
+
         $user->setCollege($college);
         $entityManager->persist($user);
         $entityManager->flush();
         $this->addFlash('success', "College  mise à jour avec succès ");
-
         return $this->redirect($request->headers->get('referer'));
+    }
 
-        // return $this->redirectToRoute('app_demande_app_index', [], Response::HTTP_SEE_OTHER);
+
+
+    #[Route('/{id}/user', name: 'admin_user_college_delete', methods: ['GET'])]
+    public function deleteCollege(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        User $user
+    ): Response {
+
+        $user->setCollege(null);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        $this->addFlash('success', "Collège  supprimer avec succés ");
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+
+
+    #[Route('/{id}/sous_categorie', name: 'admin_user_college_update_sous_categorie', methods: ['GET'])]
+    public function updateCategorie(
+        College $college,
+        UserRepository $userRepository,
+        CollegeRepository $collegeRepository
+    ): Response {
+
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findAll(),
+            "college" => $college,
+            'titre' => "Liste des Inspecteurs",
+            "colleges" => $collegeRepository->findAll()
+        ]);
     }
 }

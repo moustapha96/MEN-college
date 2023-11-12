@@ -5,6 +5,7 @@
 {% block title_job %}
 	<h1 class="card-title">
 		{{ titre }}
+
 	</h1>
 {% endblock %}
 
@@ -74,6 +75,8 @@
 													<th>Activite</th>
 													<th>Description</th>
 													<th>Resultat</th>
+													<th>Fichier</th>
+
 													<th>Inspecteur</th>
 													<th>Statut</th>
 													<th>Actions</th>
@@ -158,12 +161,7 @@
 																	</div>
 																</div>
 
-																{% if rapport.activiteFichier %}
-																	<p>
-																		<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												                                                                d'activité</a>
-																	</p>
-																{% endif %}
+
 															</div>
 
 														</td>
@@ -173,12 +171,7 @@
 																	{{rapport.description |slice(0, 50)}}....
 																</a>
 
-																{% if rapport.descriptionFichier %}
-																	<p>
-																		<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												                                                                de description</a>
-																	</p>
-																{% endif %}
+
 															</div>
 														</td>
 
@@ -188,15 +181,17 @@
 																	{{rapport.resultat |slice(0, 50)}}....
 																</a>
 
-																{% if rapport.resultatFichier %}
-																	<p>
-																		<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												                                                                de résultat</a>
-																	</p>
-																{% endif %}
+
 															</div>
 														</td>
+														<td>
+															{% if rapport.fichier|length > 0 %}
+																<a class="btn btn-link" href="{{ path('admin_rapport_fichier', {'id': rapport.id } ) }}">{{ rapport.fichier|length  }}</a>
+															{% else %}
+																<a class="btn btn-link ">{{ rapport.fichier|length  }}</a>
+															{% endif %}
 
+														</td>
 														<td>
 															<div class="widget-26-job-title">
 																<span>
@@ -210,7 +205,64 @@
 															</div>
 														</td>
 														<td>
-															{{ rapport.statut }}
+															<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#model{{rapport.id}}">
+																{% set color = (rapport.statut == "VALIDER" ) ? 'success' :  (rapport.statut == "EN ATTENTE" ? 'warning': 'danger') %}
+																{% set icon = (rapport.statut == "VALIDER" ) ? 'check-circle' :  (rapport.statut == "EN ATTENTE" ? 'check': 'thumbs-down') %}
+
+
+																<a class="btn btn-outline-{{ color }}  " type="button">
+																	<i class="fa fa-solid fa-{{ icon }}"></i>
+																	{{ rapport.statut }}
+																</a>
+															</button>
+
+															<div class="modal fade" id="model{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<h5 class="modal-title">État Rapport</h5>
+																			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																				<span aria-hidden="true">&times;</span>
+																			</button>
+																		</div>
+																		<form action="{{ path("admin_rapport_update_state", { 'id': rapport.id } ) }}" method="post">
+
+																			<div class="modal-body">
+																				<div class="container-fluid">
+																					<div class="form-group">
+																						<label for="state">État actuelle:
+																							{{ rapport.statut }}
+																						</label>
+																						<select class="custom-select" name="state" id="state">
+																							{% set selected = 'selected' %}
+																							{% set etat = '' %}
+
+
+																							<option>Choisie...</option>
+																							<option {{ rapport.statut == 'EN ATTENTE' ? selected : '' }} value="EN ATTENTE">En Attente</option>
+																							<option {{ rapport.statut == 'VALIDER' ? selected : '' }} value="VALIDER">Valider</option>
+																							<option {{ rapport.statut == 'NON VALIDER' ? selected : '' }} value="NON VALIDER">Non Valider</option>
+
+
+																						</select>
+																					</div>
+
+																					<textarea name="comment" id="comment-textarea" cols="60" rows="5" placeholder="commentaire" style="display: none;"></textarea>
+
+
+																				</div>
+																			</div>
+																			<div class="modal-footer">
+																				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+																				<button type="submit" class="btn btn-info">Enregistrer</button>
+																			</div>
+																		</form>
+
+																	</div>
+																</div>
+															</div>
+
 														</td>
 
 														<td>
@@ -219,7 +271,6 @@
 
 																<a href="{{ path('admin_college_rapport_show',{'id': rapport.id }) }}" class="m-1 btn btn-outline-info " type="button">
 																	<i class="fa fa-eye" aria-hidden="true"></i>
-																	Détails
 																</a>
 
 

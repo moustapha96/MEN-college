@@ -12,10 +12,10 @@
 {% block option %}
 
 	{# {% for label, messages in app.flashes %}
-																																																																																																																														{% for message in messages %}
-																																																																																																																															<div class="alert alert-{{ label }}">{{ message }}</div>
-																																																																																																																														{% endfor %}
-																																																																																																																													{% endfor %} #}
+																																																																																																																																																																																				{% for message in messages %}
+																																																																																																																																																																																					<div class="alert alert-{{ label }}">{{ message }}</div>
+																																																																																																																																																																																				{% endfor %}
+																																																																																																																																																																																			{% endfor %} #}
 
 	<a href=" {{ path('app_generate_pdf_users') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
 
@@ -49,16 +49,10 @@
 
 													<th>Matricule</th>
 													<th>Email</th>
-
 													<th>Nom</th>
-
-
 													<th>Téléphone</th>
-
-
 													<th>Adresse</th>
 													<th>Collège</th>
-
 													<th>Rapports</th>
 													<th>Compte</th>
 													<th>actions</th>
@@ -77,9 +71,9 @@
 
 														<td>
 															{% if user.college %}
-																<button type="button" class="btn btn-outline-dark btn-sm " data-toggle="modal" data-target="#modal-{{ user.id }}">{{ user.college.nom }}
+																<a type="button" class=" btn-outline-dark btn-sm " data-toggle="modal" data-target="#modal-{{ user.id }}">{{ user.college.nom }}
 
-																</button>
+																</a>
 
 																<div class="modal fade" id="modal-{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
 																	<div class="modal-dialog" role="document">
@@ -101,10 +95,17 @@
 																							<option value="{{ college.id }}" {{ selected }}>{{ college.nom }}</option>
 																						{% endfor %}
 																					</select>
+
+
 																				</div>
-																				<div class="modal-footer">
+																				<div class="modal-footer  d-flex justify-content-between ">
+
+
 																					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+																					<a class="btn btn-danger" href="{{ path('admin_user_college_delete', { 'id': user.id }) }}">Supprimer</a>
 																					<button type="submit" class="btn btn-success">Enregistrer</button>
+
+
 																				</div>
 																			</form>
 																		</div>
@@ -113,11 +114,11 @@
 
 															{% endif %}
 															{% if user.college == null %}
-																<button type="button" class="btn btn-outline-primary btn-bg " data-toggle="modal" data-target="#modal-{{ user.id }}">Relier au college
+																<a type="button" class=" btn-outline-link btn-sm " data-toggle="modal" data-target="#modal-{{ user.id }}">Non Affectation
 
-																</button>
+																</a>
 
-																<div class="modal fade" id="modal-{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+																<div class="modal fade" id="modal-{{ user.id }}" tabindex="1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
 																	<div class="modal-dialog" role="document">
 																		<div class="modal-content">
 																			<div class="modal-header">
@@ -128,13 +129,15 @@
 																			</div>
 																			<form method="POST" action="{{ path('app_user_college_update', {'id': user.id} ) }}">
 																				<div class="modal-body">
+
 																					<select class="form-control" name="college" id="college">
 																						{% for college in colleges %}
-
 																							<option value="{{ college.id }}">{{ college.nom }}</option>
 																						{% endfor %}
 																					</select>
+
 																				</div>
+
 																				<div class="modal-footer">
 																					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
 																					<button type="submit" class="btn btn-success">Enregistrer</button>
@@ -143,6 +146,7 @@
 																		</div>
 																	</div>
 																</div>
+
 
 															{% endif %}
 

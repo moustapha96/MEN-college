@@ -4,7 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
-		<title>MEN Rapport</title>
+		<title>GR-Inspection Générale de l'Éducation et de la Formation</title>
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
 		<link rel="stylesheet" href="login/css/mdb.min.css">
@@ -30,12 +30,21 @@
 				border-radius: 5px;
 				background-color: #f5f5f5;
 				width: 100%;
-				max-width: 600px;
+				max-width: 700px;
+
 			}
 			.responsive-image {
 				max-width: 100%;
 				height: auto;
 				border-radius: 3%;
+			}
+			.footer {
+				text-align: center;
+				padding: 2px;
+				background-color: #f5f5f5;
+				position: fixed;
+				bottom: 0;
+				width: 100%;
 			}
 		</style>
 	</head>
@@ -44,9 +53,24 @@
 			<div class="centered-element">
 				<form class="bg-white rounded shadow-5-strong p-5" method="post">
 					<div class="row mb-3 ">
-						<img src="images/men_bar.png" style="width: 100% ;height : 70px; animation:   " class="responsive-image" alt="">
 
-						<h3 class="m-2">Se Connecter</h3>
+						<div class="row  d-flex justify-content-between ">
+
+							<img src="images/flag_senegal.png" style="width: 100px;height: 50px " class="responsive-image" alt="">
+
+							<img src="images/flag_men.png" style=" height: 55px; width: 150px" class="responsive-image" alt="">
+
+
+						</div>
+						<h5 class="mt-1 ">
+							<b>Ministère de l’Éducation nationale</b>
+						</h5>
+
+
+						<h5 class="mt-2">
+							<b>
+								Inspection générale de l'Éducation et de la Formation</b>
+						</h5>
 					</div>
 
 					<div class="row">
@@ -64,13 +88,6 @@
 							<div>
 								{% if app.user.enabled == false %}
 									<b style="color: red">Votre compte est désactivé</b>
-								{% endif %}
-							</div>
-							<div class="mb-3">
-								{% if app.user.enabled == true %}
-									Vous êtes connecté en tant que
-									{{ app.user.username }},
-									<a href="{{ path('app_logout') }}">Logout</a>
 								{% endif %}
 							</div>
 						{% endif %}
@@ -91,15 +108,24 @@
 
 					<div class="d-flex mt-3 justify-content-between">
 						<a class="btn btn-outline-primary btn-block " href="{{ path('app_register') }}">s'inscrire</a>
-
-
 					</div>
-					{# <a class="btn btn-outline-primary mt-2" href="{{ path('app_forgot_password_request') }}">reinitialisation mot de passe</a> #}
-
 
 				</form>
 			</div>
 		</div>
+		<!-- Footer -->
+		<div class="footer">
+			<p>&copy; 2023 IGEF ,
+				<i class="fas fa-mail-bulk"></i>
+				<a href="mailto:igen.service@yahoo.com">igen.service@yahoo.com</a>
+				.
+				<i class="fa-solid fa-phone"></i>
+
+				TEL: 33 864 58 83</p>
+
+		</div>
+
+
 		<script type="text/javascript" src="login/js/mdb.min.js"></script>
 
 		<script type="text/javascript" src="login/js/script.js"></script>

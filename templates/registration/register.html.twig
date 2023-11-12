@@ -4,10 +4,11 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
-		<title>Men Rapport</title>
+		<title>GR-Inspection Générale de l'Éducation et de la Formation</title>
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+		<link rel="stylesheet" href="login/css/mdb.min.css">
+		<link rel="stylesheet" href="login/css/style.css">
 		<style>
 			body,
 			html {
@@ -23,32 +24,60 @@
 				flex-wrap: wrap;
 			}
 			.centered-element {
-				/* text-align: center; */
+				/*text-align: center;*/
 				padding: 20px;
 				border: 1px solid #ccc;
 				border-radius: 5px;
 				background-color: #f5f5f5;
 				width: 100%;
-				max-width: 600px;
+				max-width: 700px;
 			}
 			.responsive-image {
 				max-width: 100%;
 				height: auto;
 				border-radius: 3%;
 			}
+			.footer {
+				text-align: center;
+				padding: 2px;
+				background-color: #f5f5f5;
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+			}
+			.scrollable-form {
+				max-height: 60%; /* Set your preferred maximum height */
+				overflow-y: auto;
+			}
 		</style>
 	</head>
 	<body>
 		<div class="center-container">
 			<div class="centered-element">
-				<form class="bg-white rounded shadow-5-strong p-5" action="{{ path('app_register') }}" method="post">
-					<div class="row">
-						<img src="images/men_bar.png" style=" width: 100% " alt=""/>
-					</div>
-					<div class="row centered-element">
 
-						<h3 class=" text-center">Inscription</h3>
+
+				<form class="bg-white rounded shadow-5-strong p-5 mb-3 " action="{{ path('app_register') }}" method="post">
+					<div class="row mb-3 ">
+
+						<div class="row  d-flex justify-content-between ">
+
+							<img src="images/flag_senegal.png" style="width: 100px;height: 50px " class="responsive-image" alt="">
+
+							<img src="images/flag_men.png" style=" height: 55px; width: 150px" class="responsive-image" alt="">
+
+						</div>
+						<h5 class="mt-1 text-center ">
+							<b>Ministère de l’Éducation nationale</b>
+						</h5>
+
+
+						<h5 class="mt-2 text-center">
+							<b>
+								Inspection générale de l'Éducation et de la Formation</b>
+						</h5>
+
 					</div>
+
 
 					{% for label, messages in app.flashes %}
 						{% for message in messages %}
@@ -56,95 +85,118 @@
 						{% endfor %}
 					{% endfor %}
 
-					<div class="form-group">
-						<label for="matricule">Matricule</label>
+					<div class="scrollable-form">
 
-						<input type="text" id="matricule" name="matricule" required class="form-control">
-
-					</div>
-
-					<div class="form-group">
-						<label for="form1Example1">Adresse Email</label>
-
-						<input type="email" value="" name="email" required class="form-control">
-
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="firstName">Prénom</label>
-								<input type="text" id="firstName" required name="firstName" class="form-control">
-
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="lastName">Nom</label>
-
-								<input type="text" id="nom" required name="lastName" class="form-control">
-
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="phone">Téléphone</label>
-
-								<input type="text" id="phone" name="phone" required pattern="^(76|77|78|75|33|88)\d{7}$" class="form-control">
-
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="adresse">Adresse</label>
-
-								<input type="text" id="adresse" name="adresse" required class="form-control">
-
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label for="Sexe">Sexe</label>
-								<select id="sexe" name="sexe" class="form-control form-select" required>
-									<option value="" disabled selected>Choisissez votre sexe</option>
-									<option value="MASCULIN">Masculin</option>
-									<option value="FÉMININ">Féminin</option>
-								</select>
-							</div>
-
+						<div class="form-group">
+							<label for="matricule">Matricule</label>
+							<input type="text" id="matricule" name="matricule" required class="form-control">
 						</div>
 
+						<div class="form-group">
+							<label for="form1Example1">Adresse Email</label>
+							<input type="email" value="" name="email" required class="form-control">
+						</div>
 
-					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="plainPassword">Mot de passe</label>
-								<input type="password" id="plainPassword" required name="plainPassword" class="form-control">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="firstName">Prénom</label>
+									<input type="text" id="firstName" required name="firstName" class="form-control">
+
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="lastName">Nom</label>
+
+									<input type="text" id="nom" required name="lastName" class="form-control">
+
+								</div>
 							</div>
 						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="confirPassword">Confirmer Mot de Passe</label>
-								<input type="password" id="confirPassword" required name="confirPassword" class="form-control">
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="phone">Téléphone</label>
+
+									<input type="text" id="phone" name="phone" required pattern="^(76|77|78|75|33|88)\d{7}$" class="form-control">
+
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="adresse">Adresse</label>
+
+									<input type="text" id="adresse" name="adresse" required class="form-control">
+
+								</div>
 							</div>
 						</div>
-					</div>
 
-					<div class="d-flex justify-content-between">
-						<button type="submit" class="btn btn-primary">
-							S'inscrire</button>
-						<a class="btn btn-outline-primary" href="{{ path('app_login') }}">Se connecter</a>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="Sexe">Sexe</label>
+									<select id="sexe" name="sexe" class="form-control form-select" required>
+										<option value="" disabled selected>Choisissez votre sexe</option>
+										<option value="MASCULIN">Masculin</option>
+										<option value="FÉMININ">Féminin</option>
+									</select>
+								</div>
+
+							</div>
+
+
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="plainPassword">Mot de passe</label>
+									<input type="password" id="plainPassword" required name="plainPassword" class="form-control">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="confirPassword">Confirmer Mot de Passe</label>
+									<input type="password" id="confirPassword" required name="confirPassword" class="form-control">
+								</div>
+							</div>
+						</div>
+
+
+						<div class="d-flex justify-content-between  mt-2">
+							<button type="submit" class="btn btn-primary btn-block">
+								S'inscrire</button>
+
+						</div>
+
+						<div class="d-flex mt-3 justify-content-between">
+							<a class="btn btn-outline-primary btn-block " href="{{ path('app_login') }}">Se connecter</a>
+
+						</div>
+
+
 					</div>
 
 				</form>
+
 			</div>
 		</div>
+		<!-- Footer -->
+		<div class="footer">
+			<p>&copy; 2023 IGEF ,
+				<i class="fas fa-mail-bulk"></i>
+				<a href="mailto:igen.service@yahoo.com">igen.service@yahoo.com</a>
+				.
+				<i class="fas fa-solid fa-phone"></i>
+				: 33 864 58 83</p>
+
+		</div>
+
+
+		<script type="text/javascript" src="login/js/mdb.min.js"></script>
+
+		<script type="text/javascript" src="login/js/script.js"></script>
 	</body>
 </html>

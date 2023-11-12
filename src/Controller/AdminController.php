@@ -18,14 +18,19 @@ use App\Repository\RapportRepository;
 use App\Repository\UserRepository;
 use App\Service\MailerService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Service\ChatGPTService;
+
 
 #[Route('/admin',  name: "admin_")]
 // #[AttributeIsGranted("ROLE_ADMIN", statusCode: 404, message: "Page non accéssible")]
 class AdminController extends AbstractController
 {
 
-    public function __construct()
+    private $chatGPTService;
+
+    public function __construct(ChatGPTService $chatGPTService)
     {
+        $this->chatGPTService = $chatGPTService;
     }
 
 
@@ -111,9 +116,19 @@ class AdminController extends AbstractController
         RapportRepository $rapportRepository
     ): Response {
         return $this->render('admin/college/liste_rapport_client.html.twig', [
-            'titre' => 'Rapports inspecteur ',
+            'titre' => 'Rapports de',
             'rapports' => $rapportRepository->findBy(['user' => $user]),
             "user" =>  $user
+        ]);
+    }
+
+    //fichier d'un rapport
+    #[Route("rapport/{id}/fichiers", name: "rapport_fichier", methods: ["GET"])]
+    public function showFichierRapport(Request $request, Rapport $rapport): Response
+    {
+        return $this->render('admin/rapport/fichier.html.twig', [
+            'titre' => 'Liste Fichier',
+            'rapport' => $rapport,
         ]);
     }
 
@@ -189,12 +204,17 @@ class AdminController extends AbstractController
 
 
     #[Route('/rapports/nouveau',  name: "rapport_nouveau", methods: ['GET', 'POST'])]
-    public function NouveauRpport(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    public function NouveauRpport(
+        Request $request,
+        CollegeRepository $collegeRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+
         $rapport = new Rapport();
+        $rapport->setStatut("EN ATTENTE");
         $form = $this->createForm(RapportType::class, $rapport);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
 
             $user = $this->getUser();
 
@@ -219,11 +239,23 @@ class AdminController extends AbstractController
                 $rapport->setResultatFichier($resultatFilename);
             }
 
+            $fichiers = [];
+            $files = $form->get('fichier')->getData();
+            foreach ($files as $file) {
+                if ($file instanceof UploadedFile) {
+                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $file->move($this->getParameter('pdf_directory'), $fileName);
+                    $fichiers[] = $fileName;
+                }
+            }
+
+            $rapport->setFichier($fichiers);
             $entityManager->persist($rapport);
             $entityManager->flush();
             $this->addFlash('success', "Rapport d'activité créé avec succés ");
             return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
         }
+
         return $this->render('admin/rapport/new.html.twig', [
             'rapport' => $rapport,
             'form' => $form,
@@ -244,7 +276,7 @@ class AdminController extends AbstractController
         $rapport = new Rapport();
         $college = $collegeRepository->find($id);
         $rapport->setCollege($college);
-        $form = $this->createForm(RapportType::class, $rapport);
+        $form = $this->createForm(RapportType::class, ['statut' => "EN ATTENTE"]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -270,7 +302,16 @@ class AdminController extends AbstractController
                 $rapport->setResultatFichier($resultatFilename);
             }
 
-
+            $fichiers = [];
+            $files = $form->get('fichier')->getData();
+            foreach ($files as $file) {
+                if ($file instanceof UploadedFile) {
+                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $file->move($this->getParameter('pdf_directory'), $fileName);
+                    $fichiers[] = $fileName;
+                }
+            }
+            $rapport->setFichier($fichiers);
             $entityManager->persist($rapport);
             $this->addFlash('success', "Rapport enregistrer avec succés");
             $entityManager->flush();
@@ -288,14 +329,12 @@ class AdminController extends AbstractController
     #[Route('/rapports/{id}/synthese',  name: "college_synthese", methods: ['GET'])]
     public function syntheseRapportCollege(
         College $college,
-        Request $request,
-        CollegeRepository $collegeRepository,
-        EntityManagerInterface $entityManager
+
     ): Response {
 
 
 
-        $allDataText = "";
+        $allDataText = "je veux un synthese de ces activités \n ";
         $rapports = $college->getRapports();
 
         foreach ($rapports as $r) {
@@ -304,15 +343,15 @@ class AdminController extends AbstractController
             $allDataText .= $r->getDescription() . "\n";
         }
 
-
-
-
+        $responseText = $this->chatGPTService->generateResponse($allDataText);
+        dd($allDataText);
 
         return $this->render('admin/college/rapport_new.html.twig', [
 
             'titre' => "Nouveau Rapport d'Activité"
         ]);
     }
+
 
     #[Route('/rapports/{id}/show',  name: "rapport_show", methods: ['GET'])]
     public function show(Rapport $rapport): Response
@@ -325,7 +364,7 @@ class AdminController extends AbstractController
 
 
     #[Route('/rapports/{id}/edit', name: 'rapport_edit', methods: ['GET', 'POST'])]
-    public function edit(RapportRepository $rapportRepository, Request $request, Rapport $rapport, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Rapport $rapport, EntityManagerInterface $entityManager): Response
     {
 
         $rapportAvant = clone $rapport;
@@ -375,6 +414,17 @@ class AdminController extends AbstractController
                 }
             }
 
+            $fichiers = [];
+            $files = $form->get('fichier')->getData();
+            foreach ($files as $file) {
+                if ($file instanceof UploadedFile) {
+                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $file->move($this->getParameter('pdf_directory'), $fileName);
+                    $fichiers[] = $fileName;
+                }
+            }
+
+            $rapport->setFichier($fichiers);
             $entityManager->flush();
             $this->addFlash('success', "Mise à jour rapport d'activité effectif");
             return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);

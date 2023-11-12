@@ -1,0 +1,88 @@
+{% extends 'admin/include/main.html.twig' %}
+
+{# {% titre de l'activite %} #}
+{% block title_job %}
+	<h1 class="card-title">Détails Sous Catégorie</h1>
+{% endblock %}
+
+{# {% operation possible %} #}
+{% block option %}
+	{% for message in app.flashes('success') %}
+		<div class="flash-notice alert alert-success">{{ message }}</div>
+	{% endfor %}
+
+
+	<a href=" {{ path('admin_sous_categorie_index') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+
+		<i class="fa fa-list" aria-hidden="true"></i>
+		Liste</a>
+
+
+	<a href="{{ path('admin_sous_categorie_edit', { id: sous_categorie.id }) }}" class="m-1 btn btn-outline-info float-right btn-sm" role="button">
+
+
+		<i class="m-1 fa fa-edit" aria-hidden="true"></i>Modifier</a>
+
+
+{% endblock %}
+
+{# {% les donnees affichees %} #}
+
+{% block data %}
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="search-result">
+
+								<table class="table">
+									<tbody>
+
+										<tr>
+											<th>
+												<h3>
+													Sous collége</h3>
+											</th>
+
+
+										</tr>
+
+										<tr>
+											<th>College
+											</th>
+											<td>{{ sous_categorie.college.nom }}</td>
+
+										</tr>
+
+										<tr>
+											<th>Nom
+											</th>
+											<td>{{ sous_categorie.nom }}</td>
+
+										</tr>
+
+										<tr>
+											<th>Description
+											</th>
+											<td>{{ sous_categorie.description }}</td>
+
+										</tr>
+
+
+									</tbody>
+								</table>
+
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

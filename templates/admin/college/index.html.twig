@@ -36,7 +36,6 @@
 									<th>Nom</th>
 									<th>Description</th>
 									<th>Nbre Rapport</th>
-									<th>Synthese</th>
 									<th>actions</th>
 
 								</tr>
@@ -56,11 +55,13 @@
 												<i class="fa fa-list" aria-hidden="true"></i>
 												{{ college.SizeRapport () }}</a>
 										</td>
-										<td>
-											<a href="{{ path('admin_college_synthese', { 'id' : college.id } ) }}" class="btn btn-outline-dark " type="button">
-												<i class="fa fa-list" aria-hidden="true"></i>
-												generer</a>
-										</td>
+
+
+										{# <td>
+																																																																																																					<a href="{{ path('admin_college_synthese', { 'id' : college.id } ) }}" class="btn btn-outline-dark " type="button">
+																																																																																																						<i class="fa fa-list" aria-hidden="true"></i>
+																																																																																																						generer</a>
+																																																																																																				</td> #}
 
 
 										<td>

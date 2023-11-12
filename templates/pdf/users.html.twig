@@ -19,7 +19,7 @@
 
 	<div class="example-wrapper">
 		<h1>Liste des Inspecteurs 
-																																																																																																																																																 ✅</h1>
+																																																																																																																																																																		 ✅</h1>
 
 
 		<style>
@@ -42,12 +42,10 @@
 			<thead>
 				<tr>
 					<th>N°</th>
-					<th>Matricule</th>
-
-					<th>Email</th>
-
 					<th>Prenom</th>
 					<th>Nom</th>
+					<th>Email</th>
+					<th>Matricule</th>
 					<th>Adresse</th>
 					<th>Téléphone</th>
 					<th>Collège</th>
@@ -60,15 +58,16 @@
 				{% for r in users %}
 					<tr>
 						<td>{{ i }}</td>
-						<td>{{ r.matricule }}</td>
-
-						<td>{{ r.email }}</td>
-
 						<td>{{ r.firstName }}</td>
 						<td>{{ r.lastName }}</td>
+						<td>{{ r.email }}</td>
+
+						<td>{{ r.matricule }}</td>
+
+
 						<td>{{ r.adresse }}</td>
 						<td>{{ r.phone }}</td>
-<td>{{ r.college? r.college.nom: 'NA' }}</td>
+						<td>{{ r.college? r.college.nom: 'NA' }}</td>
 
 
 						{% set i= i+1 %}

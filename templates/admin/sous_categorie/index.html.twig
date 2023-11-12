@@ -1,0 +1,72 @@
+{% extends 'admin/include/main.html.twig' %}
+
+{# {% titre de l'activite %} #}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+	</h1>
+{% endblock %}
+
+{#        {% operation possible  %} #}
+{% block option %}
+
+	{% for message in app.flashes('success') %}
+		<div class="flash-notice alert alert-success">
+			{{ message }}
+		</div>
+	{% endfor %}
+
+
+	<a href=" {{ path('admin_sous_categorie_new') }} " class=" m-1 btn btn-info float-right btn-sm" role="button">
+		<i class="fa fa-plus" aria-hidden="true"></i>
+		nouvelle sous college</a>
+
+{% endblock %}
+
+{#        {% formulaire de creation d'un livre %} #}
+{% block data %}
+	<div class="logo" style="text-align: center">
+
+
+		<div class="card-block card-dashboard">
+			<table id="example1" class="table table-bordered table-striped">
+
+				<thead>
+					<tr style="text-align: center;">
+						<th>Nom</th>
+						<th>Description</th>
+						<th>College</th>
+						<th>actions</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					{% for sous_categorie in sous_categories %}
+
+						<tr style="text-align: center;">
+							<td>{{ sous_categorie.nom }}</td>
+							<td>{{ sous_categorie.description }}</td>
+							<td>{{ sous_categorie.college.nom }}</td>
+
+							<td>
+								<a href="{{ path('admin_sous_categorie_edit',{ "id": sous_categorie.id } ) }}" class="btn btn-sm btn-outline-info">
+									<i class="fa fa-edit" aria-hidden="true"></i>Editer
+								</a>
+
+								<a href="{{ path('admin_sous_categorie_show',{ "id": sous_categorie.id } ) }}" class="btn btn-sm btn-outline-info">
+									<i class="fa fa-eye" aria-hidden="true"></i>Details
+								</a>
+
+							</td>
+						</tr>
+
+					{% endfor %}
+				</tbody>
+
+			</table>
+		</div>
+
+
+	</div>
+
+</div>{% endblock %}

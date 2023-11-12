@@ -7,6 +7,7 @@ use App\Form\RapportType;
 use App\Repository\RapportRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,6 +32,18 @@ class RapportController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $fichiers = [];
+            $files = $form->get('fichier')->getData();
+            foreach ($files as $file) {
+                if ($file instanceof UploadedFile) {
+                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $file->move($this->getParameter('pdf_directory'), $fileName);
+                    $fichiers[] = $fileName;
+                }
+            }
+
+            $rapport->setFichier($fichiers);
             $entityManager->persist($rapport);
             $entityManager->flush();
 

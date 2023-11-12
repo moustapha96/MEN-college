@@ -14,10 +14,10 @@
 		<i class="fa fa-list" aria-hidden="true"></i>
 		Liste</a>
 	{#
-																							
-																							
-																							<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-dark float-right btn-sm" role="button"><i
-																							        class="fa fa-edit" aria-hidden="true"></i>Modifier</a> #}
+																								
+																								
+																								<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-dark float-right btn-sm" role="button"><i
+																								        class="fa fa-edit" aria-hidden="true"></i>Modifier</a> #}
 {% endblock %}
 
 {# {% les donnees affichees %}#}
@@ -47,11 +47,6 @@
 											<th>Email</th>
 											<td>{{ user.email }}</td>
 										</tr>
-										{# <tr>
-																																																																																																																																																																																																																																						                                        <th>Roles</th>
-																																																																																																																																																																																																																																						                                        <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-																																																																																																																																																																																																																																						                                    </tr> #}
-
 										<tr>
 											<th>Prenom</th>
 											<td>{{ user.firstName }}</td>

@@ -4,10 +4,9 @@
 {#{% titre de l'activite %}#}
 {% block title_job %}
 	<h1 class="card-title">
-		{{ titre }}/
-																																																												Inspecteur :
+		{{ titre }}
 		<b>
-			{{user.matricule}}</b>
+			{{user.firstName ~' '~ user.lastName}}</b>
 
 	</h1>
 {% endblock %}
@@ -71,7 +70,8 @@
 													<th>Résultat</th>
 													<th>Collège</th>
 													<th>Date</th>
-													<th>Archiver</th>
+													<th>Fichiers</th>
+													<th>Etat</th>
 													<th>Actions</th>
 
 
@@ -156,13 +156,6 @@
 																</div>
 															</div>
 
-															{% if rapport.activiteFichier %}
-																<p>
-																	<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				                                                                d'activité</a>
-																</p>
-															{% endif %}
-
 
 														</td>
 														<td>
@@ -171,12 +164,6 @@
 																{{rapport.description |slice(0, 50)}}....
 															</a>
 
-															{% if rapport.descriptionFichier %}
-																<p>
-																	<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					                                                                de description</a>
-																</p>
-															{% endif %}
 
 														</td>
 
@@ -186,12 +173,6 @@
 																{{rapport.resultat |slice(0, 50)}}....
 															</a>
 
-															{% if rapport.resultatFichier %}
-																<p>
-																	<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}" target="_blank">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						                                                                de résultat</a>
-																</p>
-															{% endif %}
 
 														</td>
 
@@ -212,13 +193,21 @@
 																{{ rapport.createdAt|date('Y-m-d H:i') }}</p>
 
 														</td>
+														<td>
+															{% if rapport.fichier|length > 0 %}
+																<a class="btn btn-link" href="{{ path('admin_rapport_fichier', {'id': rapport.id } ) }}">{{ rapport.fichier|length  }}</a>
+															{% else %}
+																<a class="btn btn-link ">{{ rapport.fichier|length  }}</a>
+															{% endif %}
 
+
+														</td>
 														<td>
 
 
 															<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#model{{rapport.id}}">
 																{% set color = (rapport.statut == "VALIDER" ) ? 'success' :  (rapport.statut == "EN ATTENTE" ? 'warning': 'danger') %}
-																{% set icon = (rapport.statut == "VALIDER" ) ? 'check-circle' :  (rapport.statut == "EN ATTENTE" ? 'check': 'trash') %}
+																{% set icon = (rapport.statut == "VALIDER" ) ? 'check-circle' :  (rapport.statut == "EN ATTENTE" ? 'check': 'thumbs-down') %}
 
 
 																<a class="btn btn-outline-{{ color }}  " type="button">
@@ -284,22 +273,58 @@
 															<div class="btn-group">
 
 
-																<a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-outline-info " type="button">
-																	<i class="m-1 fa fa-eye" aria-hidden="true"></i>Détails
+																<a href="{{ path('admin_rapport_show',{'id': rapport.id }) }}" class="m-1 btn btn-outline-info " type="button">
+																	<i class="m-1 fa fa-eye" aria-hidden="true"></i>
 
 																</a>
 
-																{% if  rapport.isDeleted == true %}
-																	<a href="{{ path('admin_rapport_edit',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-outline-dark " type="button">
-																		<i class="fa fa-edit" aria-hidden="true"></i>Editer
-																	</a>
 
-																	<a href="{{ path('app_mailler_test',{'id': rapport.id }) }}" class="m-1 btn-sm btn btn-outline-info " type="button">
+																<a href="{{ path('admin_rapport_edit',{'id': rapport.id }) }}" class="m-1  btn btn-outline-dark " type="button">
+																	<i class="fa fa-edit" aria-hidden="true"></i>
+																</a>
 
-																		<i class="fas fa-mail-bulk    "></i>
-																	</a>
+																<a class="m-1 btn btn-info btn-sm" type="button" data-toggle="modal" data-target="#modelMail--{{rapport.id}}">
 
-																{% endif %}
+																	Envoyer
+																	<i class="fas fa-mail-bulk"></i>
+																</a>
+
+
+																<!-- Modal -->
+																<div class="modal fade" id="modelMail--{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleMail" aria-hidden="true">
+																	<div class="modal-dialog modal-lg" role="document">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<h5 class="modal-title">A qui envoyer le Mail ?</h5>
+																				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																					<span aria-hidden="true">&times;</span>
+																				</button>
+																			</div>
+																			<form action="{{ path('app_mailler_send_rapport',{'id': rapport.id }) }}" method="post">
+
+																				<div class="modal-body">
+																					<div class="form-check">
+
+																						<div class="form-group w-100 ">
+																							<label for="">Email du destinataire..</label>
+																							<input type="email" class="form-control" name="email" id="email" value="{{rapport.user.email }}" aria-describedby="emailHelpId" placeholder="">
+																							<small id="emailHelpId" class="form-text text-muted">Email destinataire..</small>
+																						</div>
+
+																					</div>
+																				</div>
+																				<div class="modal-footer">
+																					<button type="reset" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+																					<button type="submit" class="btn btn-success">Envoyer le Mail</button>
+
+																				</div>
+
+
+																			</form>
+
+																		</div>
+																	</div>
+																</div>
 
 
 															</div>

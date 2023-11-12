@@ -48,12 +48,38 @@ class Rapport
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $statut = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $comment = null;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $fichier = [];
+
 
     public function __construct()
     {
         // Set the createdAt value when an instance is created
         $this->createdAt = new \DateTimeImmutable();
         $this->isDeleted = false;
+    }
+
+    public function getFichier(): array
+    {
+        if ($this->fichier == null) {
+            return [];
+        }
+        return $this->fichier;
+    }
+
+    public function SizeFichier(): int
+    {
+        return count($this->fichier);
+    }
+
+    public function setFichier(?array $fichier): self
+    {
+        $this->fichier = $fichier;
+
+        return $this;
     }
 
     public function getCreatedAt(): \DateTimeImmutable
@@ -189,6 +215,18 @@ class Rapport
     public function setStatut(?string $statut): static
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): static
+    {
+        $this->comment = $comment;
 
         return $this;
     }

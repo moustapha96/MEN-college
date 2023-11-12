@@ -14,9 +14,7 @@
 	<a class="m-1 btn btn-outline-info float-right ml-1 btn-sm" href="{{ path('admin_college_liste') }}">
 		<i class="fa fa-list"></i>
 		Liste</a>
-	{# <a href=" {{ path('admin_college_nouveau') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
-							<i class="fa fa-plus" aria-hidden="true"></i>
-							Ajouter</a> #}
+
 {% endblock %}
 
 {# {% les donnees affichees %}#}
@@ -40,14 +38,15 @@
 												<div class="form-row">
 													<div class="form-group col-md-12">
 														<label for="Nom">Nom</label>
-														<input type="text" name="nom" class="form-control " placeholder="Nom collège" id="nom" required>
+														<input type="text" name="nom" class="form-control" placeholder="Nom collège" id="nom" required>
 													</div>
 												</div>
 												<div class="form-row">
 
 
 													<div class="form-group col-md-12">
-														<label for="code">Description
+														<label for="description">Description
+
 														</label>
 														<textarea required rows="2" cols="3" name="description" class="form-control" id="description"></textarea>
 													</div>

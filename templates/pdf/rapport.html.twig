@@ -83,23 +83,25 @@
 				<div>
 					<table>
 						<tr>
-							<th>Matricule</th>
-							<td>{{ rapport.user.matricule }}</td>
+							<th>Nom Complet</th>
+							<td>{{ rapport.user.firstName ~ ' ' ~  rapport.user.lastName}}</td>
+
 						</tr>
 						<tr>
 							<th>Email</th>
 							<td>{{ rapport.user.email }}</td>
-						</tr>
-						<tr>
-							<th>Nom Complet</th>
-							<td>{{ rapport.user.firstName ~ ' ' ~  rapport.user.lastName}}</td>
-
 						</tr>
 
 						<tr>
 							<th>Téléphone</th>
 							<td>{{ rapport.user.phone }}</td>
 						</tr>
+
+						<tr>
+							<th>Matricule</th>
+							<td>{{ rapport.user.matricule }}</td>
+						</tr>
+
 
 						<tr>
 							<th>Collège</th>
@@ -122,7 +124,7 @@
 								{% if rapport.activiteFichier %}
 
 									<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}">Fichier
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										                                                    d'activité</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		                                                    d'activité</a>
 
 								{% endif %}
 
@@ -138,7 +140,7 @@
 								{% if rapport.descriptionFichier %}
 
 									<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														                                                    description</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						                                                    description</a>
 								{% endif %}
 
 							</td>
@@ -153,7 +155,7 @@
 								{% if rapport.resultatFichier %}
 
 									<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}">Fichier de
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		                                                    résultat</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										                                                    résultat</a>
 
 								{% endif %}
 

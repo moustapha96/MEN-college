@@ -31,49 +31,6 @@ class RapportEditType extends AbstractType
                 'label' => 'resultats',
             ])
 
-            // ->add('activiteFichier', FileType::class, [
-            //     'attr' => ['class' => 'col-6 mx-auto form-control '],
-            //     'required' => false,
-            //     'label' => 'activiteFichier',
-            //     'constraints' => [
-            //         new File([
-            //             'mimeTypes' => [
-            //                 'application/pdf', // Ajoutez le mime type pour les fichiers PDF
-            //             ],
-            //             'maxSize' => '4096k',
-            //             'mimeTypesMessage' => 'Veuillez choisir un fichier PDF.',
-            //         ]),
-            //     ]
-            // ])
-
-            // ->add('descriptionFichier', FileType::class, [
-            //     'attr' => ['class' => 'col-6 mx-auto form-control '],
-            //     'required' => false,
-            //     'label' => 'descriptionFichier',
-            //     'constraints' => [
-            //         new File([
-            //             'mimeTypes' => [
-            //                 'application/pdf', // Ajoutez le mime type pour les fichiers PDF
-            //             ],
-            //             'maxSize' => '4096k',
-            //             'mimeTypesMessage' => 'Veuillez choisir un fichier PDF.',
-            //         ]),
-            //     ]
-            // ])
-            // ->add('resultatFichier', FileType::class, [
-            //     'attr' => ['class' => 'col-6 mx-auto form-control '],
-            //     'required' => false,
-            //     'label' => 'resultatFichier',
-            //     'constraints' => [
-            //         new File([
-            //             'mimeTypes' => [
-            //                 'application/pdf', // Ajoutez le mime type pour les fichiers PDF
-            //             ],
-            //             'maxSize' => '4096k',
-            //             'mimeTypesMessage' => 'Veuillez choisir un fichier PDF.',
-            //         ]),
-            //     ]
-            // ])
 
 
             ->add('valider', SubmitType::class, [
