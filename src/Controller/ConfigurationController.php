@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Configuration;
 use App\Form\ConfigurationType;
 use App\Repository\ConfigurationRepository;
-use App\Services\OrangeSMSService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,25 +21,6 @@ class ConfigurationController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'configuration_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $configuration = new Configuration();
-        $form = $this->createForm(ConfigurationType::class, $configuration);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($configuration);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('super_admin_configuration_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('super_admin/configuration/new.html.twig', [
-            'configuration' => $configuration,
-            'form' => $form,
-        ]);
-    }
 
 
 
@@ -54,7 +33,6 @@ class ConfigurationController extends AbstractController
 
         $name = $request->request->all()['name'];
         $email = $request->request->all()['email'];
-        $sendSMS = $request->request->all()['sendSMS'];
         $tel = $request->request->all()['tel'];
 
         if (trim($name) == '' ||  !$name) {
@@ -72,16 +50,12 @@ class ConfigurationController extends AbstractController
         $nameEm = $configurationRepository->findOneBy(['cle' => 'email']);
         $nameEm->setValeur($email);
 
-        $nameSms = $configurationRepository->findOneBy(['cle' => 'sendSMS']);
-        $nameSms->setValeur($sendSMS);
-
         $nameTel = $configurationRepository->findOneBy(['cle' => 'tel']);
         $nameTel->setValeur($tel);
 
 
         $entityManager->persist($nameC);
         $entityManager->persist($nameEm);
-        $entityManager->persist($nameSms);
         $entityManager->persist($nameTel);
 
         $entityManager->flush();
@@ -89,40 +63,49 @@ class ConfigurationController extends AbstractController
         return $this->redirectToRoute('super_admin_configuration_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}', name: 'super_admin_configuration_show', methods: ['GET'])]
-    public function show(Configuration $configuration): Response
-    {
-        return $this->render('super_admin/configuration/show.html.twig', [
-            'configuration' => $configuration,
-        ]);
-    }
 
-    #[Route('/{id}/edit', name: 'configuration_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Configuration $configuration, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(ConfigurationType::class, $configuration);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
 
-            return $this->redirectToRoute('super_admin_configuration_index', [], Response::HTTP_SEE_OTHER);
-        }
+    #[Route('/upload-logo-tow', name: 'upload_logo_two', methods: ['POST'])]
+    public function uploadLogo(
+        Request $request,
+        ConfigurationRepository $configurationRepository,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        $uploadedFile = $request->files->get('logo');
 
-        return $this->render('super_admin/configuration/edit.html.twig', [
-            'configuration' => $configuration,
-            'form' => $form,
-        ]);
-    }
+        if ($uploadedFile) {
 
-    #[Route('/{id}', name: 'configuration_delete', methods: ['POST'])]
-    public function delete(Request $request, Configuration $configuration, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $configuration->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($configuration);
+            $destination = $this->getParameter('kernel.project_dir') . '/public/images';
+            $uploadedFile->move($destination, $uploadedFile->getClientOriginalName());
+            $nameLogo2 = $configurationRepository->findOneBy(['cle' => 'logo2']);
+            $nameLogo2->setValeur($uploadedFile->getClientOriginalName());
+            $entityManager->persist($nameLogo2);
             $entityManager->flush();
         }
+        return $this->redirectToRoute('super_admin_configuration_index');
+    }
 
-        return $this->redirectToRoute('super_admin_configuration_index', [], Response::HTTP_SEE_OTHER);
+
+
+    #[Route('/upload-logo-one', name: 'upload_logo_one', methods: ['POST'])]
+    public function uploadLogo1(
+        Request $request,
+        ConfigurationRepository $configurationRepository,
+        EntityManagerInterface $entityManager,
+    ): Response {
+
+
+        $uploadedFile = $request->files->get('logo');
+
+        if ($uploadedFile) {
+            $destination = $this->getParameter('kernel.project_dir') . '/public/images';
+            $uploadedFile->move($destination, $uploadedFile->getClientOriginalName());
+            $nameLogo1 = $configurationRepository->findOneBy(['cle' => 'logo1']);
+            $nameLogo1->setValeur($uploadedFile->getClientOriginalName());
+            $entityManager->persist($nameLogo1);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('super_admin_configuration_index');
     }
 }

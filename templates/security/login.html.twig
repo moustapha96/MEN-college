@@ -4,7 +4,8 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
-		<title>GR-Inspection Générale de l'Éducation et de la Formation</title>
+		<title>{{getName()}}</title>
+
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
 		<link rel="stylesheet" href="login/css/mdb.min.css">
@@ -56,20 +57,22 @@
 
 						<div class="row  d-flex justify-content-between ">
 
-							<img src="images/flag_senegal.png" style="width: 100px;height: 50px " class="responsive-image" alt="">
-
-							<img src="images/flag_men.png" style=" height: 55px; width: 150px" class="responsive-image" alt="">
-
+							<img src="images/{{getLogo2()}}" style="width: 100px;height: 50px " class="responsive-image" alt="">
+							<img src="images/{{getLogo1()}}" style=" height: 55px; width: 150px" class="responsive-image" alt="">
 
 						</div>
 						<h5 class="mt-1 ">
-							<b>Ministère de l’Éducation nationale</b>
+							<b>
+								{{getTitle1()}}
+							</b>
+
 						</h5>
 
 
 						<h5 class="mt-2">
 							<b>
-								Inspection générale de l'Éducation et de la Formation</b>
+								{{getTitle2()}}</b>
+
 						</h5>
 					</div>
 
@@ -115,13 +118,17 @@
 		</div>
 		<!-- Footer -->
 		<div class="footer">
-			<p>&copy; 2023 IGEF ,
+			<p>&copy; 2023
+				{{getName()}},
 				<i class="fas fa-mail-bulk"></i>
-				<a href="mailto:igen.service@yahoo.com">igen.service@yahoo.com</a>
+				<a href="mailto:{{getEmail()}}">
+					{{getEmail()}}
+				</a>
 				.
 				<i class="fa-solid fa-phone"></i>
 
-				TEL: 33 864 58 83</p>
+				TEL:
+				{{getTel()}}</p>
 
 		</div>
 

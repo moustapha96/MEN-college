@@ -116,7 +116,7 @@ class SuperAdminController extends AbstractController
     ): Response {
         return $this->render('super_admin/college/liste_rapport_client.html.twig', [
             'titre' => 'Rapports de',
-            'rapports' => $rapportRepository->findBy(['user' => $user], ['orderBy' => ['createdAt' => 'DESC']]),
+            'rapports' => $rapportRepository->findBy(['user' => $user]),
             "user" =>  $user
         ]);
     }
@@ -430,7 +430,7 @@ class SuperAdminController extends AbstractController
         UserRepository $userRepository,
         CollegeRepository $collegeRepository
     ): Response {
-        return $this->render('user/index.html.twig', [
+        return $this->render('super_admin/user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'titre' => "Liste des Inspecteurs",
             "colleges" => $collegeRepository->findAll()
@@ -583,25 +583,5 @@ class SuperAdminController extends AbstractController
         $entityManager->flush();
         $this->addFlash('success', "College  mise à jour avec succès ");
         return $this->redirect($request->headers->get('referer'));
-    }
-
-
-
-
-
-
-    #[Route('/{id}/sous_categorie', name: 'user_college_update_sous_categorie', methods: ['GET'])]
-    public function updateCategorie(
-        College $college,
-        UserRepository $userRepository,
-        CollegeRepository $collegeRepository
-    ): Response {
-
-        return $this->render('super_admin/user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-            "college" => $college,
-            'titre' => "Liste des Inspecteurs",
-            "colleges" => $collegeRepository->findAll()
-        ]);
     }
 }

@@ -116,7 +116,7 @@ class AdminController extends AbstractController
     ): Response {
         return $this->render('admin/college/liste_rapport_client.html.twig', [
             'titre' => 'Rapports de',
-            'rapports' => $rapportRepository->findBy(['user' => $user], ['orderBy' => ['createdAt' => 'DESC']]),
+            'rapports' => $rapportRepository->findBy(['user' => $user]),
             "user" =>  $user
         ]);
     }
@@ -134,7 +134,7 @@ class AdminController extends AbstractController
     #[Route('/colleges/{id}/rapport', name: 'college_rapport', methods: ['GET'])]
     public function showCollegeRapport(College $college, RapportRepository $rapportRepository): Response
     {
-        $rapports = $rapportRepository->findBy(['college' => $college], ['orderBy' => ['createdAt' => 'DESC']]);
+        $rapports = $rapportRepository->findBy(['college' => $college]);
 
         return $this->render('admin/college/rapport.html.twig', [
             'titre' => 'Liste Rapports Collège => ' . $college->getNom(),

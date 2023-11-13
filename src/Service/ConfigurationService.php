@@ -26,7 +26,8 @@ class ConfigurationService
         if (!$config) {
             throw new \Exception(sprintf('Configuration "%s" not found.', $key));
         }
-
         return $config->getValeur();
     }
+
+    
 }

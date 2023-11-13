@@ -35,63 +35,7 @@
 
 								<div class="row">
 
-
-									<div class="col-md-8">
-										<div class="card">
-											<div class="card-body">
-												<h3 class="card-title">Token SMS</h3>
-
-												<div class="col d-flex justify-content-between align-items-center">
-
-													{% set valuesmsToken = null %}
-
-
-													{% if configurations[3].getCle()  %}
-
-														{% set valuesmsToken =  configurations[3].getValeur() %}
-
-													{% endif %}
-
-													<input type="text" disabled name="smsToken" value="{{valuesmsToken}}" id="smsToken" class="form-control">
-
-
-												</div>
-											</div>
-										</div>
-									</div>
-
-
 									<div class="col-md-4">
-										<div class="card">
-											<div class="card-body">
-												<h3 class="card-title">Activation SMS</h3>
-
-												<div class="col d-flex justify-content-between align-items-center">
-
-
-													{% set valuesendSMS = null %}
-													{% if configurations[4].getCle()  %}
-														{% set valuesendSMS =  configurations[4].getValeur() %}
-														{% set selected = 'selected' %}
-
-													{% endif %}
-
-													<select class="form-control" name="sendSMS" id="sendSMS" value="{{valuesendSMS}}">
-
-														<option value="enable" {{ valuesendSMS == 'enable'? selected: '' }}>Activé</option>
-														<option value="desable" {{ valuesendSMS == 'desable'? selected: '' }}>Desactivé</option>
-
-
-													</select>
-
-
-												</div>
-											</div>
-										</div>
-									</div>
-
-
-									<div class="col-md-6">
 										<div class="card">
 											<div class="card-body">
 												<h3 class="card-title">NAME App</h3>
@@ -100,18 +44,14 @@
 													{% set valueName = null %}
 													{% if configurations[2].getCle() %}
 														{% set valueName =  configurations[2].getValeur() %}
-
 													{% endif %}
-
 													<input type="text" required name="name" value="{{valueName}}" id="name" class="form-control">
-
-
 												</div>
 											</div>
 										</div>
 									</div>
 
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<div class="card">
 											<div class="card-body">
 												<h3 class="card-title">Email App</h3>
@@ -131,7 +71,7 @@
 										</div>
 									</div>
 
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<div class="card">
 											<div class="card-body">
 												<h3 class="card-title">TEL App</h3>
@@ -153,18 +93,127 @@
 
 
 								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="card">
+											<div class="card-body">
+												<h3 class="card-title">Titre App 1</h3>
+
+												<div class="col d-flex justify-content-between align-items-center">
+													{% set valueName = null %}
+													{% if configurations[6].getCle() %}
+														{% set valueName =  configurations[6].getValeur() %}
+
+													{% endif %}
+													<textarea name="title_1" required id="title_1" class="form-control">{{valueName}}</textarea>
+
+
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+
+										<div class="card">
+											<div class="card-body">
+												<h3 class="card-title">Titre App 2</h3>
+
+												<div class="col d-flex justify-content-between align-items-center">
+													{% set valueName = null %}
+													{% if configurations[7].getCle() %}
+														{% set valueName =  configurations[7].getValeur() %}
+
+													{% endif %}
+													<textarea name="title_8" required id="title_8" class="form-control">{{valueName}}</textarea>
+
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
 
 								<div class="col-md-6">
 									<button class="btn btn-outline-success" type="submit">
 										<i class="ti-save    "></i>
 										Enregistrer</button>
-
-
 								</div>
 
 							</form>
 
 						</div>
+						<div class="bg-white rounded shadow-5-strong p-5">
+
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="card">
+
+										<div class="card-body">
+											<div class="d-flex flex-column align-items-center text-center">
+												{% set valueName = null %}
+												{% if configurations[8].getCle() %}
+													{% set valueName =  configurations[8].getValeur() %}
+												{% endif %}
+
+												<form action="{{ path('super_admin_upload_logo_one') }}" method="post" enctype="multipart/form-data">
+													<label for="logo">Télécharger Logo 1:</label>
+
+													<input type="file" name="logo" id="logo" class="form-control" accept="image/*">
+													{% if valueName %}
+														<img src="/images/{{ valueName }}" alt="Admin" class="rounded-circle" width="150" height="150">
+													{% endif %}
+													<br>
+													<button type="submit" class="btn btn-outline-success  mt-4 ">Télécharger</button>
+
+
+												</form>
+
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="col-md-6">
+									<div class="card">
+
+										<div class="card-body">
+											<div class="d-flex flex-column align-items-center text-center">
+												{% set valueName = null %}
+												{% if configurations[9].getCle() %}
+													{% set valueName =  configurations[9].getValeur() %}
+												{% endif %}
+
+												<form action="{{ path('super_admin_upload_logo_two') }}" method="post" enctype="multipart/form-data">
+
+
+													<label for="logo">Télécharger Logo 2:</label>
+													<input type="file" name="logo" id="logo" class="form-control" accept="image/*">
+
+													{% if valueName %}
+														<img src="/images/{{ valueName }}" alt="Admin" class="rounded-circle" width="150" height="150">
+
+													{% endif %}
+													<br>
+													<button type="submit" class="btn btn-outline-success mt-4">Télécharger</button>
+
+												</form>
+
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+
+						</div>
+
+
 					</div>
 
 

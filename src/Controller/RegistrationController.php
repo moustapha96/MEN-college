@@ -7,6 +7,7 @@ use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Security\UserAuthenticator;
+use App\Service\DataConfigurationService;
 use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -28,10 +29,19 @@ class RegistrationController extends AbstractController
     private EmailVerifier $emailVerifier;
     private MailerService $mailerService;
 
-    public function __construct(EmailVerifier $emailVerifier, MailerService $mailerService,)
-    {
+
+    private $configurationService;
+    private $tokenSI;
+
+    public function __construct(
+        EmailVerifier $emailVerifier,
+        MailerService $mailerService,
+        DataConfigurationService $configurationService,
+
+    ) {
         $this->emailVerifier = $emailVerifier;
         $this->mailerService = $mailerService;
+        $this->configurationService = $configurationService;
     }
 
     #[Route('/register', name: 'app_register')]
@@ -42,6 +52,11 @@ class RegistrationController extends AbstractController
         UserRepository $userRepository,
 
     ): Response {
+
+        $logo1 = $this->configurationService->getLogo1();
+        $logo2 = $this->configurationService->getLogo2();
+
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
 
@@ -108,16 +123,14 @@ class RegistrationController extends AbstractController
                     $data['plainPassword']
                 );
 
-
-
                 $this->addFlash('success', 'Inscription réussie! Veuillez vérifier votre email.');
-
                 return $this->redirectToRoute('app_login');
             }
         }
 
         return $this->render('registration/register.html.twig', [
-            // 'form' => $form->createView(),
+            'logo1' => $logo1,
+            'logo2' => $logo2,
         ]);
     }
 

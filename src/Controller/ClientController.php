@@ -139,7 +139,7 @@ class ClientController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $rapports = $rapportRepository->findBy(['college' => $user->getCollege()], ['orderBy' => ['createdAt' => 'DESC']]);
+        $rapports = $rapportRepository->findBy(['college' => $user->getCollege()]);
         return $this->render("client/rapport/index.html.twig", [
             'titre' => 'Liste des rapports d\'activités',
             "rapports" => $rapports,

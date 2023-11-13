@@ -17,9 +17,6 @@ use Symfony\Component\Validator\Constraints\File;
 class MainController extends AbstractController
 {
 
-
-
-
     #[Route('/admin/profil', name: 'admin_profil')]
     public function profilAdmin(): Response
     {
@@ -29,6 +26,7 @@ class MainController extends AbstractController
             'user' => $user
         ]);
     }
+
 
     #[Route('/client/profil', name: 'client_profil')]
     public function profil(): Response
@@ -49,8 +47,6 @@ class MainController extends AbstractController
             'user' => $user
         ]);
     }
-
-    //mettre a jour la photo profil
 
     #[Route('/super_admin/update/avatar', name: 'super_admin_profil_update_avatar', methods: ['GET', 'POST'])]
     public function updateAvatarSAdmin(Request $request, EntityManagerInterface $entityManager)
@@ -213,7 +209,6 @@ class MainController extends AbstractController
 
     //function de mise en jour des donnees
     #[Route('/admin/profil/update', name: 'admin_profil_update_data', methods: ['POST'])]
-
     public function updateDataAdmin(
         Request                $request,
         UserRepository $userRepository,

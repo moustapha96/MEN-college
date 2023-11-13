@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Security\AccountDisabledException;
+use App\Service\DataConfigurationService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,20 +18,29 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
 
+
+    private $configurationService;
     private $tokenSI;
     public function __construct(
+        DataConfigurationService $configurationService,
         private UrlGeneratorInterface $urlGenerator,
         TokenStorageInterface $tokenStorage
     ) {
         $this->tokenSI = $tokenStorage;
+        $this->configurationService = $configurationService;
     }
 
 
     #[Route('/security', name: 'app_security')]
     public function index(): Response
     {
+        $logo1 = $this->configurationService->getLogo1();
+        $logo2 = $this->configurationService->getLogo2();
+
         return $this->render('security/index.html.twig', [
             'controller_name' => 'SecurityController',
+            'logo1' => $logo1,
+            'logo2' => $logo2
         ]);
     }
 
@@ -39,7 +49,19 @@ class SecurityController extends AbstractController
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+
+        $logo1 = $this->configurationService->getLogo1();
+        $logo2 = $this->configurationService->getLogo2();
+
+        return $this->render(
+            'security/login.html.twig',
+            [
+                'last_username' => $lastUsername,
+                'error' => $error,
+                'logo1' => $logo1,
+                'logo2' => $logo2
+            ]
+        );
     }
 
 
