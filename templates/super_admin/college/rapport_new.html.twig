@@ -1,0 +1,47 @@
+{% extends 'super_admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+		au collège
+		<u>
+			{{ college.nom }}</u>
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+
+		<div class="col-12">
+
+
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="search-result">
+
+								<div class="result-body">
+									<div class="card-body">
+
+										{{ include('admin/rapport/_form.html.twig') }}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

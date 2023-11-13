@@ -15,12 +15,16 @@ use Symfony\Component\Mime\Part\File;
 class MailerService
 {
 
+    private $config;
+
     private $mail;
 
     public function __construct(
-        MailerInterface  $mailer
+        MailerInterface  $mailer,
+        ConfigurationService $config
     ) {
         $this->mail = $mailer;
+        $this->config = $config;
     }
 
     public function sendMailCompteBloque(User $user)

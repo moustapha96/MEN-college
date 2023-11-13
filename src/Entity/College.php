@@ -32,15 +32,11 @@ class College
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $rapport = null;
 
-    #[ORM\OneToMany(mappedBy: 'college', targetEntity: SousCategorie::class)]
-    private Collection $sousCategories;
-
 
     public function __construct()
     {
         $this->rapports = new ArrayCollection();
         $this->user = new ArrayCollection();
-        $this->sousCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,11 +91,6 @@ class College
         return count($this->getRapports());
     }
 
-    public function SizeSousCategorie(): int
-    {
-
-        return count($this->getSousCategories());
-    }
     public function removeRapport(Rapport $rapport): static
     {
         if ($this->rapports->removeElement($rapport)) {
@@ -150,36 +141,6 @@ class College
     public function setRapport(?string $rapport): static
     {
         $this->rapport = $rapport;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, SousCategorie>
-     */
-    public function getSousCategories(): Collection
-    {
-        return $this->sousCategories;
-    }
-
-    public function addSousCategory(SousCategorie $sousCategory): static
-    {
-        if (!$this->sousCategories->contains($sousCategory)) {
-            $this->sousCategories->add($sousCategory);
-            $sousCategory->setCollege($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSousCategory(SousCategorie $sousCategory): static
-    {
-        if ($this->sousCategories->removeElement($sousCategory)) {
-            // set the owning side to null (unless already changed)
-            if ($sousCategory->getCollege() === $this) {
-                $sousCategory->setCollege(null);
-            }
-        }
 
         return $this;
     }

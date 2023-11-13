@@ -1,0 +1,176 @@
+{% extends 'super_admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-body">
+					<h3>Parametrage</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+
+
+					<div class="result-body">
+						<div class="table-responsive">
+
+
+							<form class="bg-white rounded shadow-5-strong p-5" action="{{ path('super_admin_configuration_update') }}" method="post">
+
+
+								<div class="row">
+
+
+									<div class="col-md-8">
+										<div class="card">
+											<div class="card-body">
+												<h3 class="card-title">Token SMS</h3>
+
+												<div class="col d-flex justify-content-between align-items-center">
+
+													{% set valuesmsToken = null %}
+
+
+													{% if configurations[3].getCle()  %}
+
+														{% set valuesmsToken =  configurations[3].getValeur() %}
+
+													{% endif %}
+
+													<input type="text" disabled name="smsToken" value="{{valuesmsToken}}" id="smsToken" class="form-control">
+
+
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="col-md-4">
+										<div class="card">
+											<div class="card-body">
+												<h3 class="card-title">Activation SMS</h3>
+
+												<div class="col d-flex justify-content-between align-items-center">
+
+
+													{% set valuesendSMS = null %}
+													{% if configurations[4].getCle()  %}
+														{% set valuesendSMS =  configurations[4].getValeur() %}
+														{% set selected = 'selected' %}
+
+													{% endif %}
+
+													<select class="form-control" name="sendSMS" id="sendSMS" value="{{valuesendSMS}}">
+
+														<option value="enable" {{ valuesendSMS == 'enable'? selected: '' }}>Activé</option>
+														<option value="desable" {{ valuesendSMS == 'desable'? selected: '' }}>Desactivé</option>
+
+
+													</select>
+
+
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="col-md-6">
+										<div class="card">
+											<div class="card-body">
+												<h3 class="card-title">NAME App</h3>
+
+												<div class="col d-flex justify-content-between align-items-center">
+													{% set valueName = null %}
+													{% if configurations[2].getCle() %}
+														{% set valueName =  configurations[2].getValeur() %}
+
+													{% endif %}
+
+													<input type="text" required name="name" value="{{valueName}}" id="name" class="form-control">
+
+
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="card">
+											<div class="card-body">
+												<h3 class="card-title">Email App</h3>
+
+												<div class="col d-flex justify-content-between align-items-center">
+													{% set value = null %}
+													{% if configurations[1].getCle()  %}
+														{% set value =  configurations[1].getValeur() %}
+													{% endif %}
+
+
+													<input type="email" required name="email" value="{{value}}" id="email" class="form-control">
+
+
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="card">
+											<div class="card-body">
+												<h3 class="card-title">TEL App</h3>
+
+												<div class="col d-flex justify-content-between align-items-center">
+													{% set value = null %}
+													{% if configurations[5].getCle()  %}
+														{% set value =  configurations[5].getValeur() %}
+													{% endif %}
+
+
+													<input type="phone" required name="tel" value="{{value}}" id="tel" class="form-control">
+
+
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+								</div>
+
+								<div class="col-md-6">
+									<button class="btn btn-outline-success" type="submit">
+										<i class="ti-save    "></i>
+										Enregistrer</button>
+
+
+								</div>
+
+							</form>
+
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

@@ -1,0 +1,387 @@
+{% extends 'super_admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+	<style>
+
+		.centered-modal {
+			display: flex;
+			/* justify-content: center; */
+			/* align-items: center; */
+			height: 90vh;
+			width: 95vh;
+			max-width: 100vh;
+			margin-top: 5%;
+			margin-bottom: 5%
+		}
+
+		/* .modal-dialog {
+			max-width: 80%;
+		} */
+
+		.modal-body {
+			max-height: 70vh;
+			overflow-y: auto;
+		}
+	</style>
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="search-result">
+
+								<div class="result-body">
+									<div class="table-responsive">
+										<table id="example1" class="table table-bordered table-striped table-head-fixed">
+
+
+											<thead>
+												<tr>
+
+													<th>Activité</th>
+													<th>Déscription</th>
+													<th>Résultat</th>
+													<th>Fichier</th>
+
+													<th>Inspecteur</th>
+													<th>Collège</th>
+													<th style="width: 8px">Date</th>
+													<th>Statut</th>
+													<th>Actions</th>
+
+												</tr>
+											</thead>
+
+
+											<tbody>
+
+												{% for rapport in rapports %}
+													<tr>
+														<td style="width: 10%;">
+
+															<div class="widget-26-job-title">
+
+																<a type="button" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
+																	{{rapport.activite |slice(0, 50)}}....
+																</a>
+
+																<div class="modal fade " id="model--{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+
+																	<div class="modal-dialog" role="document">
+																		<div class="modal-content centered-modal">
+
+																			<div class="modal-header">
+																				<h5 class="modal-title">Détails rapport</h5>
+																				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																					<span aria-hidden="true">&times;</span>
+																				</button>
+																			</div>
+																			<div class="modal-body">
+																				<div class="container-fluid">
+																					<div class="row">
+																						<div class="col-md-6">
+																							<b>
+																								Collège
+																							</b>
+																							:
+
+																							{{rapport.college.nom}}
+																						</div>
+
+																						<div class="col-md-6">
+																							<b>
+																								Date
+																							</b>
+																							:
+
+																							{{ rapport.createdAt|date('Y-m-d H:i') }}</div>
+
+																					</div>
+
+																					<div>
+																						<h2>Activité</h2>
+
+																						<p>
+																							{{rapport.activite}}</p>
+
+																					</div>
+																					<div>
+																						<h2>Description</h2>
+
+																						<p>
+																							{{rapport.description}}</p>
+
+																					</div>
+																					<div>
+																						<h2>Resultat</h2>
+
+																						<p>
+																							{{rapport.resultat}}</p>
+																						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe quibusdam dolore quisquam deserunt, et earum maiores placeat! Odio aliquid quaerat quod fugit pariatur nobis, illum tenetur, nisi voluptates distinctio quae.
+
+																					</div>
+
+
+																				</div>
+																			</div>
+																			<div class="modal-footer  d-flex align-items-end ">
+
+																				<button type="button" class="btn btn-secondary  float-right " data-dismiss="modal">Fermer</button>
+
+																			</div>
+																		</div>
+																	</div>
+																</div>
+
+
+															</div>
+														</td>
+
+														<td>
+
+															<a type="button" title="{{rapport.description}}" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
+																{{rapport.description |slice(0, 50)}}....
+															</a>
+
+
+														</td>
+
+														<td>
+
+															<a type="button" title="{{rapport.resultat}}" class="btn btn-sm" data-toggle="modal" data-target="#model--{{rapport.id}}">
+																{{rapport.resultat |slice(0, 50)}}....
+															</a>
+
+														</td>
+														<td>
+
+															{% if rapport.fichier|length > 0 %}
+																<a class="btn btn-link" href="{{ path('admin_rapport_fichier', {'id': rapport.id } ) }}">{{ rapport.fichier|length  }}</a>
+															{% else %}
+																<a class="btn btn-link ">{{ rapport.fichier|length  }}</a>
+
+															{% endif %}
+
+														</td>
+														<td>
+
+
+															<span>
+																<a href="{{ path('super_admin_user_show',{'id': rapport.user.getId() }) }}" title="Détails Inspecteur">{{rapport.user.getMatricule()}}=>
+
+																	{{rapport.user }}
+																</a>
+
+															</span>
+
+
+														</td>
+
+
+														<td>
+
+															<div class="widget-26-job-title">
+																<span>
+																	<a href="{{ path('super_admin_college_show',{'id': rapport.college.id }) }}" title="Détails College">{{rapport.college.getNom()
+
+                                                                }}</a>
+																</span>
+
+															</div>
+														</td>
+
+
+														<td>
+
+															<h6>
+																{{ rapport.createdAt|date('Y-m-d') }}</h6>
+
+														</td>
+
+														<td>
+
+
+															<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#model{{rapport.id}}">
+																{% set color = (rapport.statut == "VALIDER" ) ? 'success' :  (rapport.statut == "EN ATTENTE" ? 'warning': 'danger') %}
+																{% set icon = (rapport.statut == "VALIDER" ) ? 'check-circle' :  (rapport.statut == "EN ATTENTE" ? 'check': 'thumbs-down') %}
+
+																<a class="btn btn-outline-{{ color }}  " type="button">
+																	<i class="fa fa-solid fa-{{ icon }}"></i>
+																	{{ rapport.statut }}
+																</a>
+															</button>
+
+															<div class="modal fade" id="model{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<h5 class="modal-title">État Rapport</h5>
+																			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																				<span aria-hidden="true">&times;</span>
+																			</button>
+																		</div>
+																		<form action="{{ path("super_admin_rapport_update_state", { 'id': rapport.id } ) }}" method="post">
+
+																			<div class="modal-body">
+																				<div class="container-fluid">
+																					<div class="form-group">
+																						<label for="state">État actuelle:
+																							{{ rapport.statut }}
+																						</label>
+																						<select class="custom-select" name="state" id="state">
+																							{% set selected = 'selected' %}
+																							{% set etat = '' %}
+
+
+																							<option>Choisie...</option>
+																							<option {{ rapport.statut == 'EN ATTENTE' ? selected : '' }} value="EN ATTENTE">En Attente</option>
+																							<option {{ rapport.statut == 'VALIDER' ? selected : '' }} value="VALIDER">Valider</option>
+																							<option {{ rapport.statut == 'NON VALIDER' ? selected : '' }} value="NON VALIDER">Non Valider</option>
+
+
+																						</select>
+																					</div>
+
+																					<textarea name="comment" id="comment-textarea" cols="60" rows="5" placeholder="commentaire" style="display: none;"></textarea>
+
+
+																				</div>
+																			</div>
+																			<div class="modal-footer">
+																				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+																				<button type="submit" class="btn btn-info">Enregistrer</button>
+																			</div>
+																		</form>
+
+																	</div>
+																</div>
+															</div>
+														</td>
+
+
+														<td style="width: 10%;">
+															<div class="widget-26-job-starred btn-group btn-group-toggle">
+
+																<a href="{{ path('super_admin_rapport_show',{'id': rapport.id }) }}" title="Détails Rapport" class="m-1 btn btn-outline-info" type="button">
+																	<i class="fa fa-eye" aria-hidden="true"></i>
+
+																</a>
+
+
+																<a class="m-1 btn btn-info" type="button" title="Envoyer un mail" data-toggle="modal" data-target="#modelMail--{{rapport.id}}">
+																	<i class="fas fa-mail-bulk"></i>
+																</a>
+																<!-- Modal -->
+																<div class="modal fade" id="modelMail--{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleMail" aria-hidden="true">
+																	<div class="modal-dialog modal-lg" role="document">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<h5 class="modal-title">A qui envoyer le Mail ?</h5>
+																				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																					<span aria-hidden="true">&times;</span>
+																				</button>
+																			</div>
+																			<form action="{{ path('app_mailler_send_rapport',{'id': rapport.id }) }}" method="post">
+
+																				<div class="modal-body">
+																					<div class="form-check">
+
+																						<div class="form-group w-100 ">
+																							<label for="">Email du destinataire..</label>
+																							<input type="email" class="form-control" name="email" id="email" value="{{rapport.user.email }}" aria-describedby="emailHelpId" placeholder="">
+																							<small id="emailHelpId" class="form-text text-muted">Email destinataire..</small>
+																						</div>
+
+																					</div>
+																				</div>
+																				<div class="modal-footer">
+																					<button type="reset" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+																					<button type="submit" class="btn btn-success">Envoyer le Mail</button>
+
+																				</div>
+
+
+																			</form>
+
+																		</div>
+																	</div>
+																</div>
+
+
+																<a href="{{ path('super_admin_rapport_edit',{'id': rapport.id }) }}" title="Modifier le rapport" class="m-1 btn btn-outline-dark" type="button">
+																	<i class="fa fa-edit" aria-hidden="true"></i>
+																</a>
+
+																{% if rapport.statut == "NON VALIDER" %}
+																	<a class="m-1 btn btn-outline-dark" data-toggle="modal" title="Commenter la non validation" data-target="#modelC--{{rapport.id}}">
+																		Commenter
+																	</a>
+
+																	<!-- Modal -->
+																	<div class="modal fade" id="modelC--{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<form action="{{ path('super_admin_rapport_comment',{'id': rapport.id }) }}" method="post">
+
+																					<div class="modal-header">
+																						<h5 class="modal-title">Ajouter un commentaire</h5>
+																						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																							<span aria-hidden="true">&times;</span>
+																						</button>
+																					</div>
+																					<div class="modal-body">
+																						<div class="container-fluid">
+																							<textarea name="commentaire" id="comment" class="form-control" rows="10">{{rapport.comment}}</textarea>
+																						</div>
+																					</div>
+																					<div class="modal-footer  justify-content-between ">
+
+																						<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+																						<button type="submit" class="btn btn-success">Enregistrer</button>
+																					</div>
+																				</form>
+
+																			</div>
+																		</div>
+																	</div>
+
+																{% endif %}
+
+																<a href="{{ path('super_admin_rapport_delete', { 'id' : rapport.id } ) }}" class="m-1 btn btn-sm btn-outline-danger" type="button">
+
+																	<i class="m-1 fa fa-trash" aria-hidden="true"></i>
+																</a>
+
+
+															</div>
+														</td>
+													</tr>
+
+
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				{% endblock %}

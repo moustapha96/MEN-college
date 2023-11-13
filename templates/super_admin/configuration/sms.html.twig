@@ -1,0 +1,109 @@
+{% extends 'admin/include/main.html.twig' %}
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{  'INFO SMS' }}
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block buttons %}{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block maincontent %}
+
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-body">
+					<h3>Détail PACKAGE SMS</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="search-result">
+
+								<div class="result-body">
+									<div class="table-responsive">
+
+
+										<table class="table">
+											<tbody>
+												<tr>
+													<th>SMS id</th>
+													<td>{{ soldes[0].id }}</td>
+												</tr>
+												<tr>
+													<th>Type</th>
+													<td>{{ soldes[0].type }}</td>
+
+
+												</tr>
+												<tr>
+													<th>Pays</th>
+													<td>{{ soldes[0].country }}</td>
+												</tr>
+												<tr>
+
+													<th>Nom
+													</th>
+													<td>{{ soldes[0].offerName }}</td>
+												</tr>
+
+												<tr>
+
+													<th>Unité disponible</th>
+													<td>{{ soldes[0].availableUnits }}</td>
+
+												</tr>
+												<tr>
+
+													<th>Unités echoué</th>
+													<td>{{ soldes[0].requestedUnits }}</td>
+
+												</tr>
+												<tr>
+
+													<th>status</th>
+													<td>{{ soldes[0].status }}</td>
+												</tr>
+												<tr>
+
+													<th>Date Expiration</th>
+													<td>{{ soldes[0].expirationDate | date('Y-m-d H:m:s')}}</td>
+												</tr>
+												<tr>
+
+
+													<th>Date creation</th>
+													<td>{{ soldes[0].creationDate  | date('Y-m-d H:m:s')}}</td>
+												</tr>
+												<tr>
+
+													<th>Date dernier Mise a jour</th>
+													<td>{{ soldes[0].lastUpdateDate | date('Y-m-d H:m:s') }}</td>
+
+
+												</tr>
+											</tbody>
+										</table>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

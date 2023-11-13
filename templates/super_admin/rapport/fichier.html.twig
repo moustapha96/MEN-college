@@ -1,0 +1,329 @@
+{% extends 'super_admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}
+	<a class="m-1 btn btn-outline-info float-right ml-1 btn-sm" href="{{ path('admin_rapport_liste') }}">
+		<i class="m-1 fa fa-list"></i>
+		Liste</a>
+{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+
+
+				<div class="row">
+
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-body">
+
+								<div class="vtabs col-12 ">
+									<ul class="nav nav-tabs tabs-vertical" role="tablist">
+										<li class="nav-item">
+											<a class="nav-link " data-toggle="tab" href="#home4" role="tab">
+												<span class="hidden-sm-up">
+													<i class="ti-user"></i>
+												</span>
+												<span class="hidden-xs-down">Inspecteur</span>
+											</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" data-toggle="tab" href="#college4" role="tab">
+												<span class="hidden-sm-up">
+													<i class="ti-write"></i>
+												</span>
+												<span class="hidden-xs-down">College</span>
+											</a>
+										</li>
+
+										<li class="nav-item">
+											<a class="nav-link" data-toggle="tab" href="#profile4" role="tab">
+												<span class="hidden-sm-up">
+													<i class="ti-write"></i>
+												</span>
+												<span class="hidden-xs-down">Rapport</span>
+											</a>
+										</li>
+
+										{% if rapport.fichier %}
+
+											<li class="nav-item">
+												<a class="nav-link active" data-toggle="tab" href="#fichier" role="tab">
+
+
+													<span class="hidden-sm-up">
+														<i class="ti-file"></i>
+													</span>
+													<span class="hidden-xs-down">Fichiers</span>
+												</a>
+											</li>
+
+										{% endif %}
+
+
+									</ul>
+									<!-- Tab panes -->
+									<div class="tab-content">
+										<div class="tab-pane " id="home4" role="tabpanel">
+											<table id="bootstrap-data-table-export" class="table table-striped table-bordered">
+												<tbody>
+
+													<tr>
+														<th></th>
+														<td><img src="/avatars/{{ rapport.user.avatar }}" alt="Admin" class="rounded-circle" width="150"></td>
+													</tr>
+
+													<tr>
+														<th>
+															<h3>Inspecteur</h3>
+														</th>
+													</tr>
+
+													<tr>
+														<th>Prenom</th>
+														<td>{{ rapport.user.firstName }}</td>
+													</tr>
+
+													<tr>
+														<th>Nom</th>
+														<td>{{ rapport.user.lastName }}</td>
+													</tr>
+
+													<tr>
+														<th>Matricule</th>
+														<td>{{ rapport.user.matricule }}</td>
+													</tr>
+
+													<tr>
+														<th>Email</th>
+														<td>{{ rapport.user.email }}</td>
+													</tr>
+
+													<tr>
+														<th>Téléphone</th>
+														<td>{{ rapport.user.phone }}</td>
+													</tr>
+
+
+													<tr>
+														<th>Adresse</th>
+														<td>{{ rapport.user.adresse }}</td>
+													</tr>
+													<tr>
+														<th>Sexe</th>
+														<td>{{ rapport.user.sexe }}</td>
+													</tr>
+													<tr>
+														<th>Dernier Connexion</th>
+														<td>{{ rapport.user.lastActivityAt ? rapport.user.lastActivityAt|date('Y-m-d H:i:s') : '' }}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+
+										<div class="tab-pane p-20" id="college4" role="tabpanel">
+
+											<table class="table">
+												<tbody>
+
+													<tr>
+														<th>Nom
+														</th>
+														<td>{{ rapport.college.nom }}</td>
+													</tr>
+
+													<tr>
+														<th>Description
+														</th>
+														<td>{{ rapport.college.description }}</td>
+													</tr>
+
+												</tbody>
+											</table>
+										</div>
+
+										<div class="tab-pane   p-20" id="profile4" role="tabpanel">
+
+											<table class="table">
+												<tbody>
+
+													<tr>
+														<th>Statut</th>
+														<td>
+															{% set color = (rapport.statut == "VALIDER" ) ? 'success' :  (rapport.statut == "EN ATTENTE" ? 'warning': 'danger') %}
+															{% set icon = (rapport.statut == "VALIDER" ) ? 'check-circle' :  (rapport.statut == "EN ATTENTE" ? 'check': 'thumbs-down') %}
+
+
+															<span class="text-{{ color }}  ">
+																<i class="fa fa-solid fa-{{ icon }}"></i>
+																{{ rapport.statut }}
+															</span>
+
+														</td>
+													</tr>
+
+													<tr>
+														<th>Activité
+														</th>
+														<td>{{ rapport.activite }}
+														</td>
+														<td>
+
+															{% if rapport.activiteFichier %}
+																<p>
+																	<a href="{{ asset('uploads/' ~ rapport.activiteFichier) }}">Fichier
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	                                                    d'activité</a>
+																</p>
+															{% endif %}
+														</td>
+													</tr>
+
+													<tr>
+														<th>Description</th>
+														<td>{{ rapport.description }}
+														</td>
+														<td>
+
+															{% if rapport.descriptionFichier %}
+																<p>
+																	<a href="{{ asset('uploads/' ~ rapport.descriptionFichier) }}">Fichier de
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	                                                    description</a>
+																</p>
+															{% endif %}
+														</td>
+													</tr>
+
+													<tr>
+														<th>Resultat</th>
+														<td>{{ rapport.resultat }}</td>
+														<td>
+															{% if rapport.resultatFichier %}
+																<p>
+																	<a href="{{ asset('uploads/' ~ rapport.resultatFichier) }}">Fichier de
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	                                                    résultat</a>
+																</p>
+															{% endif %}
+														</td>
+													</tr>
+
+													<tr>
+														<th>Date rapport</th>
+														<td>{{ rapport.createdAt|date('Y-m-d H:i:s') }}</td>
+
+													</tr>
+
+												</tbody>
+											</table>
+
+										</div>
+
+										<div class="tab-pane active p-20" id="fichier" role="tabpanel">
+
+
+											<table id="bootstrap-data-table-export" class="table table-striped table-bordered">
+												<tbody>
+
+													<tr>
+														<th>Fichiers</th>
+														<td>
+															<ol>
+
+																{% for fiche in rapport.fichier %}
+
+
+																	<li>
+																		<a href="{{asset('uploads/'~fiche)}}" class="btn-click btn-link" target="_blank">fiche</a>
+																	</li>
+
+
+																{% endfor %}
+															</ol>
+
+
+														</td>
+													</tr>
+
+												</tbody>
+
+											</table>
+
+										</div>
+
+									</div>
+								</div>
+
+								<div class=" justify-content-between ">
+
+
+									<a href=" {{ path('app_generate_pdf_rapport',  { 'id' : rapport.id } )  }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+
+										<i class="m-1 fa fa-print" aria-hidden="true"></i>Imprimer
+									</a>
+
+									<a href="{{ path('app_mailler_send_rapport',{'id': rapport.id }) }}" class="m-1 btn btn-info " type="button" data-toggle="modal" data-target="#modelMail--{{rapport.id}}">
+
+
+										Envoyer le rapport
+										<i class="fas fa-mail-bulk"></i>
+									</a>
+
+									<div class="modal fade" id="modelMail--{{rapport.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleMail" aria-hidden="true">
+
+
+										<div class="modal-dialog modal-lg" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title">A qui envoyer le Mail ?</h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<form action="{{ path('app_mailler_send_rapport',{'id': rapport.id }) }}" method="post">
+
+													<div class="modal-body">
+														<div class="form-check">
+
+															<div class="form-group w-100 ">
+
+																<label for="">Email du destinataire..</label>
+																<input type="email" class="form-control" name="email" id="email" value="{{rapport.user.email }}" aria-describedby="emailHelpId" placeholder="">
+																<small id="emailHelpId" class="form-text text-muted">Email destinataire..</small>
+															</div>
+
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button type="reset" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+														<button type="submit" class="btn btn-success">Envoyer le Mail</button>
+
+													</div>
+
+
+												</form>
+
+											</div>
+										</div>
+									</div>
+
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			{% endblock %}

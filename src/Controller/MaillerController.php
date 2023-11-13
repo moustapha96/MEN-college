@@ -13,9 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
-use DoctrineExtensions\Query\Mysql\Date;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mime\Part\DataPart;
 
 
 #[Route('/mailler',  name: "app_mailler_")]
@@ -36,22 +34,10 @@ class MaillerController extends AbstractController
 
     public function sendMailCompteBloque(User $user, MailerService $mailer): Response
     {
-
-
-        // $mail =  $mailer->sendMailCompteBloque(
-        //     "Veuillez recevoir le rapport de " . $user->getFirstName() . " " . $user->getLastName(),
-        //     $college->getNom(),
-        //     $user->getEmail(),
-        //     "khouma964@gmail.com",
-        //     $rapport,
-        //     $attachments,
-
-        // );
-        // dd($mail);
-
         $this->addFlash('success', "Mail test envoyer avec success");
         return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
     }
+
     #[Route('/{id}/mail-rapport', name: 'send_rapport', methods: ['POST'])]
     public function sendMailRapport(Rapport $rapport, Request $request, MailerService  $mailer): Response
     {

@@ -75,8 +75,9 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
             $this->em->persist($user);
             $this->em->flush();
 
-
-            if ($user->getEnabled() == true &&  "ROLE_ADMIN" === $user->getRoles()[0]) {
+            if ($user->getEnabled() == true &&  "ROLE_SUPER_ADMIN" === $user->getRoles()[0]) {
+                return new RedirectResponse($this->urlGenerator->generate('super_admin_home'));
+            } else if ($user->getEnabled() == true &&  "ROLE_ADMIN" === $user->getRoles()[0]) {
                 return new RedirectResponse($this->urlGenerator->generate('admin_home'));
             } else if ($user->getEnabled() == true && "ROLE_USER" === $user->getRoles()[0]) {
                 return new RedirectResponse($this->urlGenerator->generate('client_home'));

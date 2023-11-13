@@ -60,13 +60,6 @@ class ResetPasswordController extends AbstractController
                 $translator
             );
         }
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     return $this->processSendingPasswordResetEmail(
-        //         $form->get('email')->getData(),
-        //         $mailer,
-        //         $translator
-        //     );
-        // }
 
         return $this->render('reset_password/request.html.twig', [
             'requestForm' => $form->createView(),

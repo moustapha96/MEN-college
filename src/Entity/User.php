@@ -251,7 +251,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         } else {
             return (string) $this->phone;
         }
-        return (string) $this->phone;
     }
 
     public function getUsername(): string
@@ -482,5 +481,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->college = $college;
 
         return $this;
+    }
+
+    public function isIsVerified(): ?bool
+    {
+        return $this->isVerified;
     }
 }

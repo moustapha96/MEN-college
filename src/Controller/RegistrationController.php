@@ -109,16 +109,7 @@ class RegistrationController extends AbstractController
                 );
 
 
-                // $this->emailVerifier->sendEmailConfirmation(
-                //     'app_verify_email',
-                //     $user,
-                //     (new TemplatedEmail())
-                //         ->from(new Address('men-rapport@gmail.com', 'MEN'))
-                //         ->cc(new Address('khouma964@gmail.com', 'MEN'))
-                //         ->to($user->getEmail())
-                //         ->subject('Merci de confirmer cotre email')
-                //         ->htmlTemplate('registration/confirmation_email.html.twig')
-                // );
+
                 $this->addFlash('success', 'Inscription réussie! Veuillez vérifier votre email.');
 
                 return $this->redirectToRoute('app_login');

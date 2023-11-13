@@ -1,0 +1,67 @@
+{% extends 'super_admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		titre
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+
+
+					<div class="table-responsive">
+
+
+						<table id="example1" class="table table-bordered table-striped">
+
+
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Logo</th>
+									<th>Name</th>
+									<th>Description</th>
+									<th>actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for parametrage in parametrages %}
+									<tr>
+										<td>{{ parametrage.id }}</td>
+										<td>{{ parametrage.logo }}</td>
+										<td>{{ parametrage.name }}</td>
+										<td>{{ parametrage.description }}</td>
+										<td>
+											<a href="{{ path('super_admin_parametrage_show', {'id': parametrage.id}) }}">show</a>
+											<a href="{{ path('super_admin_parametrage_edit', {'id': parametrage.id}) }}">edit</a>
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="5">no records found</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

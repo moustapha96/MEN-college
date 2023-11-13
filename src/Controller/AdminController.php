@@ -16,10 +16,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CollegeRepository;
 use App\Repository\RapportRepository;
 use App\Repository\UserRepository;
-use App\Service\MailerService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Service\ChatGPTService;
-use Symfony\Component\HttpFoundation\RequestStack;
+
 
 #[Route('/admin',  name: "admin_")]
 // #[AttributeIsGranted("ROLE_ADMIN", statusCode: 404, message: "Page non accéssible")]

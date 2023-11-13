@@ -1,0 +1,108 @@
+{% extends 'super_admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="search-result">
+
+								<table class="table">
+									<tbody>
+										<tr>
+											<th></th>
+
+											<td><img src="/avatars/{{ user.avatar }}" alt="Admin" class="rounded-circle" width="150"></td>
+										</tr>
+										<tr>
+											<th>Matricule</th>
+											<td>{{ user.matricule }}</td>
+										</tr>
+										<tr>
+											<th>Email</th>
+											<td>{{ user.email }}</td>
+										</tr>
+										<tr>
+											<th>Prenom</th>
+											<td>{{ user.firstName }}</td>
+										</tr>
+
+										<tr>
+											<th>Nom</th>
+											<td>{{ user.lastName }}</td>
+										</tr>
+
+										<tr>
+											<th>État Compte</th>
+											<td>{{ user.enabled ? 'Activé' : 'Desactivé' }}</td>
+										</tr>
+
+										<tr>
+											<th>Téléphone</th>
+											<td>{{ user.phone }}</td>
+										</tr>
+
+										<tr>
+											<th>Dernier Connexion</th>
+											<td>{{ user.lastActivityAt ? user.lastActivityAt|date('Y-m-d H:i:s') : '' }}
+											</td>
+										</tr>
+										<tr>
+											<th>Adresse</th>
+											<td>{{ user.adresse }}</td>
+										</tr>
+										<tr>
+											<th>Sexe</th>
+											<td>{{ user.sexe }}</td>
+										</tr>
+
+										{% if user.college %}
+											<tr>
+												<th>Collège</th>
+												<td>{{ user.college.nom }}</td>
+											</tr>
+
+										{% endif %}
+
+
+									</tbody>
+								</table>
+
+
+								<div>
+
+
+									<a href=" {{ path('app_generate_pdf_user',  { 'id' : user.id } )  }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+
+										<i class="m-1 fa fa-print" aria-hidden="true"></i>Imprimer
+									</a>
+
+
+								</div>
+								{# {{ include('user/_delete_form.html.twig') }} #}
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

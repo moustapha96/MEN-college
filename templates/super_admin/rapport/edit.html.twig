@@ -1,0 +1,53 @@
+{% extends 'super_admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}
+	<a class="m-1 btn btn-outline-info float-right btn-sm" href="{{ path('admin_rapport_liste') }}">
+		<i class="m-1 fa fa-list"></i>
+		Liste</a>
+	<a href=" {{ path('admin_rapport_nouveau') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+		<i class="m-1 fa fa-plus" aria-hidden="true"></i>
+		Ajouter
+	</a>
+{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="search-result">
+
+								<div class="result-body">
+									<h1 style="text-align: center">Collège =>
+										{{ rapport.college.getNom() }}
+									</h1>
+
+									{{ include('admin/rapport/_form.html.twig', {'button_label': 'Update'}) }}
+
+
+									{# {{ include('admin/rapport/_delete_form.html.twig') }} #}
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

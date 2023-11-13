@@ -165,21 +165,11 @@ class UserController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         User $user,
-        CollegeRepository $collegeRepository,
-        UserRepository $userRepository,
+        CollegeRepository $collegeRepository
     ): Response {
 
         $college = $collegeRepository->find($request->request->all()['college']);
-        // if ($college->getSousCategories()) {
 
-        //     return $this->render('user/index.html.twig', [
-        //         'users' => $userRepository->findAll(),
-        //         'titre' => "Liste des Inspecteurs",
-        //         "colleges" => $collegeRepository->findAll(),
-        //         "college" => $college
-        //     ]);
-        // } else {
-        // }
 
         $user->setCollege($college);
         $entityManager->persist($user);

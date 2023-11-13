@@ -1,0 +1,39 @@
+{% extends 'super_admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		titre
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+
+
+					<div class="table-responsive">
+
+						{{ include('super_admin/parametrage/_form.html.twig') }}
+
+						<a href="{{ path('supper_admin_parametrage_index') }}">back to list</a>
+
+
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

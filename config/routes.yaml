@@ -10,7 +10,3 @@ custom_404_page:
     path: /404
     controller: App\Controller\CustomErrorController::show404
 
-
-return_page:
-    path: '/return'
-    controller: App\Controller\HomeController::pagePrecedente

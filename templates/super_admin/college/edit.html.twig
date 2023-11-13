@@ -1,0 +1,77 @@
+{% extends 'super_admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+		=>
+		{{ college.nom }}
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}
+
+	<a class="m-1 btn btn-outline-info float-right ml-1 btn-sm" href="{{ path('admin_college_liste') }}">
+		<i class="fa fa-list"></i>
+		Liste</a>
+	<a href=" {{ path('app_rapport_new') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+		<i class="fa fa-plus" aria-hidden="true"></i>
+		Ajouter
+	</a>
+{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="result-body">
+						<div class="table-responsive">
+
+
+							<form action="{{ path('admin_college_edit',{ 'id': college.id } ) }}" method="POST">
+
+								<div class="form-row">
+									<div class="form-group col-md-12">
+										<label for="Nom">Nom</label>
+										<input type="text" name="nom" class="form-control " value="{{ college.nom }}" placeholder="Nom scollège" id="nom" required>
+									</div>
+								</div>
+								<div class="form-row">
+
+
+									<div class="form-group col-md-12">
+										<label for="code">Description
+										</label>
+										<textarea required rows="2" name="description" class="form-control" id="description">
+											{{college.description}}
+										</textarea>
+									</div>
+								</div>
+
+								<div class="form-row">
+
+									<div class="form-group col-md-12 m-*-auto">
+										<button type="submit" class="pull-right btn btn-outline-success">
+											<i class="fa fa-save fa-lg fa-fw"></i>
+											enregistrer
+										</button>
+									</div>
+								</div>
+							</form>
+
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}
