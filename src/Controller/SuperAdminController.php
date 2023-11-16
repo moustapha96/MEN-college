@@ -24,6 +24,8 @@ use App\Service\ChatGPTService;
 use App\Service\DataConfigurationService;
 use App\Service\MailerService;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 #[Route('/super_admin',  name: "super_admin_")]
 // #[AttributeIsGranted("ROLE_ADMIN", statusCode: 404, message: "Page non accéssible")]
@@ -49,16 +51,47 @@ class SuperAdminController extends AbstractController
         $this->chatGPTService = $chatGPTService;
     }
 
-
     #[Route('/',  name: "home")]
     public function index(
         CollegeRepository $collegeRepository,
         UserRepository $userRepository,
         RapportRepository $rapportRepository,
-
+        ChartBuilderInterface $chartBuilder
     ): Response {
+
+        $collegesWithReportCount = $collegeRepository->findAll();
+        $chartData = [];
+        $backgroundColor = [];
+        foreach ($collegesWithReportCount as $college) {
+            $chartData['labels'][] = $college->getNom();
+            $chartData['data'][] = $college->SizeRapport();
+            $backgroundColor[] = sprintf('rgba(%d, %d, %d, 0.7)', rand(0, 255), rand(0, 255), rand(0, 255));
+        }
+
+        $chartB = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $chartB->setData([
+            'labels' => $chartData['labels'],
+            'datasets' => [
+                [
+                    'label' => 'Nombre de Rapport',
+                    'backgroundColor' => $backgroundColor,
+                    'data' => $chartData['data'],
+                ],
+            ],
+        ]);
+
+
+
+        $chartB->setOptions([
+            'scales' => [
+                'y' => [
+                    'suggestedMin' => 0,
+                    'suggestedMax' => 100,
+                ],
+            ],
+        ]);
         return $this->render("super_admin/dashboard/index.html.twig", [
-            'titre' => 'Dashboard Super Admin ',
+            'titre' => 'Dashboard Admin ',
             'rapports' => $rapportRepository->findAll(),
             'rapports_valide' => $rapportRepository->findBy(['isDeleted' => 0]),
             'rapports_deleted' => $rapportRepository->findBy(['isDeleted' => 1]),
@@ -67,6 +100,7 @@ class SuperAdminController extends AbstractController
             "rapports_en_attente" => $rapportRepository->findBy(['statut' => "EN ATTENTE"]),
             "rapports_valider" => $rapportRepository->findBy(['statut' => "VALIDER"]),
             "rapports_non_valider" => $rapportRepository->findBy(['statut' => "NON VALIDER"]),
+            'chart' => $chartB,
         ]);
     }
 

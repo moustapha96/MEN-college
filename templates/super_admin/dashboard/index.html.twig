@@ -126,6 +126,46 @@
 
 
 	</div>
+	<div class="card">
+		<div class="d-flex justify-content-between">
+			<div>
+				<h3>
+					Repartition des rapports selon les collèges</h3>
+
+			</div>
+			<button id="exportButton" class="btn btn-outline-info" onclick="exportChart()">Exporter le Graphe</button>
+
+
+		</div>
+
+
+		<div class="chart">
+			<canvas id="barChart" style="min-height: 450px; height: 500px; max-height: 250px; width: 100%;"></canvas>
+		</div>
+
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+	<script>
+
+		// JavaScript code for creating a bar chart
+document.addEventListener('DOMContentLoaded', function () {
+var ctx = document.getElementById('barChart').getContext('2d');
+var barChart = new Chart(ctx, {
+type: 'bar',
+data: {{ chart.getData() | json_encode | raw }},
+options: {{ chart.getOptions() | json_encode | raw }}
+});
+});
+function exportChart() {
+var canvas = document.getElementById('barChart');
+var dataURL = canvas.toDataURL('image/png');
+var link = document.createElement('a');
+link.href = dataURL;
+link.download = 'repatition_des_rapports_dans_les_colleges.png';
+link.click();
+}
+	</script>
 
 
 {% endblock %}

@@ -131,7 +131,7 @@
 					Repartition des rapports selon les collèges</h3>
 
 			</div>
-			<button id="exportButton" class="btn btn-outline-success" onclick="exportChart()">Exporter le Graphe</button>
+			<button id="exportButton" class="btn btn-outline-info" onclick="exportChart()">Exporter le Graphe</button>
 
 
 		</div>
@@ -160,7 +160,7 @@ var canvas = document.getElementById('barChart');
 var dataURL = canvas.toDataURL('image/png');
 var link = document.createElement('a');
 link.href = dataURL;
-link.download = 'chart.png';
+link.download = 'repatition_des_rapports_dans_les_colleges.png';
 link.click();
 }
 	</script>
