@@ -4,6 +4,10 @@
 {#{% titre de l'activite %}#}
 {% block title_job %}
 	<h1 class="card-title">{{ titre }}</h1>
+	<!-- Add this to the head section of your HTML -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 {% endblock %}
 
 {# {% operation possible %}#}
@@ -14,6 +18,7 @@
 
 
 	<div class="row">
+
 		<div class="col-md-12">
 
 			<div class="card card-body d-flex align-items-end">
@@ -26,8 +31,7 @@
 			</div>
 		</div>
 
-
-		<div class="col-md-4">
+		<div class="col-md-2">
 			<div class="card">
 				<div class="card-body">
 					<h3 class="card-title">Inspecteurs</h3>
@@ -41,7 +45,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-2">
 			<div class="card">
 				<div class="card-body">
 					<h3 class="card-title">Collèges</h3>
@@ -54,7 +58,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-2">
 			<div class="card">
 				<div class="card-body">
 					<h3 class="card-title">Rapports</h3>
@@ -69,7 +73,7 @@
 		</div>
 
 
-		<div class="col-md-4">
+		<div class="col-md-2">
 			<div class="card">
 				<div class="card-body">
 					<h3 class="card-title">Rapports En Attente</h3>
@@ -84,7 +88,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-2">
 			<div class="card">
 				<div class="card-body">
 					<h3 class="card-title">Rapports Valider</h3>
@@ -100,7 +104,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-2">
 			<div class="card">
 				<div class="card-body">
 					<h3 class="card-title">Rapports Non Valider</h3>
@@ -118,6 +122,48 @@
 
 
 	</div>
+
+
+	<div class="card">
+		<div class="d-flex justify-content-between">
+			<div>
+				<h3>
+					Repartition des rapports selon les collèges</h3>
+
+			</div>
+			<button id="exportButton" class="btn btn-outline-success" onclick="exportChart()">Exporter le Graphe</button>
+
+
+		</div>
+
+
+		<div class="chart">
+			<canvas id="barChart" style="min-height: 450px; height: 500px; max-height: 250px; width: 100%;"></canvas>
+		</div>
+
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+	<script>
+
+		// JavaScript code for creating a bar chart
+document.addEventListener('DOMContentLoaded', function () {
+var ctx = document.getElementById('barChart').getContext('2d');
+var barChart = new Chart(ctx, {
+type: 'bar',
+data: {{ chart.getData() | json_encode | raw }},
+options: {{ chart.getOptions() | json_encode | raw }}
+});
+});
+function exportChart() {
+var canvas = document.getElementById('barChart');
+var dataURL = canvas.toDataURL('image/png');
+var link = document.createElement('a');
+link.href = dataURL;
+link.download = 'chart.png';
+link.click();
+}
+	</script>
 
 
 {% endblock %}

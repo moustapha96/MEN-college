@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\OpenAIService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,10 @@ use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Service\ChatGPTService;
 
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
+
+use CMEN\ChartjsBundle\Chart\BarChart;
 
 #[Route('/admin',  name: "admin_")]
 // #[AttributeIsGranted("ROLE_ADMIN", statusCode: 404, message: "Page non accéssible")]
@@ -33,16 +38,46 @@ class AdminController extends AbstractController
     }
 
 
+
     #[Route('/',  name: "home")]
     public function index(
         CollegeRepository $collegeRepository,
         UserRepository $userRepository,
         RapportRepository $rapportRepository,
-
+        ChartBuilderInterface $chartBuilder
     ): Response {
 
+        $collegesWithReportCount = $collegeRepository->findAll();
+        $chartData = [];
+        $backgroundColor = [];
+        foreach ($collegesWithReportCount as $college) {
+            $chartData['labels'][] = $college->getNom();
+            $chartData['data'][] = $college->SizeRapport();
+            $backgroundColor[] = sprintf('rgba(%d, %d, %d, 0.7)', rand(0, 255), rand(0, 255), rand(0, 255));
+        }
+
+        $chartB = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $chartB->setData([
+            'labels' => $chartData['labels'],
+            'datasets' => [
+                [
+                    'label' => 'Nombre de Rapport',
+                    'backgroundColor' => $backgroundColor,
+                    'data' => $chartData['data'],
+                ],
+            ],
+        ]);
 
 
+
+        $chartB->setOptions([
+            'scales' => [
+                'y' => [
+                    'suggestedMin' => 0,
+                    'suggestedMax' => 100,
+                ],
+            ],
+        ]);
         return $this->render("admin/dashboard/index.html.twig", [
             'titre' => 'Dashboard Admin ',
             'rapports' => $rapportRepository->findAll(),
@@ -53,6 +88,7 @@ class AdminController extends AbstractController
             "rapports_en_attente" => $rapportRepository->findBy(['statut' => "EN ATTENTE"]),
             "rapports_valider" => $rapportRepository->findBy(['statut' => "VALIDER"]),
             "rapports_non_valider" => $rapportRepository->findBy(['statut' => "NON VALIDER"]),
+            'chart' => $chartB,
         ]);
     }
 
@@ -132,9 +168,21 @@ class AdminController extends AbstractController
     }
 
     #[Route('/colleges/{id}/rapport', name: 'college_rapport', methods: ['GET'])]
-    public function showCollegeRapport(College $college, RapportRepository $rapportRepository): Response
-    {
+    public function showCollegeRapport(
+        College $college,
+        RapportRepository $rapportRepository,
+        OpenAIService $openaiService
+    ): Response {
+
         $rapports = $rapportRepository->findBy(['college' => $college]);
+
+
+        foreach ($rapports as $rapport) {
+            $rapportG = $openaiService->generateReport($rapport->getActivite());
+            dd($rapportG);
+        }
+
+
 
         return $this->render('admin/college/rapport.html.twig', [
             'titre' => 'Liste Rapports Collège => ' . $college->getNom(),

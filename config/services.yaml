@@ -52,3 +52,8 @@ services:
             $configurationService: '@App\Service\DataConfigurationService'
         tags:
             - { name: twig.extension }
+
+    App\Service\OpenAIService:
+        arguments:
+            $apiKey: '%env(OPENAI_API_KEY)%'
+            $openaiEndpoint: 'https://api.openai.com'
