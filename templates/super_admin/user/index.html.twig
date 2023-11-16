@@ -9,7 +9,11 @@
 {% endblock %}
 
 {# {% operation possible %}#}
-{% block option %}{% endblock %}
+{% block option %}
+	<a href="{{ path('super_admin_user_create') }}" class="btn btn-outline-info">Ajouter un admin</a>
+
+
+{% endblock %}
 
 {# {% les donnees affichees %}#}
 {% block data %}
@@ -38,6 +42,7 @@
 													<th>Collège</th>
 													<th>Rapports</th>
 													<th>Compte</th>
+													<th>Role</th>
 													<th>actions</th>
 
 												</tr>
@@ -154,6 +159,49 @@
 															</td>
 
 
+															<td>
+																<!-- Button trigger modal -->
+																<a type="button" class="btn btn-info" data-toggle="modal" data-target="#modelRole{{user.id}}">
+
+																	{{user.roles[0]  }}
+																</a>
+
+																<!-- Modal -->
+																<div class="modal fade" id="modelRole{{user.id}}" tabindex="-1000" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+
+																	<div class="modal-dialog" role="document">
+																		<div class="modal-content">
+																			<form action="{{ path('super_admin_user_update',{ 'id': user.id } ) }}" method="post">
+
+
+																				<div class="modal-header">
+																					<h5 class="modal-title">Modifier le Role</h5>
+																					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																						<span aria-hidden="true">&times;</span>
+																					</button>
+																				</div>
+																				<div class="modal-body">
+																					<div class="form-group">
+																						<label for="role">Role</label>
+																						<select class="form-control" name="roles" id="role">
+																							{% set selected = 'selected' %}
+																							<option value="ROLE_ADMIN" {{ user.roles[0] == "ROLE_ADMIN" ? selected : '' }}>Administrateur</option>
+																							<option value="ROLE_USER" {{ user.roles[0] == "ROLE_USER" ? selected : '' }}>Inspecteur</option>
+																						</select>
+																					</div>
+
+																				</div>
+																				<div class="modal-footer">
+																					<button type="reset" class="btn btn-dark" data-dismiss="modal">Fermer</button>
+																					<button type="submit" class="btn btn-outline-success">Enregistrer</button>
+																				</div>
+
+																			</form>
+
+																		</div>
+																	</div>
+																</div>
+															</td>
 															<td>
 																<div class="widget-26-job-starred btn-group btn-group-toggle">
 																	<a href="{{ path('super_admin_user_show', { 'id' : user.id } ) }}" class="m-1 btn btn-sm  btn-outline-dark " type="button">

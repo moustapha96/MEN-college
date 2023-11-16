@@ -1,0 +1,133 @@
+{% extends 'super_admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}
+	<a href=" {{ path('super_admin_user_index') }}" class="m-1 btn btn-outline-info float-right btn-sm" role="button">
+		<i class="m-1 fa fa-list" aria-hidden="true"></i>
+		Liste</a>
+
+
+{% endblock %}
+
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+					<div class="row search-body">
+						<div class="col-lg-12">
+							<div class="scrollable-form">
+
+								<form action="{{ path("super_admin_create_admin") }}" method="post">
+
+
+									<div class="form-group">
+										<label for="matricule">Matricule</label>
+										<input type="text" id="matricule" name="matricule" required class="form-control">
+									</div>
+
+									<div class="form-group">
+										<label for="form1Example1">Adresse Email</label>
+										<input type="email" value="" name="email" required class="form-control">
+									</div>
+
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label for="firstName">Prénom</label>
+												<input type="text" id="firstName" required name="firstName" class="form-control">
+
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label for="lastName">Nom</label>
+
+												<input type="text" id="nom" required name="lastName" class="form-control">
+
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label for="phone">Téléphone</label>
+
+												<input type="text" id="phone" name="phone" required pattern="^(76|77|78|75|33|88)\d{7}$" class="form-control">
+
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label for="adresse">Adresse</label>
+
+												<input type="text" id="adresse" name="adresse" required class="form-control">
+
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label for="Sexe">Sexe</label>
+												<select id="sexe" name="sexe" class="form-control form-select" required>
+													<option value="" disabled selected>Choisissez votre sexe</option>
+													<option value="MASCULIN">Masculin</option>
+													<option value="FÉMININ">Féminin</option>
+												</select>
+											</div>
+
+										</div>
+
+
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label for="plainPassword">Mot de passe</label>
+												<input type="password" id="plainPassword" required name="plainPassword" class="form-control">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label for="confirPassword">Confirmer Mot de Passe</label>
+												<input type="password" id="confirPassword" required name="confirPassword" class="form-control">
+											</div>
+										</div>
+									</div>
+
+
+									<div class="d-flex justify-content-between  mt-2">
+										<button type="submit" class="btn btn-success">
+											Enregistrer</button>
+
+									</div>
+
+
+								</form>
+
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

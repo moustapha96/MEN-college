@@ -21,6 +21,7 @@ use App\Repository\RapportRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Service\ChatGPTService;
+use App\Service\DataConfigurationService;
 use App\Service\MailerService;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -29,10 +30,22 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class SuperAdminController extends AbstractController
 {
 
+
+    private MailerService $mailerService;
     private $chatGPTService;
 
-    public function __construct(ChatGPTService $chatGPTService)
-    {
+    private $configurationService;
+    private $tokenSI;
+
+    public function __construct(
+        MailerService $mailerService,
+        DataConfigurationService $configurationService,
+        ChatGPTService $chatGPTService
+
+    ) {
+
+        $this->mailerService = $mailerService;
+        $this->configurationService = $configurationService;
         $this->chatGPTService = $chatGPTService;
     }
 
@@ -45,7 +58,7 @@ class SuperAdminController extends AbstractController
 
     ): Response {
         return $this->render("super_admin/dashboard/index.html.twig", [
-            'titre' => 'Accueil Admin ',
+            'titre' => 'Dashboard Super Admin ',
             'rapports' => $rapportRepository->findAll(),
             'rapports_valide' => $rapportRepository->findBy(['isDeleted' => 0]),
             'rapports_deleted' => $rapportRepository->findBy(['isDeleted' => 1]),
@@ -108,6 +121,111 @@ class SuperAdminController extends AbstractController
             'college' => $college,
         ]);
     }
+
+
+    #[Route("enregister", name: "create_admin", methods: ['POST'])]
+    public function createAdminPost(
+        Request $request,
+        UserRepository $userRepository,
+        EntityManagerInterface $em,
+        UserPasswordHasherInterface $userPasswordHasher,
+
+    ): Response {
+
+
+        $data = $request->request->all();
+        $referer = $request->headers->get('referer');
+
+        $user = new User();
+        $userByEmail = $userRepository->findOneBy(['email' => $data['email']]);
+        if ($userByEmail) {
+            $this->addFlash('danger', 'Cette adresse email existe déjà.');
+            return $this->redirect($referer);
+        }
+
+        $userByMatricule = $userRepository->findOneBy(['matricule' => $data['matricule']]);
+        if ($userByMatricule) {
+            $this->addFlash('danger', 'Ce matricule existe déjà.');
+            return $this->redirect($referer);
+        }
+
+        $userByPhone = $userRepository->findOneBy(['phone' => $data['phone']]);
+        if ($userByPhone) {
+            $this->addFlash('danger', 'Ce numéro de téléphone existe déjà.');
+            return $this->redirect($referer);
+        }
+        if ($data['plainPassword'] != $data['confirPassword']) {
+            $this->addFlash('danger', 'Les mots de passes ne correspondent pas ');
+            return $this->redirect($referer);
+        }
+
+        if ($data['plainPassword'] != $data['confirPassword']) {
+            $this->addFlash('danger', 'Les mots de passe ne correspondent pas.');
+            return $this->redirect($referer);
+        } else {
+
+            $user->setEnabled(true);
+            $user->setStatus("ACTIVE");
+            $user->setIsActiveNow(false);
+            $user->setAvatar('avatar.jpeg');
+            $user->setRoles(['ROLE_ADMIN']);
+            $user->setPhone($data['phone']);
+            $user->setFirstName($data['firstName']);
+            $user->setLastName($data['lastName']);
+            $user->setAdresse($data['adresse']);
+            $user->setSexe($data['sexe']);
+            $user->setMatricule($data['matricule']);
+            $user->setEmail($data['email']);
+
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $data['plainPassword']
+                )
+            );
+
+            $em->persist($user);
+            $em->flush();
+
+
+            $this->mailerService->sendMailCompteCreer(
+                $user,
+                $data['plainPassword']
+            );
+            $this->addFlash('success', 'Inscription réussie! Veuillez vérifier votre email.');
+            return $this->redirectToRoute('super_admin_user_index');
+        }
+    }
+
+    #[Route("update/{id}/profil", name: "user_update", methods: ['POST'])]
+    public function updateRole(
+        Request $request,
+        User $user,
+        EntityManagerInterface $em
+    ): Response {
+
+
+        $role = $request->request->get('roles');
+
+        $user->setRoles([$role]);
+
+        $em->persist($user);
+        $em->flush();
+
+        $this->addFlash('success', 'Role mise a jour avec succès');
+        return $this->redirectToRoute('super_admin_user_index');
+    }
+
+
+    #[Route("nouveau-admin", name: "user_create", methods: ['GET'])]
+    public function createAdmin(): Response
+    {
+        return $this->render('super_admin/user/create_user.html.twig', [
+            'titre' => 'Crer un admin',
+        ]);
+    }
+
+
 
     #[Route('/rapports/{id}/inspecteur', name: 'college_rapport_client_show', methods: ['GET'])]
     public function showRapportClient(

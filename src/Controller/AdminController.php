@@ -44,7 +44,7 @@ class AdminController extends AbstractController
 
 
         return $this->render("admin/dashboard/index.html.twig", [
-            'titre' => 'Accueil Admin ',
+            'titre' => 'Dashboard Admin ',
             'rapports' => $rapportRepository->findAll(),
             'rapports_valide' => $rapportRepository->findBy(['isDeleted' => 0]),
             'rapports_deleted' => $rapportRepository->findBy(['isDeleted' => 1]),
