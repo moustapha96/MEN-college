@@ -6,6 +6,7 @@
 parameters:
   pdf_directory: "%kernel.project_dir%/public/uploads"
   CHATGPT_KEY: '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'
+  openai_api_key: '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'
 
 services:
     # default configuration for services in *this* file
@@ -57,3 +58,5 @@ services:
         arguments:
             $apiKey: '%env(OPENAI_API_KEY)%'
             $openaiEndpoint: 'https://api.openai.com'
+
+    

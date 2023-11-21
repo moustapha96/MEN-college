@@ -4,7 +4,6 @@ namespace App\Service;
 
 use OpenAI;
 
-use OpenAI\Client;
 
 class ChatGPTService
 {
@@ -17,15 +16,20 @@ class ChatGPTService
 
     public function generateResponse(string $prompt): string
     {
-        $client = OpenAI::client($this->apiKey);
 
-        $response = $client->chat()->create([
-            'model' => 'gpt-3.5-turbo-instruct',
-            'messages' => [
-                ['role' => 'user', 'content' => 'Hello!'],
-            ],
-        ]);
+        try {
+            $client = OpenAI::client("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");
 
-        return  $response->choices[0]->message->content;
+            $response = $client->chat()->create([
+                'model' => 'text-davinci-003',
+                'messages' => [
+                    ['role' => 'user', 'content' => $prompt],
+                ],
+            ]);
+
+            return  $response->choices[0]->message->content;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

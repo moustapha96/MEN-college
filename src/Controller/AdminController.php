@@ -362,20 +362,35 @@ class AdminController extends AbstractController
 
         $allDataText = "je veux un synthese de ces activités \n ";
         $rapports = $college->getRapports();
-
         foreach ($rapports as $r) {
             $allDataText .= $r->getActivite() . "\n";
             $allDataText .= $r->getResultat() . "\n";
             $allDataText .= $r->getDescription() . "\n";
         }
 
-        $responseText = $this->chatGPTService->generateResponse($allDataText);
-        dd($allDataText);
+        // dd($allDataText);
+        // $responseText = $this->chatGPTService->generateResponse($allDataText);
 
-        return $this->render('admin/college/rapport_new.html.twig', [
 
-            'titre' => "Nouveau Rapport d'Activité"
+        $htmlContent = $this->renderView('pdf/synthese.html.twig', [
+            'controller_name' => 'Synthese',
+            'college' => $college,
+            'synthese' => "Vous avez dépassé votre quota actuel, veuillez vérifier votre forfait et vos détails de facturation."
         ]);
+
+        $command = 'wkhtmltopdf --encoding utf-8 - --disable-external-links --no-images - -';
+        $pdfContent = shell_exec('echo ' . escapeshellarg($htmlContent) . ' | ' . $command);
+
+        return new Response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="synthese_' . $college->getNom() . '.pdf"',
+        ]);
+
+        // $pdfContent = shell_exec('wkhtmltopdf - - <<< ' . escapeshellarg($htmlContent));
+        // return new Response($pdfContent, 200, [
+        //     'Content-Type' => 'application/pdf',
+        //     'Content-Disposition' => 'inline; filename="synthese_ ' . $college->getNom() . '.pdf"',
+        // ]);
     }
 
 

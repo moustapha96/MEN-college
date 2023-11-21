@@ -30,8 +30,9 @@ class MailerService
     public function sendMailCompteBloque(User $user)
     {
 
+        $emailIGEF = $this->config->get('email');
         $email = (new TemplatedEmail())
-            ->from(new Address("moustaphakhouma964@gmail.com", 'Ministére de l\'Éducation National'))
+            ->from(new Address($emailIGEF, "IGEF"))
             ->to(new Address($user->getEmail()))
             ->cc(new Address("khouma964@gmail.com"))
             ->subject("Compte bolqué")
@@ -54,8 +55,9 @@ class MailerService
     public function sendMailCompteActive(User $user)
     {
 
+        $emailIGEF = $this->config->get('email');
         $email = (new TemplatedEmail())
-            ->from(new Address("moustaphakhouma964@gmail.com", 'Ministére de l\'Éducation National'))
+            ->from(new Address($emailIGEF, "IGEF"))
             ->to(new Address($user->getEmail()))
             ->cc(new Address("khouma964@gmail.com"))
             ->subject("Compte Activé")
@@ -77,8 +79,10 @@ class MailerService
 
     public function sendMailCompteCreer(User $user, string $password)
     {
+
+        $emailIGEF = $this->config->get('email');
         $email = (new TemplatedEmail())
-            ->from(new Address("moustaphakhouma964@gmail.com", 'Ministére de l\'Éducation National'))
+            ->from(new Address($emailIGEF, "IGEF"))
             ->to(new Address($user->getEmail()))
             ->cc(new Address("khouma964@gmail.com"))
             ->subject("Compte créé Avec succé")
@@ -110,8 +114,11 @@ class MailerService
         User $user
     ) {
 
+        $emailIGEF = $this->config->get('email');
+
+
         $email = (new TemplatedEmail())
-            ->from(new Address("moustaphakhouma964@gmail.com", 'Ministére de l\'Éducation National'))
+            ->from(new Address($emailIGEF, "IGEF"))
             ->to(new Address($destinataire))
             ->cc(new Address($destinatairecc))
             ->subject("Rapport collège " . $college)
@@ -146,8 +153,10 @@ class MailerService
         string $destinatairecc,
         $objet
     ) {
+
+        $emailIGEF = $this->config->get('email');
         $email = (new TemplatedEmail())
-            ->from(new Address("men-rapport@gmail.com", 'MEN'))
+            ->from(new Address($emailIGEF, "IGEF"))
             ->to(new Address($destinataire))
             ->cc(new Address($destinatairecc))
             ->subject($objet)
