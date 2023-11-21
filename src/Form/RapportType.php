@@ -4,7 +4,11 @@ namespace App\Form;
 
 use App\Entity\College;
 use App\Entity\Rapport;
+use App\Entity\User;
+use App\Repository\CollegeRepository;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -18,19 +22,34 @@ use Symfony\Component\Validator\Constraints\File;
 
 class RapportType extends AbstractType
 {
+
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
+        /** @var User $user  */
+        $user = $this->security->getUser();
 
         $builder
 
             ->add('college', EntityType::class, [
                 'attr' => ['class' => 'col-6 mx-auto form-control m-2'],
                 'class' => College::class,
-                'choice_label' => function ($college) {
-                    return  $college->getNom();
-                },
+                'choice_label' => 'nom', // Supposant que 'nom' est le champ que vous souhaitez afficher dans la liste déroulante
                 'label' => 'Collège',
                 'placeholder' => 'Sélectionnez un collège',
+                'query_builder' => function (CollegeRepository $er) use ($user) {
+                    return $er->createQueryBuilder('c')
+                        ->andWhere('c.nom = :user_college')
+                        ->setParameter('user_college', $user->getCollege()->getNom());
+                },
             ])
             ->add('activite', TextareaType::class, [
                 'attr' => ['class' => 'col-6 mx-auto form-control ', 'row' => 3],

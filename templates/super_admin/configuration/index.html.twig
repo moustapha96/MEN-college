@@ -12,8 +12,9 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="card">
-				<div class="card-body">
-					<h3>Parametrage</h3>
+				<div class="card-body text-center ">
+					<h3>Paramétrage de l'application</h3>
+
 				</div>
 			</div>
 		</div>
@@ -28,7 +29,6 @@
 
 					<div class="result-body">
 						<div class="table-responsive">
-							<h3 class="text-center">Parametrage de l'application</h3>
 							<form class="bg-white rounded shadow-5-strong p-5" action="{{ path('super_admin_configuration_update') }}" method="post">
 
 								<div class="row">
@@ -36,14 +36,10 @@
 									<div class="col-md-4">
 										<div class="card">
 											<div class="card-body">
-												<h3 class="card-title">Nom de la Plarforme</h3>
+												<h3 class="card-title">Nom de la Platforme</h3>
 
 												<div class="col d-flex justify-content-between align-items-center">
-													{% set valueName = null %}
-													{% if configurations[2].getCle() %}
-														{% set valueName =  configurations[2].getValeur() %}
-													{% endif %}
-													<input type="text" required name="name" value="{{valueName}}" id="name" class="form-control">
+													<input type="text" required name="name" value="{{getName()}}" id="name" class="form-control">
 												</div>
 											</div>
 										</div>
@@ -56,15 +52,7 @@
 
 
 												<div class="col d-flex justify-content-between align-items-center">
-													{% set value = null %}
-													{% if configurations[1].getCle()  %}
-														{% set value =  configurations[1].getValeur() %}
-													{% endif %}
-
-
-													<input type="email" required name="email" value="{{value}}" id="email" class="form-control">
-
-
+													<input type="email" required name="email" value="{{getEmail()}}" id="email" class="form-control">
 												</div>
 											</div>
 										</div>
@@ -76,15 +64,7 @@
 												<h3 class="card-title">Tétéphone</h3>
 
 												<div class="col d-flex justify-content-between align-items-center">
-													{% set value = null %}
-													{% if configurations[5].getCle()  %}
-														{% set value =  configurations[5].getValeur() %}
-													{% endif %}
-
-
-													<input type="phone" required name="tel" value="{{value}}" id="tel" class="form-control">
-
-
+													<input type="phone" required name="tel" value="{{ getTel() }}" id="tel" class="form-control">
 												</div>
 											</div>
 										</div>

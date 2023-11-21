@@ -176,15 +176,8 @@ class AdminController extends AbstractController
         OpenAIService $openaiService
     ): Response {
 
+
         $rapports = $rapportRepository->findBy(['college' => $college]);
-
-
-        foreach ($rapports as $rapport) {
-            $rapportG = $openaiService->generateReport($rapport->getActivite());
-            // dd($rapportG);
-        }
-
-
 
         return $this->render('admin/college/rapport.html.twig', [
             'titre' => 'Liste Rapports Collège => ' . $college->getNom(),

@@ -122,7 +122,9 @@
 			<div class="card card-body d-flex align-items-start">
 				<span>
 					Statistique Global du Collège
-					<b>{{app.user.college.nom}}
+					<b>
+						{{ app.user.college.nom is defined ? app.user.college.nom : 'Non Attribué' }}
+
 
 					</b>
 				</span>
