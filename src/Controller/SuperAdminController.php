@@ -24,11 +24,12 @@ use App\Service\ChatGPTService;
 use App\Service\DataConfigurationService;
 use App\Service\MailerService;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
 #[Route('/super_admin',  name: "super_admin_")]
-// #[AttributeIsGranted("ROLE_ADMIN", statusCode: 404, message: "Page non accéssible")]
+#[IsGranted("ROLE_SUPER_ADMIN", statusCode: 404, message: "Page non accéssible")]
 class SuperAdminController extends AbstractController
 {
 
@@ -70,7 +71,8 @@ class SuperAdminController extends AbstractController
 
         $chartB = $chartBuilder->createChart(Chart::TYPE_LINE);
         $chartB->setData([
-            'labels' => $chartData['labels'],
+            'labels' =>
+            $chartData['labels'],
             'datasets' => [
                 [
                     'label' => 'Nombre de Rapport',
@@ -85,6 +87,7 @@ class SuperAdminController extends AbstractController
         $chartB->setOptions([
             'scales' => [
                 'y' => [
+
                     'suggestedMin' => 0,
                     'suggestedMax' => 100,
                 ],
@@ -460,23 +463,45 @@ class SuperAdminController extends AbstractController
 
     ): Response {
 
-
+        $aujourdhui = new \DateTime();
+        $moisEnCours = $aujourdhui->format('m');
 
         $allDataText = "je veux un synthese de ces activités \n ";
-        $rapports = $college->getRapports();
+        $rapports = $college->getRapportsByMonth($moisEnCours);
 
+        if (count($rapports)  == 0) {
+            $this->addFlash('warning', "Aucun rapport n'a été fait sur ce mois");
+            return $this->redirectToRoute('super_admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
+        }
         foreach ($rapports as $r) {
             $allDataText .= $r->getActivite() . "\n";
             $allDataText .= $r->getResultat() . "\n";
             $allDataText .= $r->getDescription() . "\n";
         }
 
+        // dd($allDataText);
         $responseText = $this->chatGPTService->generateResponse($allDataText);
-        dd($allDataText);
 
-        return $this->render('super_admin/college/rapport_new.html.twig', [
+        $htmlContent = $this->renderView('pdf/synthese.html.twig', [
+            'controller_name' => 'Synthese',
+            'college' => $college,
+            'synthese' => $responseText
+        ]);
 
-            'titre' => "Nouveau Rapport d'Activité"
+
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $section = $phpWord->addSection();
+        \PhpOffice\PhpWord\Shared\Html::addHtml($section, $htmlContent);
+
+        // Enregistrer le fichier Word sur le serveur
+        $dateSuffix = (new \DateTime())->format('d-m-Y');
+        $filename = 'synthese_' . $college->getNom() . '_' . $dateSuffix . '.docx';
+        $filepath = $this->getParameter('synthese_rapports') . $filename;
+        $phpWord->save($filepath);
+
+        return new Response(file_get_contents($filepath), 200, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'Content-Disposition' => 'inline; filename=' . $filename,
         ]);
     }
 

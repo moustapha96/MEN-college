@@ -32,9 +32,6 @@ class ResetPasswordController extends AbstractController
     ) {
     }
 
-    /**
-     * Display & process form to request a password reset.
-     */
     #[Route('', name: 'app_forgot_password_request')]
     public function request(
         Request $request,
@@ -48,11 +45,9 @@ class ResetPasswordController extends AbstractController
         if ($request->isMethod('POST')) {
 
             $data = $request->request->all();
-            $uri = "localhost:8000/reset-password";
+            $uri = "localhost:8000/reset-password/reset/";
             $email = $data['email'];
-
             $result =  $resetPasswordService->processSendingPasswordResetEmail($email, $uri);
-
 
             return $this->processSendingPasswordResetEmail(
                 $data['email'],

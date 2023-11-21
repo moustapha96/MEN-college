@@ -5,7 +5,8 @@
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 		<meta http-equiv="x-ua-compatible" content="ie=edge"/>
-		<title>Gestion Men Rapport | E-mail de réinitialisation du mot de passe envoyé</title>
+		<title>{{ getName() }}
+			| E-mail de réinitialisation du mot de passe envoyé</title>
 
 
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
@@ -53,7 +54,9 @@
 						</div>
 
 						<div class="row mt-2 ">
-							<h3>MEN E-mail de réinitialisation du mot de passe envoyé
+							<h3>{{ getName() }}
+								E-mail de réinitialisation du mot de passe
+
 
 							</h3>
 						</div>
@@ -61,7 +64,11 @@
 						{% for label, messages in app.flashes %}
 							{% for message in messages %}
 								<div class="alert alert-{{ label }}">
-									{{ message }}
+									{% if label == "success" %}
+										{{ message }}
+
+									{% endif %}
+
 								</div>
 							{% endfor %}
 						{% endfor %}
@@ -69,12 +76,12 @@
 
 						<p>
 							Si un compte correspondant à votre adresse e-mail existe, un e-mail vient d'être envoyé contenant un lien que vous pouvez utiliser pour réinitialiser votre mot de passe.
-																																																	Ce lien expirera dans
+																																																																																											Ce lien expirera dans
 							{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
 						</p>
 						<p>Si vous ne recevez pas d'e-mail, veuillez vérifier votre dossier spam ou</p>
 
-						<a href="{{ path('app_forgot_password_request') }}">essayer à nouveau</a>.</p>
+						<a href="{{ path('app_forgot_password_request') }}">Essayer à nouveau</a>.</p>
 
 
 				</form>
@@ -83,4 +90,4 @@
 			</div>
 		</div>
 	</body>
-</html></div><script type="text/javascript" src="login/js/mdb.min.js"></script><!-- Custom scripts --><script type="text/javascript" src="login/js/script.js"></script></body></html></body></html>
+</html>

@@ -143,24 +143,23 @@ class ResetPassworService extends AbstractController
 
         try {
             $tokenG = $this->resetPasswordHelper->generateResetToken($user);
-            dd($tokenG);
             $user->setResetToken($tokenG->getToken());
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
+
             try {
                 $url = $uri . $tokenG->getToken();
                 $email = (new TemplatedEmail())
-                    ->from(new Address($emailbase, $nombase))
-                    ->to($user->getEmail())
-                    ->subject('Votre demande de réinitialisation de mot de passe')
+                    ->from(new Address("moustaphakhouma964@gmail.com", $nombase))
+                    ->to(new Address($user->getEmail()))
+                    ->subject("Votre demande de réinitialisation de mot de passe")
                     ->htmlTemplate('reset_password/emailTokenApi.html.twig')
                     ->context([
                         'url' => $url,
                         'resetToken' => $tokenG,
                     ]);
                 $this->mailer->send($email);
-
                 $this->addFlash('success', "Demande envoyé, Merci de vérifier votre boite mail ");
                 return $this->redirectToRoute('app_check_email');
             } catch (\Throwable $th) {

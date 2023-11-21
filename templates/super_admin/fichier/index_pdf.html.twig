@@ -1,0 +1,68 @@
+{% extends 'super_admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{ titre }}
+	</h1>
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-margin">
+				<div class="card-body">
+
+
+					<div class="table-responsive">
+
+
+						<table id="exampleFILE" class="table table-bordered table-striped">
+
+
+							<thead>
+								<tr>
+									<th>Nom</th>
+									<th>url</th>
+									<th>Supprimer</th>
+
+								</tr>
+							</thead>
+							<tbody>
+
+
+								{% for file in files %}
+									<tr>
+										<td>
+											<span>{{file}}</span>
+										</td>
+										<td>
+											<a href="{{asset('uploads/'~file)}}" target="_blank" class="btn-click btn-link" target="_blank">Télécharger</a>
+										</td>
+										<td>
+											<a href="{{ path('super_admin_fichier_pdf_delete', { 'name': file }) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce fichier ?')">Supprimer</a>
+										</td>
+
+
+									</tr>
+
+
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

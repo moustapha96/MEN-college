@@ -11,17 +11,9 @@
 {# {% operation possible %}#}
 {% block option %}
 
-	{# {% for label, messages in app.flashes %}
-																																																																																																																																																																																				{% for message in messages %}
-																																																																																																																																																																																					<div class="alert alert-{{ label }}">{{ message }}</div>
-																																																																																																																																																																																				{% endfor %}
-																																																																																																																																																																																			{% endfor %} #}
-
 	<a href=" {{ path('app_generate_pdf_users') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
-
 		<i class="m-1 fa fa-print" aria-hidden="true"></i>Imprimer
 	</a>
-
 
 	<a href=" {{ path('app_user_new') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
 		<i class="m-1 fa fa-plus" aria-hidden="true"></i>
@@ -62,128 +54,135 @@
 
 											<tbody>
 												{% for user in users %}
-													<tr>
-														<td>{{ user.matricule }}</td>
-														<td>{{ user.email }}</td>
-														<td>{{ user.firstName ~' '~ user.lastName }}</td>
-														<td>{{ user.phone }}</td>
-														<td>{{ user.adresse }}</td>
+													{% if user.roles[0] != "ROLE_SUPER_ADMIN"  %}
 
-														<td>
-															{% if user.college %}
-																<a type="button" class=" btn-outline-dark btn-sm " data-toggle="modal" data-target="#modal-{{ user.id }}">{{ user.college.nom }}
+														<tr>
+															<td>{{ user.matricule }}</td>
+															<td>{{ user.email }}</td>
+															<td>{{ user.firstName ~' '~ user.lastName }}</td>
+															<td>{{ user.phone }}</td>
+															<td>{{ user.adresse }}</td>
 
-																</a>
+															<td>
+																{% if user.college %}
+																	<a type="button" class=" btn-outline-dark btn-sm " data-toggle="modal" data-target="#modal-{{ user.id }}">{{ user.college.nom }}
 
-																<div class="modal fade" id="modal-{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-																	<div class="modal-dialog" role="document">
-																		<div class="modal-content">
-																			<div class="modal-header">
-																				<h5 class="modal-title">College</h5>
-																				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-																					<span aria-hidden="true">&times;</span>
-																				</button>
+																	</a>
+
+																	<div class="modal fade" id="modal-{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																					<h5 class="modal-title">College</h5>
+																					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																						<span aria-hidden="true">&times;</span>
+																					</button>
+																				</div>
+																				<form method="POST" action="{{ path('app_user_college_update', {'id': user.id} ) }}">
+																					<div class="modal-body">
+																						<select class="form-control" name="college" id="college">
+																							{% for college in colleges %}
+																								{% set selected = '' %}
+																								{% if college.nom == user.college.nom %}
+																									{% set selected = 'selected' %}
+																								{% endif %}
+																								<option value="{{ college.id }}" {{ selected }}>{{ college.nom }}</option>
+																							{% endfor %}
+																						</select>
+
+
+																					</div>
+																					<div class="modal-footer  d-flex justify-content-between ">
+
+
+																						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+																						<a class="btn btn-danger" href="{{ path('admin_user_college_delete', { 'id': user.id }) }}">Supprimer</a>
+																						<button type="submit" class="btn btn-success">Enregistrer</button>
+
+
+																					</div>
+																				</form>
 																			</div>
-																			<form method="POST" action="{{ path('app_user_college_update', {'id': user.id} ) }}">
-																				<div class="modal-body">
-																					<select class="form-control" name="college" id="college">
-																						{% for college in colleges %}
-																							{% set selected = '' %}
-																							{% if college.nom == user.college.nom %}
-																								{% set selected = 'selected' %}
-																							{% endif %}
-																							<option value="{{ college.id }}" {{ selected }}>{{ college.nom }}</option>
-																						{% endfor %}
-																					</select>
-
-
-																				</div>
-																				<div class="modal-footer  d-flex justify-content-between ">
-
-
-																					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-																					<a class="btn btn-danger" href="{{ path('admin_user_college_delete', { 'id': user.id }) }}">Supprimer</a>
-																					<button type="submit" class="btn btn-success">Enregistrer</button>
-
-
-																				</div>
-																			</form>
 																		</div>
 																	</div>
-																</div>
 
-															{% endif %}
-															{% if user.college == null %}
-																<a type="button" class=" btn-outline-link btn-sm " data-toggle="modal" data-target="#modal-{{ user.id }}">Non Affectation
+																{% endif %}
+																{% if user.college == null %}
+																	<a type="button" class="btn btn-outline-info btn-sm " data-toggle="modal" data-target="#modal-{{ user.id }}">Non Affecter
 
-																</a>
+																	</a>
 
-																<div class="modal fade" id="modal-{{ user.id }}" tabindex="1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-																	<div class="modal-dialog" role="document">
-																		<div class="modal-content">
-																			<div class="modal-header">
-																				<h5 class="modal-title">Collège</h5>
-																				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-																					<span aria-hidden="true">&times;</span>
-																				</button>
+																	<div class="modal fade" id="modal-{{ user.id }}" tabindex="1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																					<h5 class="modal-title">Collège</h5>
+																					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																						<span aria-hidden="true">&times;</span>
+																					</button>
+																				</div>
+																				<form method="POST" action="{{ path('app_user_college_update', {'id': user.id} ) }}">
+																					<div class="modal-body">
+
+																						<select class="form-control" name="college" id="college">
+																							{% for college in colleges %}
+																								<option value="{{ college.id }}">{{ college.nom }}</option>
+																							{% endfor %}
+																						</select>
+
+																					</div>
+
+																					<div class="modal-footer">
+																						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+																						<button type="submit" class="btn btn-success">Enregistrer</button>
+																					</div>
+																				</form>
 																			</div>
-																			<form method="POST" action="{{ path('app_user_college_update', {'id': user.id} ) }}">
-																				<div class="modal-body">
-
-																					<select class="form-control" name="college" id="college">
-																						{% for college in colleges %}
-																							<option value="{{ college.id }}">{{ college.nom }}</option>
-																						{% endfor %}
-																					</select>
-
-																				</div>
-
-																				<div class="modal-footer">
-																					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-																					<button type="submit" class="btn btn-success">Enregistrer</button>
-																				</div>
-																			</form>
 																		</div>
 																	</div>
+
+
+																{% endif %}
+
+
+															</td>
+
+
+															<td>
+																<a href="{{ path('admin_college_rapport_client_show', { 'id' : user.id } ) }}" class="m-1 btn btn-sm btn-outline-dark" type="button">
+																	<i class="fa fa-list"></i>
+																	{{ user.rapports | length }}
+																</a>
+															</td>
+
+
+															<td>
+																<a href="{{ path('app_user_acount', { 'id' : user.id } ) }}" class="m-1 btn btn-sm btn-outline-{{ user.enabled ? 'success' : 'danger'}}  " type="button">
+																	<i class="fa fa-{{ user.enabled ? 'unlock-alt': 'lock' }}" aria-hidden="true"></i>
+																	{{ user.enabled ? 'Activer': 'Blocker' }}
+																</a>
+															</td>
+
+
+															<td>
+																<div class="widget-26-job-starred btn-group btn-group-toggle">
+																	<a href="{{ path('app_user_show', { 'id' : user.id } ) }}" class="m-1 btn btn-sm  btn-outline-dark " type="button">
+
+																		<i class="fa fa-eye" aria-hidden="true"></i>
+																	</a>
+
+																	<a href="{{ path('app_user_edit', { 'id' : user.id } ) }}" class="m-1 btn btn-sm btn-outline-info" type="button">
+																		<i class="fa fa-edit" aria-hidden="true"></i>
+																	</a>
 																</div>
 
-
-															{% endif %}
-
-
-														</td>
+															</td>
+														</tr>
 
 
-														<td>
-															<a href="{{ path('admin_college_rapport_client_show', { 'id' : user.id } ) }}" class="m-1 btn btn-sm btn-outline-dark" type="button">
-																<i class="fa fa-list"></i>
-																{{ user.rapports | length }}
-															</a>
-														</td>
+													{% endif %}
 
 
-														<td>
-															<a href="{{ path('app_user_acount', { 'id' : user.id } ) }}" class="m-1 btn btn-sm btn-outline-{{ user.enabled ? 'success' : 'danger'}}  " type="button">
-																<i class="fa fa-{{ user.enabled ? 'unlock-alt': 'lock' }}" aria-hidden="true"></i>
-																{{ user.enabled ? 'Activer': 'Blocker' }}
-															</a>
-														</td>
-
-
-														<td>
-															<div class="widget-26-job-starred btn-group btn-group-toggle">
-																<a href="{{ path('app_user_show', { 'id' : user.id } ) }}" class="m-1 btn btn-sm  btn-outline-dark " type="button">
-
-																	<i class="fa fa-eye" aria-hidden="true"></i>
-																</a>
-
-																<a href="{{ path('app_user_edit', { 'id' : user.id } ) }}" class="m-1 btn btn-sm btn-outline-info" type="button">
-																	<i class="fa fa-edit" aria-hidden="true"></i>
-																</a>
-															</div>
-
-														</td>
-													</tr>
 												{% else %}
 													<tr>
 														<td colspan="17">no records found</td>

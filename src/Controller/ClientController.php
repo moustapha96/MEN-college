@@ -16,11 +16,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\RapportRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Security\Http\Attribute\IsGranted as AttributeIsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 #[Route('/client',  name: "client_")]
-#[AttributeIsGranted("ROLE_USER", statusCode: 404, message: "Page non accéssible")]
+#[IsGranted("ROLE_USER", statusCode: 404, message: "Page non accéssible")]
 class ClientController extends AbstractController
 {
 
@@ -96,6 +96,7 @@ class ClientController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
 
+        /** @var User $user */
         $user = $this->getUser();
         $rapport = new Rapport();
         $college = $collegeRepository->find($id);
@@ -112,7 +113,7 @@ class ClientController extends AbstractController
             $files = $form->get('fichier')->getData();
             foreach ($files as $file) {
                 if ($file instanceof UploadedFile) {
-                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $fileName = count($fichiers) . '_' . $rapport->getCollege()->getNom() . '_' . $user->getFirstName() . '_' . $user->getLastName() . '_' . $file->getFilename() . '.' . $file->guessExtension();
                     $file->move($this->getParameter('pdf_directory'), $fileName);
                     $fichiers[] = $fileName;
                 }
@@ -167,7 +168,7 @@ class ClientController extends AbstractController
             $files = $form->get('fichier')->getData();
             foreach ($files as $file) {
                 if ($file instanceof UploadedFile) {
-                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $fileName = count($fichiers) . '_' . $rapport->getCollege()->getNom() . '_' . $user->getFirstName() . '_' . $user->getLastName() . '_' . $file->getFilename() . '.' . $file->guessExtension();
                     $file->move($this->getParameter('pdf_directory'), $fileName);
                     $fichiers[] = $fileName;
                 }
@@ -222,7 +223,7 @@ class ClientController extends AbstractController
             $files = $form->get('fichier')->getData();
             foreach ($files as $file) {
                 if ($file instanceof UploadedFile) {
-                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $fileName = count($fichiers) . '_' . $rapport->getCollege()->getNom() . '_' . $user->getFirstName() . '_' . $user->getLastName() . '_' . $file->getFilename() . '.' . $file->guessExtension();
                     $file->move($this->getParameter('pdf_directory'), $fileName);
                     $fichiers[] = $fileName;
                 }

@@ -39,4 +39,8 @@ $("#example1").DataTable({
 ]
 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });
+
+$(function () {
+$("#exampleFILE").DataTable({"responsive": true, "lengthChange": false, "autoWidth": false, "buttons": []}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+});
 </script>

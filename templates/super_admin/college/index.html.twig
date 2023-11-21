@@ -63,7 +63,7 @@
 
 												<i class="m-1 fa fa-edit" aria-hidden="true"></i>
 											</a>
-											<a href="{{ path('super_admin_college_delete', { 'id' : college.id } ) }}" class="m-1 btn btn-sm btn-outline-danger" type="button">
+											<a href="{{ path('super_admin_college_delete', { 'id' : college.id } ) }}" class="m-1 btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce college ?')" type="button">
 
 												<i class="m-1 fa fa-trash" aria-hidden="true"></i>
 											</a>

@@ -85,6 +85,24 @@ class College
 
         return $this;
     }
+
+    public function getRapportsByMonth($mois)
+    {
+        $rapportsDuMois = [];
+
+        foreach ($this->rapports as $rapport) {
+            // Récupère le mois du rapport
+            $moisRapport = $rapport->getCreatedAt()->format('n');
+
+            // Vérifie si le rapport est du mois en cours
+            if ($moisRapport == $mois) {
+                $rapportsDuMois[] = $rapport;
+            }
+        }
+
+        return $rapportsDuMois;
+    }
+
     public function SizeRapport(): int
     {
 

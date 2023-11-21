@@ -20,13 +20,15 @@ use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Service\ChatGPTService;
 
+
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
-
 use CMEN\ChartjsBundle\Chart\BarChart;
+use PhpOffice\PhpWord\IOFactory;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin',  name: "admin_")]
-// #[AttributeIsGranted("ROLE_ADMIN", statusCode: 404, message: "Page non accéssible")]
+#[IsGranted("ROLE_ADMIN", statusCode: 404, message: "Page non accéssible")]
 class AdminController extends AbstractController
 {
 
@@ -179,7 +181,7 @@ class AdminController extends AbstractController
 
         foreach ($rapports as $rapport) {
             $rapportG = $openaiService->generateReport($rapport->getActivite());
-            dd($rapportG);
+            // dd($rapportG);
         }
 
 
@@ -245,7 +247,7 @@ class AdminController extends AbstractController
     {
         return $this->render("admin/rapport/index.html.twig", [
             'titre' => 'Gestion des Rapports d\'Activités',
-            'rapports' => $rapportRepository->findAll(['orderBy' => ['createdAt' => 'DESC']])
+            'rapports' => $rapportRepository->findAll()
         ]);
     }
 
@@ -256,19 +258,22 @@ class AdminController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
 
+        /** @var User $user */
+        $user = $this->getUser();
+
         $rapport = new Rapport();
         $rapport->setStatut("EN ATTENTE");
         $form = $this->createForm(RapportType::class, $rapport);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $user = $this->getUser();
-            $rapport->setUser($user);
 
+            $rapport->setUser($user);
+            // dd($rapport->getCollege()->getNom());
             $fichiers = [];
             $files = $form->get('fichier')->getData();
             foreach ($files as $file) {
                 if ($file instanceof UploadedFile) {
-                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $fileName = count($fichiers) . '_' . $rapport->getCollege()->getNom() . '_' . $user->getFirstName() . '_' . $user->getLastName() . '_' . $file->getFilename() . '.' . $file->guessExtension();
                     $file->move($this->getParameter('pdf_directory'), $fileName);
                     $fichiers[] = $fileName;
                 }
@@ -317,6 +322,7 @@ class AdminController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
 
+        /** @var User $user */
         $user = $this->getUser();
         $rapport = new Rapport();
         $college = $collegeRepository->find($id);
@@ -326,13 +332,14 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
+
             $rapport->setUser($user);
 
             $fichiers = [];
             $files = $form->get('fichier')->getData();
             foreach ($files as $file) {
                 if ($file instanceof UploadedFile) {
-                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $fileName = count($fichiers) . '_' . $college->getNom() . '_' . $user->getFirstName() . '_' . $user->getLastName() . '_' . $file->getFilename() . '.' . $file->guessExtension();
                     $file->move($this->getParameter('pdf_directory'), $fileName);
                     $fichiers[] = $fileName;
                 }
@@ -358,10 +365,16 @@ class AdminController extends AbstractController
 
     ): Response {
 
-
+        $aujourdhui = new \DateTime();
+        $moisEnCours = $aujourdhui->format('m');
 
         $allDataText = "je veux un synthese de ces activités \n ";
-        $rapports = $college->getRapports();
+        $rapports = $college->getRapportsByMonth($moisEnCours);
+
+        if (count($rapports)  == 0) {
+            $this->addFlash('warning', "Aucun rapport n'a été fait sur ce mois");
+            return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
+        }
         foreach ($rapports as $r) {
             $allDataText .= $r->getActivite() . "\n";
             $allDataText .= $r->getResultat() . "\n";
@@ -369,28 +382,29 @@ class AdminController extends AbstractController
         }
 
         // dd($allDataText);
-        // $responseText = $this->chatGPTService->generateResponse($allDataText);
-
+        $responseText = $this->chatGPTService->generateResponse($allDataText);
 
         $htmlContent = $this->renderView('pdf/synthese.html.twig', [
             'controller_name' => 'Synthese',
             'college' => $college,
-            'synthese' => "Vous avez dépassé votre quota actuel, veuillez vérifier votre forfait et vos détails de facturation."
+            'synthese' => $responseText
         ]);
 
-        $command = 'wkhtmltopdf --encoding utf-8 - --disable-external-links --no-images - -';
-        $pdfContent = shell_exec('echo ' . escapeshellarg($htmlContent) . ' | ' . $command);
 
-        return new Response($pdfContent, 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="synthese_' . $college->getNom() . '.pdf"',
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $section = $phpWord->addSection();
+        \PhpOffice\PhpWord\Shared\Html::addHtml($section, $htmlContent);
+
+        // Enregistrer le fichier Word sur le serveur
+        $dateSuffix = (new \DateTime())->format('d-m-Y');
+        $filename = 'synthese_' . $college->getNom() . '_' . $dateSuffix . '.docx';
+        $filepath = $this->getParameter('synthese_rapports') . $filename;
+        $phpWord->save($filepath);
+
+        return new Response(file_get_contents($filepath), 200, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'Content-Disposition' => 'inline; filename=' . $filename,
         ]);
-
-        // $pdfContent = shell_exec('wkhtmltopdf - - <<< ' . escapeshellarg($htmlContent));
-        // return new Response($pdfContent, 200, [
-        //     'Content-Type' => 'application/pdf',
-        //     'Content-Disposition' => 'inline; filename="synthese_ ' . $college->getNom() . '.pdf"',
-        // ]);
     }
 
 
@@ -413,13 +427,16 @@ class AdminController extends AbstractController
         $form = $this->createForm(RapportType::class, $rapport);
         $form->handleRequest($request);
 
+        /** @var User $user */
+        $user = $this->getUser();
+
         if ($form->isSubmitted()) {
 
             $fichiers = [];
             $files = $form->get('fichier')->getData();
             foreach ($files as $file) {
                 if ($file instanceof UploadedFile) {
-                    $fileName = count($fichiers) . $file->getFilename() . '.' . $file->guessExtension();
+                    $fileName = count($fichiers) . '_' . $rapport->getCollege()->getNom() . '_' . $user->getFirstName() . '_' . $user->getLastName() . '_' . $file->getFilename() . '.' . $file->guessExtension();
                     $file->move($this->getParameter('pdf_directory'), $fileName);
                     $fichiers[] = $fileName;
                 }

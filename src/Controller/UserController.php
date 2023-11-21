@@ -23,6 +23,8 @@ class UserController extends AbstractController
         UserRepository $userRepository,
         CollegeRepository $collegeRepository
     ): Response {
+
+
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'titre' => "Liste des Inspecteurs",
