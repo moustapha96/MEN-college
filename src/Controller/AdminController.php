@@ -373,7 +373,7 @@ class AdminController extends AbstractController
 
         if (count($rapports)  == 0) {
             $this->addFlash('warning', "Aucun rapport n'a été fait sur ce mois");
-            return $this->redirectToRoute('admin_rapport_liste', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_college_liste', [], Response::HTTP_SEE_OTHER);
         }
         foreach ($rapports as $r) {
             $allDataText .= $r->getActivite() . "\n";

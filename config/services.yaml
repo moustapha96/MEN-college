@@ -6,8 +6,8 @@
 parameters:
   pdf_directory: "%kernel.project_dir%/public/uploads"
   synthese_rapports:  "%kernel.project_dir%/public/syntheses/"
-  CHATGPT_KEY: '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'
-  openai_api_key: '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'
+  CHATGPT_KEY: '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'
+  openai_api_key: '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'
 
 
 services:
