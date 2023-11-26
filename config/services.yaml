@@ -61,4 +61,10 @@ services:
             $apiKey: '%env(OPENAI_API_KEY)%'
             $openaiEndpoint: 'https://api.openai.com'
 
+    App\EventListener\ExceptionSubscriber:
+        arguments:
+            $params: '@parameter_bag'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
     

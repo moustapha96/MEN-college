@@ -176,16 +176,13 @@ class AdminController extends AbstractController
         OpenAIService $openaiService
     ): Response {
 
-
         $rapports = $rapportRepository->findBy(['college' => $college]);
-
         return $this->render('admin/college/rapport.html.twig', [
             'titre' => 'Liste Rapports Collège => ' . $college->getNom(),
             'college' => $college,
             'rapports' => $rapports
         ]);
     }
-
 
     #[Route('/college/rapports/{id}/show',  name: "college_rapport_show", methods: ['GET'])]
     public function showRapport(Rapport $rapport): Response

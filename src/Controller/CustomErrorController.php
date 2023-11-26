@@ -15,7 +15,6 @@ class CustomErrorController extends AbstractController
      */
     public function show404(): Response
     {
-        // Vous pouvez personnaliser la réponse ici en utilisant le template Twig 404.html.twig
-        return $this->render('layouts/404.html.twig');
+        return $this->render('bundles/TwigBundle/Exception/error404.html.twig');
     }
 }

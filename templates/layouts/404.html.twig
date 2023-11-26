@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
 	<head>
-		<meta charset="UTF-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-		<meta http-equiv="x-ua-compatible" content="ie=edge"/>
-		<title>Gestion Men Rapport | E-mail de réinitialisation du mot de passe envoyé</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>{{getName()}}</title>
+		<link rel="icon" type="image/png" href="	images/{{getLogo1()}}"/>
 
 
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"/>
-		<link rel="stylesheet" href="login/css/mdb.min.css"/>
-		<link rel="stylesheet" href="login/css/style.css"/>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+		<link rel="stylesheet" href="login/css/mdb.min.css">
+		<link rel="stylesheet" href="login/css/style.css">
 		<style>
 			body,
 			html {
@@ -19,37 +21,72 @@
 				padding: 0;
 				height: 100%;
 			}
-
 			.center-container {
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				min-height: calc(100vh - 40px);
-				/* Centrage vertical avec un espace de 20px en haut et en bas */
+				min-height: 100vh;
+				flex-wrap: wrap;
 			}
-
 			.centered-element {
 				text-align: center;
 				padding: 20px;
 				border: 1px solid #ccc;
 				border-radius: 5px;
 				background-color: #f5f5f5;
+				width: 100%;
+				max-width: 700px;
+
+			}
+			.responsive-image {
+				max-width: 100%;
+				height: auto;
+				border-radius: 3%;
+			}
+			.footer {
+				text-align: center;
+				padding: 2px;
+				background-color: #f5f5f5;
+				position: fixed;
+				bottom: 0;
+				width: 100%;
 			}
 		</style>
 	</head>
-
 	<body>
-
-
 		<div class="center-container">
 			<div class="centered-element">
+				<h1>Page non trouvée</h1>
+				<h4>Désolé, la page que vous recherchez n'a pas pu être trouvée.</h4>
 
-				<div class="row">
-					Cette page n'existe pas
-				</div>
+				<p>
+					<a class="btn btn-primary float-right ml-1 btn-sm" href="javascript:void(0);" onclick="history.back();">
+						<i class="fa fa-reply"></i>
+						Retour
+					</a>
+				</p>
+
+
 			</div>
 		</div>
+		<!-- Footer -->
+		<div class="footer">
+			<p>&copy; 2023
+				{{getName()}},
+				<i class="fas fa-mail-bulk"></i>
+				<a href="mailto:{{getEmail()}}">
+					{{getEmail()}}
+				</a>
+				.
+				<i class="fa fa-solid fa-phone"></i>
+				TEL:
+				{{getTel()}}</p>
 
-		<script type="text/javascript" src="login/js/mdb.min.js"></script><!-- Custom scripts --><script type="text/javascript" src="login/js/script.js"></script>
+		</div>
+
+
+		<script type="text/javascript" src="login/js/mdb.min.js"></script>
+
+		<script type="text/javascript" src="login/js/script.js"></script>
 	</body>
 </html>
