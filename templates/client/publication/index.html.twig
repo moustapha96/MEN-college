@@ -1,0 +1,126 @@
+{% extends 'client/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{  "" }}
+
+	</h1>
+{% endblock %}
+
+{% block option %}
+
+	<a href=" {{ path('client_publication_new') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+
+		<i class="m-1 fa fa-plus" aria-hidden="true"></i>Nouvelle Publication</a>
+
+
+{% endblock %}
+
+{% block data %}
+	<style>
+		/* Ajoutez le style ici ou dans votre fichier CSS externe */
+		.scrollable-list {
+			max-height: 500px; /* Ajustez la hauteur maximale selon vos besoins */
+			overflow-y: auto; /* Ajoute une barre de défilement uniquement si nécessaire */
+		}
+	</style>
+
+
+	<div class="card p-3">
+		<div class="row">
+			<div class="col-12">
+				<h2>Recente Publication</h2>
+
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12 scrollable-list">
+
+
+				{% for pub in publications %}
+
+					{% if pub.destinataire != 'Tout'  and  ( app.user.college and app.user.college.nom == pub.destinataire  )%}
+						<div class="post">
+
+							<div class="user-block">
+								<img class="img-circle img-bordered-sm" src="/avatars/{{ pub.user.avatar }}" alt="user image">
+								<span class="username">
+									<a href="#">
+										{{ pub.user.firstName~' '~pub.user.lastName }}
+									</a>
+								</span>
+								<span class="description">{{ pub.user.college.nom }}
+									-
+									{{ pub.createdAt.format('Y-m-d H:i') }}
+								</span>
+							</div>
+
+							<p>
+								{{ pub.contenu }}
+							</p>
+							<p>
+								<a href="#" class="link-black text-sm">
+									<i class="fas fa-link mr-1"></i>
+									{{ pub.destinataire }}
+								</a>
+								{% if app.user.id == pub.user.id %}
+									<a href="{{ path('client_publication_delete',{ 'id': pub.id }) }}" class="btn btn-outline-danger btn-sm float-right" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette pub ?')" title="Supprimer cette publication">
+										<i class="fa fa-trash" aria-hidden="true"></i>
+									</a>
+
+								{% endif %}
+
+							</p>
+						</div>
+
+					{% elseif  pub.destinataire == 'Tout' %}
+
+						<div class="post">
+
+							<div class="user-block">
+								<img class="img-circle img-bordered-sm" src="/avatars/{{ pub.user.avatar }}" alt="user image">
+								<span class="username">
+									<a href="#">
+										{{ pub.user.firstName~' '~pub.user.lastName }}
+									</a>
+								</span>
+								<span class="description">{{ pub.user.college.nom }}
+									-
+									{{ pub.createdAt.format('Y-m-d H:i') }}
+								</span>
+							</div>
+
+							<p>
+								{{ pub.contenu }}
+							</p>
+							<p>
+								<a href="#" class="link-black text-sm">
+									<i class="fas fa-link mr-1"></i>
+									{{ pub.destinataire }}
+								</a>
+								{% if app.user.id == pub.user.id %}
+									<a href="{{ path('client_publication_delete',{ 'id': pub.id }) }}" class="btn btn-outline-danger btn-sm float-right" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette pub ?')" title="Supprimer cette publication">
+										<i class="fa fa-trash" aria-hidden="true"></i>
+									</a>
+
+								{% endif %}
+
+
+							</p>
+						</div>
+
+
+					{% endif %}
+
+
+				{% endfor %}
+			</div>
+		</div>
+
+	</div>
+
+
+{% endblock %}

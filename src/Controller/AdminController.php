@@ -9,12 +9,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\College;
+use App\Entity\Publication;
 use App\Entity\Rapport;
 use App\Entity\User;
 use App\Form\CollegeType;
 use App\Form\RapportType;
+use App\Message\Notification;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CollegeRepository;
+use App\Repository\PublicationRepository;
 use App\Repository\RapportRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -24,7 +27,9 @@ use App\Service\ChatGPTService;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use CMEN\ChartjsBundle\Chart\BarChart;
+use DateTime;
 use PhpOffice\PhpWord\IOFactory;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin',  name: "admin_")]
@@ -46,8 +51,10 @@ class AdminController extends AbstractController
         CollegeRepository $collegeRepository,
         UserRepository $userRepository,
         RapportRepository $rapportRepository,
-        ChartBuilderInterface $chartBuilder
+        ChartBuilderInterface $chartBuilder,
+        MessageBusInterface $bus
     ): Response {
+
 
         $collegesWithReportCount = $collegeRepository->findAll();
         $chartData = [];
@@ -496,5 +503,61 @@ class AdminController extends AbstractController
         }
         $referer = $request->headers->get('referer');
         return new RedirectResponse($referer);
+    }
+
+    // publication
+    #[Route('/publication', name: 'publication_index')]
+    public function indexPublication(PublicationRepository $publication): Response
+    {
+
+        $pubs = $publication->findBy([], ['createdAt' => 'DESC'], 5);
+
+        return $this->render('admin/publication/index.html.twig', [
+            'titre' => 'Publications',
+            "publications" => $pubs
+        ]);
+    }
+
+    // publication
+    #[Route('/new-publication', name: 'publication_new')]
+    public function indexNew(): Response
+    {
+        return $this->render('admin/publication/new.html.twig', [
+            'titre' => 'Nouvelle Publication',
+        ]);
+    }
+
+    // publication
+    #[Route('/save-publication', name: 'publication_save', methods: ['POST'])]
+    public function indexSave(Request $request, EntityManagerInterface $em): Response
+    {
+
+        $titre = $request->request->get('titre');
+        $contenu = $request->request->get('contenu');
+        /** @var User user  */
+        $user = $this->getUser();
+        $publication = new Publication();
+
+        $publication->setTitre($titre);
+        $publication->setDestinataire($request->request->get('destinataire'));
+        $publication->setContenu($contenu);
+        $publication->setUser($user);
+
+        $em->persist($publication);
+        $em->flush();
+
+        $this->addFlash('success', "Publication ajoutée avec succès");
+        return $this->redirectToRoute('admin_publication_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    //suppression
+    #[Route('/suppression/{id}', name: 'publication_delete', methods: ['GET'])]
+    public function deletePub(Publication $pub, EntityManagerInterface $em): Response
+    {
+
+        $em->remove($pub);
+        $em->flush();
+        $this->addFlash('success', "Suppréssion publication réussie");
+        return $this->redirectToRoute('admin_publication_index', [], Response::HTTP_SEE_OTHER);
     }
 }

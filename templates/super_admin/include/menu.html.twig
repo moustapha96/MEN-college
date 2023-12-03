@@ -1,11 +1,3 @@
-{# <li class="nav-item">
-    <a href="{{ path('admin_college_liste') }}" class="nav-link">
-        <i class="nav-icon fas fa-search"></i>
-        <p>Recherche</p>
-    </a>
-</li> #}
-
-
 <li class="nav-item">
 	<a href="{{ path('super_admin_college_liste') }}" class="nav-link">
 
@@ -31,6 +23,33 @@
 		<p>Gestion des Inspecteurs</p>
 	</a>
 </li>
+
+<li class="nav-item">
+	<a href="#" class="nav-link">
+		<i class="nav-icon fas fa-chart-pie"></i>
+		<p>
+			Publications
+			<i class="right fas fa-angle-left"></i>
+		</p>
+	</a>
+	<ul class="nav nav-treeview">
+		<li class="nav-item">
+			<a href="{{ path('super_admin_publication_index') }} " class=" nav-link">
+				<i class="fa fa-list nav-icon"></i>
+				<p>Publié</p>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a href=" {{ path('super_admin_publication_new') }} " class=" nav-link">
+
+				<i class="fa fa-plus nav-icon"></i>
+				<p>Nouvelle</p>
+			</a>
+		</li>
+
+	</ul>
+</li>
+
 
 <li class="nav-item">
 	<a href="{{ path('super_admin_configuration_index') }}" class="nav-link">

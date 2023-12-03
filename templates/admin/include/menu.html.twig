@@ -59,6 +59,32 @@
 	</ul>
 </li> #}
 
+<li class="nav-item">
+	<a href="#" class="nav-link">
+		<i class="nav-icon fas fa-chart-pie"></i>
+		<p>
+			Publications
+			<i class="right fas fa-angle-left"></i>
+		</p>
+	</a>
+	<ul class="nav nav-treeview">
+		<li class="nav-item">
+			<a href="{{ path('admin_publication_index') }} " class=" nav-link">
+				<i class="fa fa-list nav-icon"></i>
+				<p>Publié</p>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a href=" {{ path('admin_publication_new') }} " class=" nav-link">
+
+				<i class="fa fa-plus nav-icon"></i>
+				<p>Nouvelle</p>
+			</a>
+		</li>
+
+	</ul>
+</li>
+
 
 <li class="nav-item">
 	<a href="{{ path('app_user_index') }}" class="nav-link">

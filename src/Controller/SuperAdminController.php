@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\College;
 use App\Entity\Configuration;
+use App\Entity\Publication;
 use App\Entity\Rapport;
 use App\Entity\User;
 use App\Form\CollegeType;
@@ -17,6 +18,7 @@ use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CollegeRepository;
 use App\Repository\ConfigurationRepository;
+use App\Repository\PublicationRepository;
 use App\Repository\RapportRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -753,12 +755,55 @@ class SuperAdminController extends AbstractController
     ): Response {
 
         $college = $collegeRepository->find($request->request->all()['college']);
-
-
         $user->setCollege($college);
         $entityManager->persist($user);
         $entityManager->flush();
         $this->addFlash('success', "College  mise à jour avec succès ");
         return $this->redirect($request->headers->get('referer'));
+    }
+
+
+    // publication
+    #[Route('/publication', name: 'publication_index')]
+    public function indexPublication(PublicationRepository $publication): Response
+    {
+
+        $pubs = $publication->findBy([], ['createdAt' => 'DESC'], 5);
+
+        return $this->render('super_admin/publication/index.html.twig', [
+            'titre' => 'Publications',
+            "publications" => $pubs
+        ]);
+    }
+
+    // publication
+    #[Route('/new-publication', name: 'publication_new')]
+    public function indexNew(): Response
+    {
+        return $this->render('super_admin/publication/new.html.twig', [
+            'titre' => 'Nouvelle Publication',
+        ]);
+    }
+
+    // publication
+    #[Route('/save-publication', name: 'publication_save', methods: ['POST'])]
+    public function indexSave(Request $request, EntityManagerInterface $em): Response
+    {
+
+        $titre = $request->request->get('titre');
+        $contenu = $request->request->get('contenu');
+        /** @var User user  */
+        $user = $this->getUser();
+        $publication = new Publication();
+
+        $publication->setTitre($titre);
+        $publication->setContenu($contenu);
+        $publication->setUser($user);
+
+        $em->persist($publication);
+        $em->flush();
+
+        $this->addFlash('success', "Publication ajoutée avec succès");
+        return $this->redirectToRoute('super_admin_publication_index', [], Response::HTTP_SEE_OTHER);
     }
 }

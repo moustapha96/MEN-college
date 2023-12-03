@@ -1,0 +1,75 @@
+{% extends 'client/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">
+		{{  "Nouvelle Publications" }}
+	</h1>
+{% endblock %}
+
+{% block option %}
+
+	<a href=" {{ path('client_publication_index') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+		<i class="m-1 fa fa-list" aria-hidden="true"></i>Liste</a>
+
+
+{% endblock %}
+
+{% block data %}
+
+	<form action="{{ path('client_publication_save') }}" method="post">
+
+		<div class="row">
+			<div class="col-md-12">
+
+				<div class="card card-info">
+					<div class="card-header">
+						<h3 class="card-title">Nouvelle Publication</h3>
+
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+						</div>
+					</div>
+
+
+					<div class="card-body">
+						<div class="form-group">
+							<label for="inputName">Titre</label>
+							<input type="text" id="inputName" name="titre" class="form-control">
+						</div>
+
+						<div class="form-group">
+							<label for="desti">Destinataire</label>
+							<select class="form-control" name="destinataire" id="desti">
+								<option></option>
+								<option value={{ app.user.college ? app.user.college.nom: '' }}>
+									{{ app.user.college ? app.user.college.nom: '' }}
+								</option>
+								<option value="Tout">
+									Tout</option>
+
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label for="inputDescription">Message</label>
+							<textarea id="inputDescription" name="contenu" class="form-control" rows="4"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<a href="{{ path('admin_publication_index') }}" class="btn btn-danger">Annuler</a>
+				<input type="submit" value="Enregistrer" class="btn btn-info float-right">
+			</div>
+		</div>
+	</form>
+
+
+{% endblock %}

@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\College;
+use App\Entity\Publication;
 use App\Entity\Rapport;
 use App\Entity\User;
 use App\Form\RapportType;
 use App\Repository\CollegeRepository;
-
+use App\Repository\PublicationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -263,5 +264,61 @@ class ClientController extends AbstractController
             'titre' => 'Liste Fichier',
             'rapport' => $rapport,
         ]);
+    }
+
+    // publication
+    #[Route('/publication', name: 'publication_index')]
+    public function indexPublication(PublicationRepository $publication): Response
+    {
+
+        $pubs = $publication->findBy([], ['createdAt' => 'DESC'], 5);
+
+        return $this->render('client/publication/index.html.twig', [
+            'titre' => 'Publications',
+            "publications" => $pubs
+        ]);
+    }
+
+    // publication
+    #[Route('/new-publication', name: 'publication_new')]
+    public function indexNew(): Response
+    {
+        return $this->render('client/publication/new.html.twig', [
+            'titre' => 'Nouvelle Publication',
+        ]);
+    }
+
+    // publication
+    #[Route('/save-publication', name: 'publication_save', methods: ['POST'])]
+    public function indexSave(Request $request, EntityManagerInterface $em): Response
+    {
+
+        $titre = $request->request->get('titre');
+        $contenu = $request->request->get('contenu');
+        /** @var User user  */
+        $user = $this->getUser();
+        $publication = new Publication();
+
+        $publication->setDestinataire($request->request->get('destinataire'));
+        $publication->setTitre($titre);
+        $publication->setContenu($contenu);
+        $publication->setUser($user);
+
+        $em->persist($publication);
+        $em->flush();
+
+        $this->addFlash('success', "Publication ajoutée avec succès");
+        return $this->redirectToRoute('client_publication_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    //suppression
+    #[Route('/suppression/{id}', name: 'publication_delete', methods: ['GET'])]
+    public function deletePub(Publication $pub, EntityManagerInterface $em): Response
+    {
+
+        $em->remove($pub);
+        $em->flush();
+        $this->addFlash('success', "Suppréssion publication réussie");
+        return $this->redirectToRoute('client_publication_index', [], Response::HTTP_SEE_OTHER);
     }
 }
