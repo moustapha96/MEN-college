@@ -95,6 +95,12 @@
 									<b style="color: red">Votre compte est désactivé</b>
 								{% endif %}
 							</div>
+							<div>
+								{% if app.user.enabled %}
+									<b style="color: green">Connecter et erreur</b>
+								{% endif %}
+							</div>
+
 						{% endif %}
 					</div>
 
@@ -107,6 +113,7 @@
 						<input type="password" id="password" name="password" class="form-control"/>
 						<label class="form-label" for="form1Example2">Mot de passe</label>
 					</div>
+
 					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 					<button type="submit" class="btn btn-primary btn-block">Se connecter</button>

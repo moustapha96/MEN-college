@@ -763,8 +763,10 @@ class SuperAdminController extends AbstractController
     }
 
 
+
+
     // publication
-    #[Route('/publication', name: 'publication_index')]
+    #[Route('/publications', name: 'publication_index')]
     public function indexPublication(PublicationRepository $publication): Response
     {
 
@@ -777,7 +779,7 @@ class SuperAdminController extends AbstractController
     }
 
     // publication
-    #[Route('/new-publication', name: 'publication_new')]
+    #[Route('/new-publications', name: 'publication_new')]
     public function indexNew(): Response
     {
         return $this->render('super_admin/publication/new.html.twig', [

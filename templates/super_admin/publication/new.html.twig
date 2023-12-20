@@ -18,7 +18,7 @@
 
 {% block data %}
 
-	<form action="{{ path('admin_publication_save') }}" method="post">
+	<form action="{{ path('super_admin_publication_save') }}" method="post">
 
 		<div class="row">
 			<div class="col-md-12">
@@ -53,7 +53,7 @@
 		</div>
 		<div class="row">
 			<div class="col-12">
-				<a href="{{ path('admin_publication_index') }}" class="btn btn-danger">Annuler</a>
+				<a href="{{ path('super_admin_publication_index') }}" class="btn btn-danger">Annuler</a>
 				<input type="submit" value="Enregistrer" class="btn btn-info float-right">
 			</div>
 		</div>

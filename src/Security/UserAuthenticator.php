@@ -58,10 +58,17 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         string $firewallName
     ): ?Response {
 
-        // dd($token->getRoleNames()[0]);
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+
+        $targetPath = $this->getTargetPath($request->getSession(), $firewallName);
+
+        // if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+        //     return new RedirectResponse($targetPath);
+        // }
+
+        if (!$token->getRoleNames()[0]) {
             return new RedirectResponse($targetPath);
         }
+
 
         /** @var User $user */
         $user = $token->getUser();

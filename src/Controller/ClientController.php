@@ -7,12 +7,16 @@ use App\Entity\Publication;
 use App\Entity\Rapport;
 use App\Entity\User;
 use App\Form\RapportType;
+use Symfony\Component\Notifier\Notification\Notification;
 use App\Repository\CollegeRepository;
 use App\Repository\PublicationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\RapportRepository;
 use App\Repository\UserRepository;
@@ -290,14 +294,28 @@ class ClientController extends AbstractController
 
     // publication
     #[Route('/save-publication', name: 'publication_save', methods: ['POST'])]
-    public function indexSave(Request $request, EntityManagerInterface $em): Response
-    {
+    public function indexSave(
+        Request $request,
+        EntityManagerInterface $em,
+        MessageBusInterface $bus,
+        NotifierInterface $notifier
+    ): Response {
 
         $titre = $request->request->get('titre');
         $contenu = $request->request->get('contenu');
         /** @var User user  */
         $user = $this->getUser();
         $publication = new Publication();
+
+
+        $recipient = new Recipient('khouma964@gmail.com');
+
+        $new_notify = (new Notification())
+            ->subject('Sujet personnalisé')
+            ->content('Contenu de la notification personnalisée');
+
+        $notifier->send($new_notify, $recipient);
+
 
         $publication->setDestinataire($request->request->get('destinataire'));
         $publication->setTitre($titre);

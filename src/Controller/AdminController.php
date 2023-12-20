@@ -482,7 +482,6 @@ class AdminController extends AbstractController
     public function changeState(Request $request, Rapport $rapport, EntityManagerInterface $entityManager): Response
     {
         $state = $request->request->all()['state'];
-
         if ($rapport) {
             $rapport->setStatut($state);
             if ($state == "NON VALIDER") {
@@ -507,11 +506,19 @@ class AdminController extends AbstractController
 
     // publication
     #[Route('/publication', name: 'publication_index')]
-    public function indexPublication(PublicationRepository $publication): Response
+    public function indexPublication(PublicationRepository $publication, MessageBusInterface $bus): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $bus->dispatch(new Notification(
+            'khouma964@gmail',
+            'content',
+            $user->getId(),
+            $user->getCollege()->getId()
+        ));
 
         $pubs = $publication->findBy([], ['createdAt' => 'DESC'], 5);
-
         return $this->render('admin/publication/index.html.twig', [
             'titre' => 'Publications',
             "publications" => $pubs
@@ -529,7 +536,7 @@ class AdminController extends AbstractController
 
     // publication
     #[Route('/save-publication', name: 'publication_save', methods: ['POST'])]
-    public function indexSave(Request $request, EntityManagerInterface $em): Response
+    public function indexSave(Request $request, EntityManagerInterface $em, MessageBusInterface $bus): Response
     {
 
         $titre = $request->request->get('titre');
@@ -537,6 +544,13 @@ class AdminController extends AbstractController
         /** @var User user  */
         $user = $this->getUser();
         $publication = new Publication();
+
+        $bus->dispatch(new Notification(
+            'khouma964@gmail',
+            'content',
+            $user->getId(),
+            $user->getCollege()->getId()
+        ));
 
         $publication->setTitre($titre);
         $publication->setDestinataire($request->request->get('destinataire'));

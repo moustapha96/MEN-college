@@ -103,6 +103,7 @@ class MailerService
         }
     }
 
+    // Deprecated: Optional parameter $attachments declared before required parameter $user is implicitly treated as a required parameter in /Users/mac/Documents/GitHub/MEN_rapport/men_rapport/src/Service/MailerService.php on line 107
 
     public function sendMail(
         string $message,
@@ -110,7 +111,7 @@ class MailerService
         string $destinataire,
         string $destinatairecc,
         Rapport $rapport,
-        array $attachments = [],
+        array $attachments,
         User $user
     ) {
 
