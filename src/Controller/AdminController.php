@@ -536,8 +536,11 @@ class AdminController extends AbstractController
 
     // publication
     #[Route('/save-publication', name: 'publication_save', methods: ['POST'])]
-    public function indexSave(Request $request, EntityManagerInterface $em, MessageBusInterface $bus): Response
-    {
+    public function indexSave(
+        Request $request,
+        EntityManagerInterface $em,
+        MessageBusInterface $bus
+    ): Response {
 
         $titre = $request->request->get('titre');
         $contenu = $request->request->get('contenu');

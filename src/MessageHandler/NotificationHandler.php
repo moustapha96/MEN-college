@@ -13,7 +13,7 @@ use Symfony\Component\Notifier\Notification\Notification as NotifierNotification
 
 
 #[AsMessageHandler]
-final class NotificationHandler implements MessageHandlerInterface
+final class NotificationHandler
 {
     private $notifier;
     public function __construct(NotifierInterface $notifier)

@@ -35,6 +35,11 @@ class LoginEventListener implements EventSubscriberInterface
         $this->entityManager->flush();
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return [

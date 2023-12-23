@@ -22,12 +22,13 @@ security:
             custom_authenticator: App\Security\UserAuthenticator
             remember_me:
                 secret: '%kernel.secret%'
-                lifetime: 604800
+                lifetime: 120
                 path: /
                 always_remember_me: true
             switch_user: true
             logout:
                 path: app_logout
+                
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }

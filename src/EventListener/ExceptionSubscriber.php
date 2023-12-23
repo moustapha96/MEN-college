@@ -21,6 +21,10 @@ class ExceptionSubscriber extends AbstractController implements EventSubscriberI
         $this->params = $params;
     }
 
+    /**
+     *
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return [

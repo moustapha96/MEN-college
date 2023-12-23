@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "public",
+            "use": "@vercel/php",
+            "config": {
+                "maxLambdaSize": "30mb"
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/public/build"
+        }
+    ]
+}

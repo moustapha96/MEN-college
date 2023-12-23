@@ -20,6 +20,7 @@ class TokenExpirationListener
 
     public function onKernelRequest(RequestEvent $event)
     {
+
         $token = $this->tokenStorage->getToken();
 
         if ($token !== null && $token->isAuthenticated()) {
