@@ -52,7 +52,7 @@
 										{{ pub.user.firstName~' '~pub.user.lastName }}
 									</a>
 								</span>
-								<span class="description">{{ pub.user.college.nom }}
+								<span class="description">{{ pub.user.college.nom ?? 'Nouveau' }}
 									-
 									{{ pub.createdAt.format('Y-m-d H:i') }}
 								</span>
@@ -87,7 +87,7 @@
 										{{ pub.user.firstName~' '~pub.user.lastName }}
 									</a>
 								</span>
-								<span class="description">{{ pub.user.college.nom }}
+								<span class="description">{{ pub.user.college.nom ?? 'Nouveau'}}
 									-
 									{{ pub.createdAt.format('Y-m-d H:i') }}
 								</span>

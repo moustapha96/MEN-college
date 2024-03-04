@@ -18,6 +18,10 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
+
+    Symfony\Component\HttpKernel\KernelInterface: '@kernel'
+
+    
     App\:
         resource: '../src/'
         exclude:
@@ -39,12 +43,7 @@ services:
         arguments:
             $apiKey: '%CHATGPT_KEY%'
 
-    # App\EventListener\TokenExpirationListener:
-    #     arguments:
-    #         - '@security.token_storage'
-    #     tags:
-    #         - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-
+  
     App\Service\DataConfigurationService:
         arguments:
             $configurationRepository: '@App\Repository\ConfigurationRepository'
@@ -66,5 +65,14 @@ services:
             $params: '@parameter_bag'
         tags:
             - { name: 'kernel.event_subscriber' }
+
+    
+
+    App\WebSocket\ChatWebSocket:
+        autowire: true
+
+    App\Command\WebSocketServerCommand:
+        arguments:
+            $chatWebSocket: '@App\WebSocket\ChatWebSocket'
 
     

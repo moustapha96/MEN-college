@@ -22,6 +22,11 @@
 <script src="{{ asset('plugins/jsgrid/demos/db.js')}}"></script>
 <script src="{{ asset('plugins/jsgrid/jsgrid.min.js')}}"></script>
 
+<!-- SweetAlert2 -->
+<script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+<!-- Toastr -->
+<script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+
 
 <script>
 	$(function () {
@@ -44,3 +49,43 @@ $(function () {
 $("#exampleFILE").DataTable({"responsive": true, "lengthChange": false, "autoWidth": false, "buttons": []}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });
 </script>
+
+
+<script>
+	function previewImage(event) {
+var input = event.target;
+var reader = new FileReader();
+
+reader.onload = function () {
+var dataURL = reader.result;
+var img = document.getElementById('profile-picture');
+img.src = dataURL;
+};
+
+reader.readAsDataURL(input.files[0]);
+}
+</script>
+
+
+{% for label, messages in app.flashes %}
+	{% for message in messages %}
+		{% if label == 'error' %}
+			<script>
+				toastr.error('{{ message }}');
+			</script>
+		{% elseif label == 'success' %}
+			<script>
+				toastr.success('{{ message }}');
+			</script>
+		{% elseif label == 'warning' %}
+			<script>
+				toastr.warning('{{ message }}');
+			</script>
+		{% elseif label == 'info' %}
+			<script>
+				toastr.info('{{ message }}');
+			</script>
+		{% endif %}
+
+	{% endfor %}
+{% endfor %}

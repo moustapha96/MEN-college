@@ -27,19 +27,33 @@
 		}
 	</style>
 
+	<div class="row">
+		<h1>Messages</h1>
+		<ul>
+			{% for message in messages %}
+				<li>
+					{% if message.type == 'sent' %}
+						Server:
+						{{ message.content }}
+					{% else %}
+						User
+						{{ message.from }}:
+						{{ message.content }}
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ul>
 
+	</div>
 	<div class="card p-3">
 		<div class="row">
 			<div class="col-12">
 				<h2>Recente Publication</h2>
-
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-12 scrollable-list">
-
-
 				{% for pub in publications %}
 
 					{% if pub.destinataire != 'Tout'  and  ( app.user.college and app.user.college.nom == pub.destinataire  )%}

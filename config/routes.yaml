@@ -10,3 +10,10 @@ custom_404_page:
     path: /404
     controller: App\Controller\CustomErrorController::show404
 
+
+# route pour la commande Symfony
+# websocket_server:
+#     path: /websocket/server
+#     controller: 'App\Controller\WebSocketServerController::start'
+
+

@@ -34,12 +34,10 @@
 							<thead>
 								<tr>
 									<th>Nom</th>
-									<th>Description</th>
+									<th>Déscription</th>
 									<th>Nbre Rapport</th>
 									{# <th>Rapport</th> #}
-
 									<th>actions</th>
-
 								</tr>
 							</thead>
 							<tbody>
@@ -47,9 +45,7 @@
 								{% for college in colleges %}
 									<tr>
 										<td>
-
-											<span>{{college.nom}}</span>
-
+											{{college.nom}}
 										</td>
 										<td>{{ college.description }}</td>
 										<td>
@@ -58,11 +54,11 @@
 												{{ college.SizeRapport () }}</a>
 										</td>
 
-										<td>
-											{# <a href="{{ path('admin_college_synthese', { 'id' : college.id } ) }}" class="btn btn-outline-dark " type="button">
-																																		<i class="fa fa-file" aria-hidden="true"></i>
-																																		Synthése Mois</a> #}
-										</td>
+										{# <td>
+																					<a href="{{ path('admin_college_synthese', { 'id' : college.id } ) }}" class="btn btn-outline-dark " type="button">
+																						<i class="fa fa-file" aria-hidden="true"></i>
+																						Synthése Mois</a>
+																				</td> #}
 
 										<td>
 											<a href="{{ path('admin_college_show', { 'id' : college.id } ) }}" title="Voir détails" class="m-1 btn btn-sm btn-outline-dark" type="button">

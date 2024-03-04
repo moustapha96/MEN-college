@@ -1,8 +1,13 @@
 # config/packages/messenger.yaml
 
+# framework:
+#     messenger:
+#         transports:
+#             async: '%env(MESSENGER_TRANSPORT_DSN)%'
+#         routing:
+#             'App\Message\Notification': async
+
 framework:
     messenger:
-        transports:
-            async: '%env(MESSENGER_TRANSPORT_DSN)%'
-        routing:
-            'App\Message\Notification': async
+        buses:
+            websocket_messages: ~

@@ -20,6 +20,7 @@ use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\RapportRepository;
 use App\Repository\UserRepository;
+use App\WebSocket\ChatWebSocket;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -29,9 +30,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ClientController extends AbstractController
 {
 
-    public function __construct()
-    {
+    private $chatWebSocket;
+
+
+
+    public function __construct(
+
+        ChatWebSocket $chatWebSocket
+    ) {
+
+        $this->chatWebSocket = $chatWebSocket;
     }
+
 
     #[Route('/',  name: "home")]
     public function index(
@@ -159,6 +169,11 @@ class ClientController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
+
+        if (!$user->getCollege()) {
+            $this->addFlash('warning', "Vous n'avez encore ete inscrit sur aucune college ! desole");
+            return $this->redirectToRoute('client_rapport_liste');
+        }
         $rapport = new Rapport();
         $rapport->setCollege($user->getCollege());
         $rapport->setStatut("EN ATTENTE");
@@ -307,14 +322,20 @@ class ClientController extends AbstractController
         $user = $this->getUser();
         $publication = new Publication();
 
+        // $recipient = new Recipient('khouma964@gmail.com');
 
-        $recipient = new Recipient('khouma964@gmail.com');
+        // $new_notify = (new Notification())
+        //     ->subject('Sujet personnalisé')
+        //     ->content('Contenu de la notification personnalisée');
 
-        $new_notify = (new Notification())
-            ->subject('Sujet personnalisé')
-            ->content('Contenu de la notification personnalisée');
+        // $notifier->send($new_notify, $recipient);
 
-        $notifier->send($new_notify, $recipient);
+        $messageData = [
+            'type' => 'message',
+            'content' => $contenu,
+            'title' => $titre,  // Ajout de la propriété $title
+        ];
+        $this->chatWebSocket->broadcast($messageData);
 
 
         $publication->setDestinataire($request->request->get('destinataire'));

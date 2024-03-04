@@ -1,0 +1,63 @@
+{% extends 'admin/include/main.html.twig' %}
+
+
+{#{% titre de l'activite %}#}
+{% block title_job %}
+	<h1 class="card-title">Tableau de Bord Admin</h1>
+
+{% endblock %}
+
+{# {% operation possible %}#}
+{% block option %}{% endblock %}
+
+{# {% les donnees affichees %}#}
+{% block data %}
+
+	<div class="row">
+		<div id="chat-container">
+			<div id="messages"></div>
+			<input type="text" id="message-input" placeholder="Type your message">
+			<button onclick="sendMessage()">Send</button>
+		</div>
+	</div>
+
+	<script>
+		const socket = new WebSocket('ws://localhost:8080');
+
+socket.onopen = function (event) {
+console.log('WebSocket connection opened:', event);
+};
+
+socket.onmessage = function (event) {
+const data = JSON.parse(event.data);
+if (data.type === 'message') {
+displayMessage(data.username, data.message);
+}
+};
+
+socket.onclose = function (event) {
+console.log('WebSocket connection closed:', event);
+};
+
+function sendMessage() {
+const username = prompt('Enter your username:');
+const message = document.getElementById('message-input').value;
+
+const data = {
+type: 'message',
+username: username,
+message: message
+};
+
+socket.send(JSON.stringify(data));
+}
+
+function displayMessage(username, message) {
+const messagesContainer = document.getElementById('messages');
+const messageElement = document.createElement('div');
+messageElement.innerHTML = `<strong>${username}:</strong> ${message}`;
+messagesContainer.appendChild(messageElement);
+}
+	</script>
+
+{% endblock %}

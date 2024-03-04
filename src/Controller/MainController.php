@@ -48,39 +48,17 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/super_admin/update/avatar', name: 'super_admin_profil_update_avatar', methods: ['GET', 'POST'])]
+
+    #[Route('/super_admin/profil/save', name: 'super_admin_profil_save_avatar', methods: ['POST'])]
     public function updateAvatarSAdmin(Request $request, EntityManagerInterface $entityManager)
     {
         /** @var User $user */
         $user = $this->getUser();
-        $defaultData = ['message' => "formulaire de modification du profil"];
-        $formAvatar = $this->createFormBuilder($defaultData)
-            ->add(
-                'avatar',
-                FileType::class,
-                [
-                    'required' => false,
-                    'label' => 'photo profil',
-                    'constraints' => [
-                        new File([
-                            'mimeTypes' => [
-                                "image/png", "image/jpeg", "image/jpg", "image/gif"
-                            ],
-                            'maxSize' => '4096k',
-                            'mimeTypesMessage' => 'trop volumineuse , veuillez choisir une autre image',
 
-                        ])
-                    ]
-                ]
-            )->add('enregistrer', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-outline-success mt-3 '],
-                'label' => 'enregistrer'
-            ])
-            ->getForm();
 
-        $formAvatar->handleRequest($request);
-        if ($formAvatar->isSubmitted() && $formAvatar->isValid()) {
-            $uploadedFile = $formAvatar['avatar']->getData();
+        $uploadedFile = $request->files->get('avatar');
+
+        if ($uploadedFile) {
             $destination = $this->getParameter('kernel.project_dir') . '/public/avatars/';
             $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
             $newFilename = Urlizer::urlize($originalFilename) . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
@@ -91,49 +69,39 @@ class MainController extends AbstractController
             $user->setAvatar($newFilename);
             $entityManager->persist($user);
             $entityManager->flush();
-            $this->addFlash('success', "photo profil mise a jour !");
+
+            $this->addFlash('success', "Photo profil mise a jour !");
+            return $this->redirectToRoute('super_admin_profil');
         }
 
-        return $this->render('super_admin/profil/profil.html.twig', [
-            'formAvatar' => $formAvatar->createView(),
-            'titre' => 'Mise a jour Profil',
-            'user' => $user
-        ]);
+        $this->addFlash('warning', "Photo profil non mise a jour !");
+        return $this->redirectToRoute('super_admin_profil');
     }
 
-    #[Route('/admin/profil/update/avatar', name: 'admin_profil_update_avatar', methods: ['GET', 'POST'])]
-    public function updateAvatarAdmin(Request $request, EntityManagerInterface $entityManager)
+    #[Route('/admin/profil', name: 'admin_profil_update_avatar', methods: ['GET'])]
+    public function updateAvatarAdmin()
     {
         /** @var User $user */
         $user = $this->getUser();
-        $defaultData = ['message' => "formulaire de modification du profil"];
-        $formAvatar = $this->createFormBuilder($defaultData)
-            ->add(
-                'avatar',
-                FileType::class,
-                [
-                    'required' => false,
-                    'label' => 'photo profil',
-                    'constraints' => [
-                        new File([
-                            'mimeTypes' => [
-                                "image/png", "image/jpeg", "image/jpg", "image/gif"
-                            ],
-                            'maxSize' => '4096k',
-                            'mimeTypesMessage' => 'trop volumineuse , veuillez choisir une autre image',
+        return $this->render('admin/profil/profil.html.twig', [
+            'titre' => 'Mise a jour Profil',
+            'user' => $user
+        ]);
+    }
 
-                        ])
-                    ]
-                ]
-            )->add('enregistrer', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-outline-success mt-3 '],
-                'label' => 'enregistrer'
-            ])
-            ->getForm();
 
-        $formAvatar->handleRequest($request);
-        if ($formAvatar->isSubmitted() && $formAvatar->isValid()) {
-            $uploadedFile = $formAvatar['avatar']->getData();
+
+    #[Route('/admin/profil/save', name: 'admin_profil_save_avatar', methods: ['POST'])]
+    public function saveAvatarAdmin(
+        Request $request,
+        EntityManagerInterface $entityManager
+    ) {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $uploadedFile = $request->files->get('avatar');
+
+        if ($uploadedFile) {
             $destination = $this->getParameter('kernel.project_dir') . '/public/avatars/';
             $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
             $newFilename = Urlizer::urlize($originalFilename) . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
@@ -144,15 +112,15 @@ class MainController extends AbstractController
             $user->setAvatar($newFilename);
             $entityManager->persist($user);
             $entityManager->flush();
-            $this->addFlash('success', "photo profil mise a jour !");
+
+            $this->addFlash('success', "Photo profil mise a jour !");
+            return $this->redirectToRoute('admin_profil_update_avatar');
         }
 
-        return $this->render('admin/profil/profil.html.twig', [
-            'formAvatar' => $formAvatar->createView(),
-            'titre' => 'Mise a jour Profil',
-            'user' => $user
-        ]);
+        $this->addFlash('warning', "Photo profil non mise a jour !");
+        return $this->redirectToRoute('admin_profil_update_avatar');
     }
+
     #[Route('/client/profil/update/avatar', name: 'client_profil_update_avatar', methods: ['GET', 'POST'])]
     public function updateAvatarClient(Request $request, EntityManagerInterface $entityManager)
     {

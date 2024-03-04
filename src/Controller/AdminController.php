@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\OpenAIService;
+use App\WebSocket\ChatWebSocket;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,11 +38,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class AdminController extends AbstractController
 {
 
+    private $chatWebSocket;
+
     private $chatGPTService;
 
-    public function __construct(ChatGPTService $chatGPTService)
-    {
+    public function __construct(
+        ChatGPTService $chatGPTService,
+        ChatWebSocket $chatWebSocket
+    ) {
         $this->chatGPTService = $chatGPTService;
+        $this->chatWebSocket = $chatWebSocket;
     }
 
 
@@ -511,17 +517,13 @@ class AdminController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        $bus->dispatch(new Notification(
-            'khouma964@gmail',
-            'content',
-            $user->getId(),
-            $user->getCollege()->getId()
-        ));
+        $messages = $this->chatWebSocket->getMessages();
 
         $pubs = $publication->findBy([], ['createdAt' => 'DESC'], 5);
         return $this->render('admin/publication/index.html.twig', [
             'titre' => 'Publications',
-            "publications" => $pubs
+            "publications" => $pubs,
+            "messages" => $this->json($messages)
         ]);
     }
 
@@ -529,9 +531,20 @@ class AdminController extends AbstractController
     #[Route('/new-publication', name: 'publication_new')]
     public function indexNew(): Response
     {
-        return $this->render('admin/publication/new.html.twig', [
-            'titre' => 'Nouvelle Publication',
-        ]);
+
+        $resourceIds = $this->chatWebSocket->getResourceIds(); { # dd($this->json(['resourceIds' => $resourceIds])); #}
+
+            $recipientId = 'user@gmail.com'; // Remplacez par l'ID ou le nom d'utilisateur du destinataire
+            $messageContent = 'Bonjour!';
+            $messageTitle = 'Nouveau message';
+
+            $success = $this->chatWebSocket->sendMessageToUser($recipientId, $messageContent, $messageTitle);
+
+            // dd($success);
+            return $this->render('admin/publication/new.html.twig', [
+                'titre' => 'Nouvelle Publication',
+            ]);
+        }
     }
 
     // publication
@@ -539,7 +552,7 @@ class AdminController extends AbstractController
     public function indexSave(
         Request $request,
         EntityManagerInterface $em,
-        MessageBusInterface $bus
+
     ): Response {
 
         $titre = $request->request->get('titre');
@@ -548,12 +561,22 @@ class AdminController extends AbstractController
         $user = $this->getUser();
         $publication = new Publication();
 
-        $bus->dispatch(new Notification(
-            'khouma964@gmail',
-            'content',
-            $user->getId(),
-            $user->getCollege()->getId()
-        ));
+        // Example data to send
+        $messageData = [
+            'type' => 'message',
+            'content' => $contenu,
+            'title' => $titre,  // Ajout de la propriété $title
+        ];
+        $this->chatWebSocket->broadcast($messageData);
+
+
+
+        // $bus->dispatch(new Notification(
+        //     'khouma964@gmail',
+        //     'content',
+        //     $user->getId(),
+        //     $user->getCollege()->getId()
+        // ));
 
         $publication->setTitre($titre);
         $publication->setDestinataire($request->request->get('destinataire'));
