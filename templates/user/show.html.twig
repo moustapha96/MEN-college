@@ -14,10 +14,10 @@
 		<i class="fa fa-list" aria-hidden="true"></i>
 		Liste</a>
 	{#
-																									
-																									
-																									<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-dark float-right btn-sm" role="button"><i
-																									        class="fa fa-edit" aria-hidden="true"></i>Modifier</a> #}
+																																	
+																																	
+																																	<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-dark float-right btn-sm" role="button"><i
+																																	        class="fa fa-edit" aria-hidden="true"></i>Modifier</a> #}
 {% endblock %}
 
 {# {% les donnees affichees %}#}
@@ -70,48 +70,51 @@
 										<tr>
 											<th>Dernier Connexion</th>
 											<td>{{ user.lastActivityAt ? user.lastActivityAt|date('Y-m-d H:i:s') : '' }}
+												--
+												{{ user.isActiveNow ? '<span class="badge badge-success">online</span>': '<span class="badge badge-danger">offline</span>' }}
+
+
 											</td>
 										</tr>
-										<tr>
-											<th>Adresse</th>
-											<td>{{ user.adresse }}</td>
-										</tr>
-										<tr>
-											<th>Sexe</th>
-											<td>{{ user.sexe }}</td>
-										</tr>
-
-										{% if user.college %}
-											<tr>
-												<th>Collège</th>
-												<td>{{ user.college.nom }}</td>
-											</tr>
-
-										{% endif %}
-
-
 									</tbody>
-								</table>
+								</td>
+							</tr>
+							<tr>
+								<th>Adresse</th>
+								<td>{{ user.adresse }}</td>
+							</tr>
+							<tr>
+								<th>Sexe</th>
+								<td>{{ user.sexe }}</td>
+							</tr>
+
+							{% if user.college %}
+								<tr>
+									<th>Collège</th>
+									<td>{{ user.college.nom }}</td>
+								</tr>
+
+							{% endif %}
 
 
-								<div>
+						</tbody>
+					</table>
 
 
-									<a href=" {{ path('app_generate_pdf_user',  { 'id' : user.id } )  }}" class="m-1 btn btn-info float-right btn-sm" role="button">
-
-										<i class="m-1 fa fa-print" aria-hidden="true"></i>Imprimer
-									</a>
+					<div>
 
 
-								</div>
-								{# {{ include('user/_delete_form.html.twig') }} #}
-							</div>
-						</div>
+						<a href=" {{ path('app_generate_pdf_user',  { 'id' : user.id } )  }}" class="m-1 btn btn-info float-right btn-sm" role="button">
+
+							<i class="m-1 fa fa-print" aria-hidden="true"></i>Imprimer
+						</a>
+
+
 					</div>
-
+					{# {{ include('user/_delete_form.html.twig') }} #}
 				</div>
 			</div>
 		</div>
-	</div>
 
-{% endblock %}
+	</div>
+</div></div></div>{% endblock %}

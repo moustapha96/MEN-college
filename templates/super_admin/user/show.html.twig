@@ -61,6 +61,10 @@
 										<tr>
 											<th>Dernier Connexion</th>
 											<td>{{ user.lastActivityAt ? user.lastActivityAt|date('Y-m-d H:i:s') : '' }}
+												--
+												{{ user.isActiveNow ? '<span class="badge badge-success">online</span>': '<span class="badge badge-danger">offline</span>' }}
+
+
 											</td>
 										</tr>
 										<tr>
