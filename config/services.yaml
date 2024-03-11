@@ -8,6 +8,7 @@ parameters:
   synthese_rapports:  "%kernel.project_dir%/public/syntheses/"
   CHATGPT_KEY: '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'
   openai_api_key: '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'
+  session_max_idle_time: 1800 
 
 
 services:
@@ -75,4 +76,18 @@ services:
         arguments:
             $chatWebSocket: '@App\WebSocket\ChatWebSocket'
 
-    
+    App\EventListener\DatabaseInitializer:
+        autowire: true
+
+    App\EventSubscriber\KernelSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
+  
+   
+
+   
+    App\EventListener\SessionIdleHandler:
+        arguments: ["%session_max_idle_time%"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

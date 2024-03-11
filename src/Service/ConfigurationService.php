@@ -28,6 +28,4 @@ class ConfigurationService
         }
         return $config->getValeur();
     }
-
-    
 }
