@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\College;
-use App\Entity\Configuration;
 use App\Entity\Publication;
 use App\Entity\Rapport;
 use App\Entity\User;
@@ -35,12 +34,11 @@ use Symfony\UX\Chartjs\Model\Chart;
 class SuperAdminController extends AbstractController
 {
 
-
     private MailerService $mailerService;
     private $chatGPTService;
 
     private $configurationService;
-    private $tokenSI;
+
 
     public function __construct(
         MailerService $mailerService,
@@ -48,7 +46,6 @@ class SuperAdminController extends AbstractController
         ChatGPTService $chatGPTService
 
     ) {
-
         $this->mailerService = $mailerService;
         $this->configurationService = $configurationService;
         $this->chatGPTService = $chatGPTService;
@@ -766,12 +763,10 @@ class SuperAdminController extends AbstractController
 
 
     // publication
-    #[Route('/publications', name: 'publication_index')]
+    #[Route('/pubs', name: 'pub_index')]
     public function indexPublication(PublicationRepository $publication): Response
     {
-
         $pubs = $publication->findBy([], ['createdAt' => 'DESC'], 5);
-
         return $this->render('super_admin/publication/index.html.twig', [
             'titre' => 'Publications',
             "publications" => $pubs
@@ -779,8 +774,8 @@ class SuperAdminController extends AbstractController
     }
 
     // publication
-    #[Route('/new-publications', name: 'publication_new')]
-    public function indexNew(): Response
+    #[Route('/new-pub', name: 'pub_new')]
+    public function indexNewSA(): Response
     {
         return $this->render('super_admin/publication/new.html.twig', [
             'titre' => 'Nouvelle Publication',
@@ -788,8 +783,8 @@ class SuperAdminController extends AbstractController
     }
 
     // publication
-    #[Route('/save-publication', name: 'publication_save', methods: ['POST'])]
-    public function indexSave(Request $request, EntityManagerInterface $em): Response
+    #[Route('/save-pub', name: 'pub_save', methods: ['POST'])]
+    public function indexSaveSA(Request $request, EntityManagerInterface $em): Response
     {
 
         $titre = $request->request->get('titre');
@@ -806,6 +801,6 @@ class SuperAdminController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', "Publication ajoutée avec succès");
-        return $this->redirectToRoute('super_admin_publication_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('super_admin_pub_index', [], Response::HTTP_SEE_OTHER);
     }
 }

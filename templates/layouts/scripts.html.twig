@@ -29,6 +29,36 @@
 
 
 <script>
+	// clock.js
+
+function updateClock() {
+var now = new Date();
+var hours = now.getHours();
+var minutes = now.getMinutes();
+var seconds = now.getSeconds();
+
+// Ajoute un zéro devant les chiffres si nécessaire pour l'affichage
+hours = addZero(hours);
+minutes = addZero(minutes);
+seconds = addZero(seconds);
+
+var clockElement = document.getElementById('clock');
+clockElement.innerHTML = hours + ':' + minutes + ':' + seconds;
+
+// Met à jour l'heure toutes les secondes
+setTimeout(updateClock, 1000);
+}
+
+function addZero(number) {
+return(number < 10 ? '0' : '') + number;
+}
+
+// Démarre la mise à jour de l'horloge lorsque la page est chargée
+document.addEventListener('DOMContentLoaded', updateClock);
+
+</script>
+
+<script>
 	$(function () {
 $("#example1").DataTable({
 "responsive": true,

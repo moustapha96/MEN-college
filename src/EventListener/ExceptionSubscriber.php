@@ -54,10 +54,10 @@ class ExceptionSubscriber extends AbstractController implements EventSubscriberI
     {
         $exception = $event->getThrowable();
 
-        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
-            $response = $this->render('layouts/404.html.twig');
-            $event->setResponse($response);
-        }
+        // if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+        //     $response = $this->render('layouts/404.html.twig');
+        //     $event->setResponse($response);
+        // }
     }
 
     public function onKernelRequest(RequestEvent $event)

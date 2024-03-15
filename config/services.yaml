@@ -61,14 +61,13 @@ services:
             $apiKey: '%env(OPENAI_API_KEY)%'
             $openaiEndpoint: 'https://api.openai.com'
 
-    App\EventListener\ExceptionSubscriber:
-        arguments:
-            $params: '@parameter_bag'
-        tags:
-            - { name: 'kernel.event_subscriber' }
+    # App\EventListener\ExceptionSubscriber:
+    #     arguments:
+    #         $params: '@parameter_bag'
+    #     tags:
+    #         - { name: 'kernel.event_subscriber' }
 
     
-
     App\WebSocket\ChatWebSocket:
         autowire: true
 
@@ -82,9 +81,6 @@ services:
     App\EventSubscriber\KernelSubscriber:
         tags:
             - { name: kernel.event_subscriber }
-
-  
-   
 
    
     App\EventListener\SessionIdleHandler:

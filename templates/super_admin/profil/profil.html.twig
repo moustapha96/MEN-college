@@ -23,7 +23,8 @@
 					<div class="card">
 						<div class="card-body">
 							<div class="d-flex flex-column align-items-center text-center">
-								<form action="{{ path('admin_profil_save_avatar') }}" method="POST" enctype="multipart/form-data">
+								<form action="{{ path('super_admin_profil_save_avatar') }}" method="POST" enctype="multipart/form-data">
+
 									<label for="file-input">
 										<img id="profile-picture" height="150px" width="150px" class="img-circle" src="/avatars/{{ user.avatar }}" alt="User profile picture">
 									</label>
@@ -51,7 +52,7 @@
 
 				<div class="col-lg-8">
 					<div class="card">
-						<form enctype="multipart/form-data" action="{{ path('admin_profil_update_data') }}" method="POST">
+						<form enctype="multipart/form-data" action="{{ path('super_admin_profil_update_data') }}" method="POST">
 							<div class="card-body">
 
 								<div class="row mb-3">
@@ -59,7 +60,6 @@
 										<h6 class="mb-0">Matricule</h6>
 									</div>
 									<div class="col-sm-9 text-secondary">
-
 										<input type="text" name="matricule" class="form-control " id="matricule" disabled placeholder="matricule" value="{{ user.matricule }}" required>
 									</div>
 								</div>
@@ -69,8 +69,7 @@
 										<h6 class="mb-0">Prénom</h6>
 									</div>
 									<div class="col-sm-9 text-secondary">
-
-										<input type="text" pattern="[a-zAZ]{3,}" name="firstName" class="form-control " id="firstName" placeholder="prenom" value="{{ user.firstName }}" required>
+										<input type="text" pattern="[a-z-A-Z]" name="firstName" class="form-control " id="firstName" placeholder="prenom" value="{{ user.firstName }}" required>
 									</div>
 								</div>
 								<div class="row mb-3">
@@ -79,7 +78,7 @@
 									</div>
 									<div class="col-sm-9 text-secondary">
 
-										<input type="text" pattern="[a-zAZ]{3,}" name="lastName" class="form-control  " id="lastName" placeholder="nom" value="{{ user.lastName }}" required>
+										<input type="text" pattern="[a-z-A-Z]" name="lastName" class="form-control  " id="lastName" placeholder="nom" value="{{ user.lastName }}" required>
 									</div>
 								</div>
 
@@ -128,7 +127,7 @@
 										<h6 class="mb-0">Adresse</h6>
 									</div>
 									<div class="col-sm-9 text-secondary">
-										<input type="text" pattern="[a-zAZ0-9 ]{3,}" class="form-control " id="adresse" name="adresse" value="{{ user.adresse }}" required>
+										<input type="text" pattern="[a-z-A-Z-0-9]" class="form-control " id="adresse" name="adresse" value="{{ user.adresse }}" required>
 									</div>
 								</div>
 

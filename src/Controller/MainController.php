@@ -90,7 +90,6 @@ class MainController extends AbstractController
     }
 
 
-
     #[Route('/admin/profil/save', name: 'admin_profil_save_avatar', methods: ['POST'])]
     public function saveAvatarAdmin(
         Request $request,
@@ -330,6 +329,83 @@ class MainController extends AbstractController
 
         $formAvatar->handleRequest($request);
         return $this->render('client/profil/profil.html.twig', [
+            'formAvatar' => $formAvatar->createView(),
+            'titre' => 'Mise a jour Profil',
+            'user' => $user
+        ]);
+    }
+
+    //function de mise en jour des donnees
+    #[Route('/sa/profil/update', name: 'super_admin_profil_update_data', methods: ['POST'])]
+    public function updateDataSAdmin(
+        Request                $request,
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager
+    ) {
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $request->request->all();
+
+        if ($request->isMethod('POST')) {
+
+            $user->setFirstName($data['firstName']);
+            $user->setLastName($data['lastName']);
+            $user->setAdresse($data['adresse']);
+            $user->setSexe($data['sexe']);
+
+            $email = $data['email'];
+            $phone = $data['phone'];
+
+            $userWithEmail = $userRepository->findOneBy(['email' => $email]);
+            $userWithPhone = $userRepository->findOneBy(['phone' => $phone]);
+
+            if ($userWithEmail && $userWithEmail !== $user) {
+                $this->addFlash('warning', "L'adresse email existe déjà !");
+                return $this->redirectToRoute('super_admin_profil');
+            } else {
+                $user->setEmail($email);
+            }
+
+            if ($userWithPhone && $userWithPhone !== $user) {
+                $this->addFlash('warning', "Le numéro de téléphone existe déjà !");
+                return $this->redirectToRoute('super_admin_profil');
+            } else {
+                $user->setPhone($phone);
+            }
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $this->addFlash('success', "Profil mis à jour !");
+            return $this->redirectToRoute('super_admin_profil');
+        }
+
+        $user = $this->getUser();
+        $defaultData = ['message' => "formulaire de modification du profil"];
+        $formAvatar = $this->createFormBuilder($defaultData)
+            ->add(
+                'avatar',
+                FileType::class,
+                [
+                    'required' => false,
+                    'label' => 'photo',
+                    'constraints' => [
+                        new File([
+                            'mimeTypes' => [
+                                "image/png", "image/jpeg", "image/jpg", "image/gif"
+                            ],
+                            'maxSize' => '4096k',
+                            'mimeTypesMessage' => 'trop volumineuse , veuillez choisir une autre image',
+
+                        ])
+                    ]
+                ]
+            )->add('update', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-outline-success mt-3 ']
+            ])
+            ->getForm();
+
+        $formAvatar->handleRequest($request);
+        return $this->render('admin/profil/profil.html.twig', [
             'formAvatar' => $formAvatar->createView(),
             'titre' => 'Mise a jour Profil',
             'user' => $user
