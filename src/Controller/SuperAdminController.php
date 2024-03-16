@@ -30,7 +30,7 @@ use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
 #[Route('/super_admin',  name: "super_admin_")]
-#[IsGranted("ROLE_SUPER_ADMIN", statusCode: 404, message: "Page non accéssible")]
+// #[IsGranted("ROLE_SUPER_ADMIN", statusCode: 404, message: "Page non accéssible")]
 class SuperAdminController extends AbstractController
 {
 
@@ -606,6 +606,8 @@ class SuperAdminController extends AbstractController
         UserRepository $userRepository,
         CollegeRepository $collegeRepository
     ): Response {
+
+
         return $this->render('super_admin/user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'titre' => "Liste des Inspecteurs",
@@ -757,50 +759,5 @@ class SuperAdminController extends AbstractController
         $entityManager->flush();
         $this->addFlash('success', "College  mise à jour avec succès ");
         return $this->redirect($request->headers->get('referer'));
-    }
-
-
-
-
-    // publication
-    #[Route('/pubs', name: 'pub_index')]
-    public function indexPublication(PublicationRepository $publication): Response
-    {
-        $pubs = $publication->findBy([], ['createdAt' => 'DESC'], 5);
-        return $this->render('super_admin/publication/index.html.twig', [
-            'titre' => 'Publications',
-            "publications" => $pubs
-        ]);
-    }
-
-    // publication
-    #[Route('/new-pub', name: 'pub_new')]
-    public function indexNewSA(): Response
-    {
-        return $this->render('super_admin/publication/new.html.twig', [
-            'titre' => 'Nouvelle Publication',
-        ]);
-    }
-
-    // publication
-    #[Route('/save-pub', name: 'pub_save', methods: ['POST'])]
-    public function indexSaveSA(Request $request, EntityManagerInterface $em): Response
-    {
-
-        $titre = $request->request->get('titre');
-        $contenu = $request->request->get('contenu');
-        /** @var User user  */
-        $user = $this->getUser();
-        $publication = new Publication();
-
-        $publication->setTitre($titre);
-        $publication->setContenu($contenu);
-        $publication->setUser($user);
-
-        $em->persist($publication);
-        $em->flush();
-
-        $this->addFlash('success', "Publication ajoutée avec succès");
-        return $this->redirectToRoute('super_admin_pub_index', [], Response::HTTP_SEE_OTHER);
     }
 }

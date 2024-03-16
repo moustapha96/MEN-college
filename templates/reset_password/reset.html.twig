@@ -62,8 +62,11 @@
 					<div class="row mb-3  centered-element">
 
 						<div class="row  d-flex justify-content-between ">
-							<img src="images/{{getLogo2()}}" style="width: 100px;height: 50px " class="responsive-image" alt="">
-							<img src="images/{{getLogo1()}}" style=" height: 55px; width: 150px" class="responsive-image" alt="">
+
+							<img src="/images/{{getLogo2()}}" style="width: 100px;height: 50px " class="responsive-image" alt="">
+							<img src="/images/{{getLogo1()}}" style=" height: 55px; width: 150px" class="responsive-image" alt="">
+
+
 						</div>
 						<h5 class="mt-1 ">
 							<b>
@@ -126,22 +129,7 @@
 
 		<script type="text/javascript" src="login/js/mdb.min.js"></script>
 		<script type="text/javascript" src="login/js/script.js"></script>
-		<script>
-			(function () {
-'use strict'
-const forms = document.querySelectorAll('.requires-validation')
-Array.from(forms).forEach(function (form) {
-form.addEventListener('submit', function (event) {
-if (! form.checkValidity()) {
-event.preventDefault()
-event.stopPropagation()
-}
 
-form.classList.add('was-validated')
-}, false)
-})
-})()
-		</script>
 
 	</body>
 </html>

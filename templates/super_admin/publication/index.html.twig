@@ -5,7 +5,6 @@
 {% block title_job %}
 	<h1 class="card-title">
 		{{  "" }}
-
 	</h1>
 {% endblock %}
 
@@ -14,8 +13,6 @@
 	<a href=" {{ path('super_admin_pub_new') }}" class="m-1 btn btn-info float-right btn-sm" role="button">
 
 		<i class="m-1 fa fa-plus" aria-hidden="true"></i>Nouvelle Publication</a>
-
-
 {% endblock %}
 
 {% block data %}
@@ -27,19 +24,33 @@
 		}
 	</style>
 
+	<div class="row">
 
+		<ul>
+			{% for message in messages %}
+				<li>
+					{% if message.type == 'sent' %}
+						Server:
+						{{ message.content }}
+					{% else %}
+						User
+						{{ message.from }}:
+						{{ message.content }}
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ul>
+
+	</div>
 	<div class="card p-3">
 		<div class="row">
 			<div class="col-12">
 				<h2>Recente Publication</h2>
-
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-12 scrollable-list">
-
-
 				{% for pub in publications %}
 
 					<div class="post">
@@ -63,13 +74,19 @@
 						<p>
 							<a href="#" class="link-black text-sm">
 								<i class="fas fa-link mr-1"></i>
-								{{ pub.user.college.nom }}
+								{{ pub.destinataire }}
 							</a>
-							<a href="" class="btn btn-danger">
+
+							<a href="{{ path('super_admin_pub_delete',{ 'id': pub.id }) }}" class="btn btn-outline-danger btn-sm float-right" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette pub ?')" title="Supprimer cette publication">
+
 								<i class="fa fa-trash" aria-hidden="true"></i>
 							</a>
+
+
 						</p>
 					</div>
+
+
 				{% endfor %}
 			</div>
 		</div>

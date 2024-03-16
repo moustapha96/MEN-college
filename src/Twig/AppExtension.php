@@ -29,6 +29,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('getEmail', [$this, 'getEmail']),
             new TwigFunction('getTitle1', [$this, 'getTitle1']),
             new TwigFunction('getTitle2', [$this, 'getTitle2']),
+            new TwigFunction('getUri', [$this, 'getUri']),
         ];
     }
 
@@ -67,5 +68,10 @@ class AppExtension extends AbstractExtension
     public function getTitle2(): ?string
     {
         return $this->configurationService->getTitle2();
+    }
+
+    public function getUri(): ?string
+    {
+        return $this->configurationService->getUri();
     }
 }

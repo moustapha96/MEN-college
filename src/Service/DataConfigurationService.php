@@ -51,4 +51,9 @@ class DataConfigurationService
     {
         return $this->configurationRepository->findAll() ?  $this->configurationRepository->findOneBy(['cle' => 'title_2'])->getValeur() : 'IGEF';
     }
+
+    public function getUri(): ?string
+    {
+        return $this->configurationRepository->findAll() ?  $this->configurationRepository->findOneBy(['cle' => 'uri'])->getValeur() : 'localhost:8000';
+    }
 }

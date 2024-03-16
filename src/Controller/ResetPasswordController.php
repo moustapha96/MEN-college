@@ -45,7 +45,7 @@ class ResetPasswordController extends AbstractController
         if ($request->isMethod('POST')) {
 
             $data = $request->request->all();
-            $uri = "localhost:8000/reset-password/reset/";
+            $uri =  "localhost:8000/reset-password/reset/";
             $email = $data['email'];
             $result =  $resetPasswordService->processSendingPasswordResetEmail($email, $uri);
 
@@ -81,6 +81,8 @@ class ResetPasswordController extends AbstractController
     #[Route('/reset/{token}', name: 'app_reset_password')]
     public function reset(Request $request, UserPasswordHasherInterface $passwordHasher, TranslatorInterface $translator, string $token = null): Response
     {
+
+
         if ($token) {
             $this->storeTokenInSession($token);
             return $this->redirectToRoute('app_reset_password');
@@ -158,7 +160,7 @@ class ResetPasswordController extends AbstractController
         }
 
         $email = (new TemplatedEmail())
-            ->from(new Address('men_rapport@gmail.com', 'MEN'))
+            ->from(new Address('moustaphakhouma964@gmail.com', 'MEN'))
             ->to($user->getEmail())
             ->subject('Your password reset request')
             ->htmlTemplate('reset_password/email.html.twig')

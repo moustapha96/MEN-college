@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Publication;
 use App\Entity\User;
+use App\Repository\PublicationRepository;
 use App\Repository\UserRepository;
+use App\WebSocket\ChatWebSocket;
 use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +19,17 @@ use Symfony\Component\Validator\Constraints\File;
 
 class MainController extends AbstractController
 {
+
+
+    private $chatWebSocket;
+
+
+    public function __construct(
+        ChatWebSocket $chatWebSocket
+    ) {
+        $this->chatWebSocket = $chatWebSocket;
+    }
+
 
     #[Route('/admin/profil', name: 'admin_profil')]
     public function profilAdmin(): Response
@@ -410,5 +424,72 @@ class MainController extends AbstractController
             'titre' => 'Mise a jour Profil',
             'user' => $user
         ]);
+    }
+
+
+
+
+    // publication
+    #[Route('/pubs', name: 'super_admin_pub_index')]
+    public function indexPublication(PublicationRepository $publication): Response
+    {
+
+        $messages = $this->chatWebSocket->getMessages();
+        $pubs = $publication->findBy([], ['createdAt' => 'DESC'], 5);
+        return $this->render('super_admin/publication/index.html.twig', [
+            'titre' => 'Publications',
+            "publications" => $pubs,
+            "messages" => $this->json($messages)
+        ]);
+    }
+
+    // publication
+    #[Route('/new-pub', name: 'super_admin_pub_new')]
+    public function indexNewSA(): Response
+    {
+        return $this->render('super_admin/publication/new.html.twig', [
+            'titre' => 'Nouvelle Publication',
+        ]);
+    }
+
+    // publication
+    #[Route('/save-pub', name: 'super_admin_pub_save', methods: ['POST'])]
+    public function indexSaveSA(Request $request, EntityManagerInterface $em): Response
+    {
+
+        $titre = $request->request->get('titre');
+        $contenu = $request->request->get('contenu');
+        /** @var User user  */
+        $user = $this->getUser();
+        $publication = new Publication();
+
+        $publication->setTitre($titre);
+        $publication->setContenu($contenu);
+        $publication->setUser($user);
+
+        $em->persist($publication);
+        $em->flush();
+
+        $this->addFlash('success', "Publication ajoutée avec succès");
+        return $this->redirectToRoute('super_admin_pub_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/pub/{id}/delete', name: 'super_admin_pub_delete')]
+    public function indexNewDelete(
+        $id,
+        PublicationRepository $publicationRepository,
+        EntityManagerInterface $em
+    ): Response {
+
+        $pub = $publicationRepository->find($id);
+        if (!$pub) {
+            $this->addFlash('warning', "Publication non trouvé");
+            return $this->redirectToRoute('super_admin_pub_index');
+        }
+        $em->remove($pub);
+        $em->flush();
+
+        $this->addFlash('success', "Publication non trouvé");
+        return $this->redirectToRoute('super_admin_pub_index');
     }
 }

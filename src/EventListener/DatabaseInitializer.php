@@ -44,7 +44,9 @@ class DatabaseInitializer
             ['title_1', 'Ministère de l’Éducation nationale'],
             ['title_2', 'Inspection générale de l\'Éducation et de la Formation'],
             ['logo1', 'flag_men.png'],
-            ['logo2', 'flag_senegal.png']
+            ['logo2', 'flag_senegal.png'],
+            ['uri', 'localhost:8000'],
+
         ];
 
         foreach ($data as $item) {

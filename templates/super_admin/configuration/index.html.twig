@@ -33,7 +33,7 @@
 
 								<div class="row">
 
-									<div class="col-md-4">
+									<div class="col-md-6">
 										<div class="card">
 											<div class="card-body">
 												<h3 class="card-title">Nom de la Platforme</h3>
@@ -45,7 +45,7 @@
 										</div>
 									</div>
 
-									<div class="col-md-4">
+									<div class="col-md-6">
 										<div class="card">
 											<div class="card-body">
 												<h3 class="card-title">Email de la Plarforme</h3>
@@ -58,13 +58,28 @@
 										</div>
 									</div>
 
-									<div class="col-md-4">
+								</div>
+								<div class="row">
+
+									<div class="col-md-6">
 										<div class="card">
 											<div class="card-body">
 												<h3 class="card-title">Tétéphone</h3>
 
 												<div class="col d-flex justify-content-between align-items-center">
 													<input type="phone" required name="tel" value="{{ getTel() }}" id="tel" class="form-control">
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="card">
+											<div class="card-body">
+												<h3 class="card-title">Url</h3>
+
+												<div class="col d-flex justify-content-between align-items-center">
+													<input type="uri" required name="uri" value="{{ getUri() }}" id="tel" class="form-control">
 												</div>
 											</div>
 										</div>
